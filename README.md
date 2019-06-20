@@ -1,7 +1,6 @@
 # Yggis
 
-[![Build Status](https://travis-ci.org/malouro/yggis.svg?branch=master)]()
-[![CircleCi](https://circleci.com/gh/malouro/yggis/tree/master.svg?style=shield)]()
+[![CircleCI](https://circleci.com/gh/malouro/yggis-bot.svg?style=svg)](https://circleci.com/gh/malouro/yggis-bot)
 [![dependencies Status](https://david-dm.org/malouro/yggis/status.svg)](https://david-dm.org/malouro/yggis)
 [![devDependencies Status](https://david-dm.org/malouro/yggis/dev-status.svg)](https://david-dm.org/malouro/yggis?type=dev)
 [![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
