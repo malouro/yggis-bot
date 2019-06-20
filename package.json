@@ -34,14 +34,14 @@
   "scripts": {
     "start": "babel-node src/index",
     "setup": "yarn && yarn generate",
-    "generate": "node ./scripts/generate-dotenv.js",
+    "script:generate": "node ./scripts/generate-dotenv.js",
     "test": "jest --watch",
-    "test:ci": "jest --runInBand",
+    "test:coverage": "jest --coverage",
     "build:dev": "rollup -c rollup.config.js -w",
     "build:prod": "rollup -c rollup.config.js",
-    "lint": "eslint src/ test/ scripts/",
+    "check:lint": "eslint src/ test/ scripts/",
+    "check:spelling": "npx cspell /src/**/*.js",
     "format": "prettier --no-config --write '{src,test,scripts}/**/*.js'",
-    "spellcheck": "npx cspell /src/**/*.js",
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs"
   },

@@ -3,6 +3,10 @@
 
 module.exports = {
 	clearMocks: true,
+	collectCoverageFrom: [
+		'<rootDir>/src/**/*.{js,ts,jsx,tsx}',
+		'!<rootDir>/src/utils/logger.js',
+	],
 	coverageDirectory: 'coverage',
 	setupFiles: [
 		'<rootDir>/test/setup/setupMocks',

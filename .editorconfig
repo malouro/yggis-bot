@@ -5,6 +5,6 @@ end_of_line = lf
 indent_size = 2
 indent_style = tab
 
-[{package.json,cspell.json,*.yml}]
+[{package.json,cSpell.json,*.yml}]
 indent_size = 2
 indent_style = space

@@ -4,11 +4,15 @@
     "words": [
         "discordbot",
         "overwatch",
+        "printf",
         "vuepress",
-        "Yggis"
+        "yggis"
     ],
     "ignorePaths": [
         "/node_modules",
         "package.json"
+    ],
+    "dictionaries": [
+        "typescript"
     ]
 }

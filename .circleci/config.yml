@@ -6,7 +6,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/node:8.9.1
+      - image: circleci/node:8.16.0
 
     steps:
       - checkout
@@ -28,17 +28,9 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
 
       - run:
-          name: lint
-          command: npm run lint
-      
+          name: static checks
+          command: yarn check:lint && yarn check:spelling
+
       - run:
           name: test
-          command: npm run test -- --coverage
-
-      # Uncomment if using codacy code coverage
-      # - run:
-      #     name: coverage
-      #     command: |
-      #       if [ "${CIRCLE_BRANCH}" == "master" ]; then
-      #         cat ./coverage/lcov.info | node_modules/.bin/codacy-coverage -p .
-      #       fi
+          command: yarn test:coverage
