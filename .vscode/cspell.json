@@ -1,0 +1,14 @@
+{
+    "version": "0.1",
+    "language": "en",
+    "words": [
+        "discordbot",
+        "overwatch",
+        "vuepress",
+        "Yggis"
+    ],
+    "ignorePaths": [
+        "/node_modules",
+        "package.json"
+    ]
+}
