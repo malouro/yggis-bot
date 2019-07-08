@@ -3,12 +3,18 @@ import Discord from 'discord.js'
 import defaultConfig from '../constants/config'
 import defaultLogger from '../utils/logger'
 
+import {
+	parseArguments,
+	getCommandFromMessage,
+} from '../utils/commands'
+
 export default class Bot {
 	constructor({
-		config,
-		token = process.env.TOKEN,
 		client = new Discord.Client(),
+		commands = new Discord.Collection(),
+		config,
 		logger = defaultLogger,
+		token = process.env.TOKEN,
 	}) {
 		/* oauth token for Discord bot */
 		this.token = token
@@ -18,12 +24,15 @@ export default class Bot {
 			...defaultConfig,
 			...config,
 		}
+
+		/* setup commands */
+		this.commands = commands
 		this.commandPrefix = config.commandPrefix
 
 		/* logger utils */
 		this.logger = logger
 
-		/* Discord.js Client */
+		/* Discord.js client & events */
 		this.client = client
 		this.client.on('ready', this.onReady.bind(this))
 		this.client.on('message', this.onMessage.bind(this))
@@ -41,11 +50,25 @@ export default class Bot {
 	}
 
 	onMessage(message) {
-		const { content } = message
+		let args = []
+		let commandName = null
+
+		if (message.content.startsWith(this.config.commandPrefix)) {
+			args = parseArguments(message)
+			commandName = getCommandFromMessage(args, this.config)
+
+			if (this.commands.has(commandName)) {
+				this.commands.get(commandName).run({
+					message,
+					client: this.client,
+					logger: this.logger,
+				})
+			}
+		}
 
 		this.logger.bot.log({
 			level: 'info',
-			message: `Message received: "${content}"`,
+			message: `Message received: "${message.content}"`,
 		})
 	}
 

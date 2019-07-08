@@ -47,13 +47,14 @@ const createCustomLogger = customLabel =>
 	})
 
 const botLogger = createCustomLogger('Bot')
+const debugLogger = createCustomLogger('Debug')
 const lfgLogger = createCustomLogger('LFG')
 const streamLinkLogger = createCustomLogger('StreamLink')
 
 const logger = {
 	bot: botLogger,
+	debug: debugLogger,
 	lfg: lfgLogger,
-	'stream-link': streamLinkLogger,
 	sl: streamLinkLogger,
 }
 

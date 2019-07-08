@@ -1,5 +1,5 @@
 import { toMatchDiffSnapshot } from 'snapshot-diff'
-import lfgGamesData from '../../../src/constants/games'
+import lfgGamesData from '../../../../src/constants/games'
 
 const gameValues = Object.values(lfgGamesData)
 const gameKeys = Object.keys(lfgGamesData)
