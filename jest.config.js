@@ -6,6 +6,7 @@ module.exports = {
 	collectCoverageFrom: [
 		'<rootDir>/src/**/*.{js,ts,jsx,tsx}',
 		'!<rootDir>/src/utils/logger.js',
+		'!**/index.js',
 	],
 	coverageDirectory: 'coverage',
 	setupFiles: [
