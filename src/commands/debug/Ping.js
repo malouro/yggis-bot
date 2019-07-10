@@ -9,7 +9,7 @@ export default class Ping extends Command {
 	}
 
 	action({ client, message, logger }) {
-		message.reply(`Pong! \`${client.ping} ms\``)
+		message.reply(`Pong! \`${Math.round(client.ping)} ms\``)
 		logger.debug.log({
 			level: 'info',
 			message: `${message.author} has used the \`Ping\` command!`,

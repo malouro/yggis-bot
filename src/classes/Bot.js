@@ -4,7 +4,7 @@ import defaultConfig from '../constants/config'
 import defaultLogger from '../utils/logger'
 
 import {
-	parseArguments,
+	getArgumentsFromMessage,
 	getCommandFromMessage,
 } from '../utils/commands'
 
@@ -54,7 +54,7 @@ export default class Bot {
 		let commandName = null
 
 		if (message.content.startsWith(this.config.commandPrefix)) {
-			args = parseArguments(message)
+			args = getArgumentsFromMessage(message)
 			commandName = getCommandFromMessage(args, this.config)
 
 			if (this.commands.has(commandName)) {

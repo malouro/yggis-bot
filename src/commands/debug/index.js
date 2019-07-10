@@ -1,5 +1,7 @@
+import { makeCommandFromModule } from '../../utils/commands'
+
 import Ping from './Ping'
 
 export default [
-	{ Name: Ping.name, CommandConstructor: Ping },
-]
+	Ping,
+].map(module => makeCommandFromModule(module))
