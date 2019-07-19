@@ -32,7 +32,7 @@
     "bin/"
   ],
   "scripts": {
-    "start": "babel-node src/index",
+    "start": "babel-node src/Yggis",
     "setup": "yarn && yarn generate",
     "script:generate": "node ./scripts/generate-dotenv.js",
     "test": "jest --watch",
@@ -41,13 +41,14 @@
     "build:prod": "rollup -c rollup.config.js",
     "check:lint": "eslint src/ test/ scripts/",
     "check:spelling": "npx cspell /src/**/*.js",
-    "format": "prettier --no-config --write '{src,test,scripts}/**/*.js'",
+    "format": "prettier --no-config --write \"{src,test,scripts}/**/*.js\"",
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs"
   },
   "dependencies": {
     "discord.js": "^11.5.1",
     "dotenv": "^8.0.0",
+    "lowdb": "^1.0.0",
     "winston": "^3.2.1",
     "yargs": "^13.2.4"
   },

@@ -1,14 +1,17 @@
-import { config } from 'dotenv'
+import { config as dotenvConfig } from 'dotenv'
+
 import Bot from './classes/Bot'
 import logger from './utils/logger'
+import { getCommands } from './utils/setup'
 
-config()
+dotenvConfig()
 
 const Yggis = new Bot({
-	logger,
 	config: {
 		statusMessage: 'test',
 	},
+	logger,
+	commands: getCommands(),
 })
 
 Yggis.start()

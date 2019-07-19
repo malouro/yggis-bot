@@ -19,8 +19,8 @@ jobs:
             - v1-dependencies-
 
       - run: 
-          name: install
-          command: npm install
+          name: Install
+          command: yarn install
 
       - save_cache:
           paths:
@@ -28,9 +28,9 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
 
       - run:
-          name: static checks
+          name: Static analysis & formatting
           command: yarn check:lint && yarn check:spelling
 
       - run:
-          name: test
+          name: Tests
           command: yarn test:coverage

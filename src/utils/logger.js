@@ -9,10 +9,10 @@ const {
 const formatting = printf(
 	({
 		label: logLabel,
-		level,
-		message,
+		level, message,
 		timestamp: logTimestamp,
-	}) => `► ${logTimestamp} | \x1b[1m[${logLabel}]\x1b[0m ${level} ${message}`,
+	}) =>
+		`► ${logTimestamp} | \x1b[1m[${logLabel}]\x1b[0m ${level} ${message}`,
 )
 
 const customLevels = {
@@ -46,15 +46,18 @@ const createCustomLogger = customLabel =>
 		transports: [new transports.Console()],
 	})
 
-const botLogger = createCustomLogger('Bot')
-const lfgLogger = createCustomLogger('LFG')
-const streamLinkLogger = createCustomLogger('StreamLink')
+export const loggerNames = [
+	'bot',
+	'debug',
+	'lfg',
+	'sl',
+]
 
-const logger = {
-	bot: botLogger,
-	lfg: lfgLogger,
-	'stream-link': streamLinkLogger,
-	sl: streamLinkLogger,
+const loggers = {
+	[loggerNames[0]]: createCustomLogger('Bot'),
+	[loggerNames[1]]: createCustomLogger('Debug'),
+	[loggerNames[2]]: createCustomLogger('LFG'),
+	[loggerNames[3]]: createCustomLogger('StreamLink'),
 }
 
-export default logger
+export default loggers

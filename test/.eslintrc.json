@@ -1,0 +1,11 @@
+{
+	"env": {
+		"node": true,
+		"es6": true,
+		"jest": true
+	},
+	"extends": "../.eslintrc.json",
+	"rules": {
+		"import/no-unresolved": 0
+	}
+}
