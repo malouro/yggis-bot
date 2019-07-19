@@ -1,7 +1,7 @@
 import {
 	getArgumentsFromMessage,
-	getCommandFromMessage,
-	makeCommandFromModule,
+	// getCommandFromMessage,
+	// makeCommandFromModule,
 } from '../../../src/utils/commands'
 
 describe('Command Utilities', () => {
