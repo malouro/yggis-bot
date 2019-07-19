@@ -3,7 +3,9 @@ import lfgGamesData from '../../../../src/constants/games'
 
 const gameValues = Object.values(lfgGamesData)
 const gameKeys = Object.keys(lfgGamesData)
-const allGameAliases = gameValues.reduce((acc, game) => acc.concat(game.aliases), []).sort()
+const allGameAliases = gameValues
+	.reduce((acc, game) => acc.concat(game.aliases), [])
+	.sort()
 
 expect.extend({ toMatchDiffSnapshot })
 
@@ -18,7 +20,9 @@ describe('LFG Games', () => {
 	})
 
 	test('aliases are unique across games', () => {
-		expect(Array.from(new Set(allGameAliases))).toMatchDiffSnapshot(allGameAliases)
+		expect(Array.from(new Set(allGameAliases))).toMatchDiffSnapshot(
+			allGameAliases,
+		)
 	})
 
 	test('aliases should be unique to game keys', () => {
@@ -31,10 +35,7 @@ describe('LFG Games', () => {
 				if (game.defaultGameMode === 'any') {
 					return true
 				}
-				if (
-					game.gameModes
-					&& game.defaultGameMode in game.gameModes
-				) {
+				if (game.gameModes && game.defaultGameMode in game.gameModes) {
 					return true
 				}
 				return `${game.name} does not have a proper \`defaultGameMode\``

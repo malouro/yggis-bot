@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Command Utilities \`getArgumentsFromMessage\` gets arguments from a message 1`] = `
+Array [
+  "This",
+  "message",
+  "should",
+  "have",
+  "6",
+  "arguments.",
+]
+`;

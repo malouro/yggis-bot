@@ -15,7 +15,4 @@ class MissingPropertyError extends CommandError {
 	}
 }
 
-export {
-	CommandError,
-	MissingPropertyError,
-}
+export { CommandError, MissingPropertyError }

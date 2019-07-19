@@ -1,60 +1,93 @@
-import Command from '../../../src/classes/Command'
+import { Command } from '../../../src/classes'
 import { MissingPropertyError } from '../../../src/utils/errors'
 
 describe('Command Class', () => {
-	test('should throw an error when a `name` isn\'t given', () => {
-		expect(() => new Command()).toThrowError(MissingPropertyError)
-	})
-
-	test('should construct a command given options', () => {
+	test('constructs a Command (given a set of options)', () => {
 		const testOptions = {
 			name: 'test',
 		}
 
 		expect(() => new Command(testOptions)).not.toThrowError()
 
-		const testCommand = new Command(testOptions)
+		const TestCommand = new Command(testOptions)
 
-		expect(testCommand).toBeInstanceOf(Command)
-		expect(testCommand.name).toBe(testOptions.name)
+		expect(TestCommand).toBeInstanceOf(Command)
+		expect(TestCommand.name).toBe(testOptions.name)
 	})
 
-	test('should fire a preAction, an action, and a postAction', async () => {
-		const testCommand = new Command({ name: 'test' })
+	test("throws an error when a `name` isn't given", () => {
+		expect(() => new Command()).toThrowError(MissingPropertyError)
+	})
 
-		const spyOnPreAction = jest.spyOn(testCommand, 'preAction')
-		const spyOnAction = jest.spyOn(testCommand, 'action')
-		const spyOnPostAction = jest.spyOn(testCommand, 'postAction')
+	test('executes preAction, action, and postAction events by default', async () => {
+		const TestCommand = new Command({ name: 'test' })
 
-		await testCommand.run({ client: {}, message: {}, logger: {} })
+		const spyOnPreAction = jest.spyOn(TestCommand, 'preAction')
+		const spyOnAction = jest.spyOn(TestCommand, 'action')
+		const spyOnPostAction = jest.spyOn(TestCommand, 'postAction')
+
+		await TestCommand.run({ client: {}, message: {}, logger: {} })
 
 		expect(spyOnPreAction).toHaveBeenCalled()
 		expect(spyOnAction).toHaveBeenCalled()
 		expect(spyOnPostAction).toHaveBeenCalled()
 	})
 
-	test('should fire a given custom `preAction` event', async () => {
+	test('fires a given custom `preAction` event', async () => {
 		class TestCommand extends Command {
 			constructor() {
 				super({ name: 'test' })
 			}
 
-			preAction = jest.fn(() => 'preAction')
+      preAction = jest.fn(() => 'preAction');
 		}
 
 		const testCommand = new TestCommand()
-
 		await testCommand.run({ client: {}, message: {}, logger: {} })
-
-		expect(testCommand.preAction).toHaveBeenCalled()
+		expect(testCommand.preAction).toHaveReturnedWith('preAction')
 	})
 
-	test('should fire a given `postAction` event', () => {
+	test('fires a given `postAction` event', async () => {
+		class TestCommand extends Command {
+			constructor() {
+				super({ name: 'test' })
+			}
 
+      postAction = jest.fn(() => 'postAction');
+		}
+
+		const testCommand = new TestCommand()
+		await testCommand.run({ client: {}, message: {}, logger: {} })
+		expect(testCommand.postAction).toHaveReturnedWith('postAction')
 	})
 
-	test.todo('should fire a given `action` event')
+	test('fires a given `action` event', async () => {
+		class TestCommand extends Command {
+			constructor() {
+				super({ name: 'test' })
+			}
 
-	test.todo('should complain about insufficient command permissions')
-	test.todo('should disable when `disabled = true`')
+      action = jest.fn(() => 'action');
+		}
+
+		const testCommand = new TestCommand()
+		await testCommand.run({ client: {}, message: {}, logger: {} })
+		expect(testCommand.action).toHaveReturnedWith('action')
+	})
+
+	test('disabled when `disabled = true`', async () => {
+		class TestCommand extends Command {
+			constructor() {
+				super({ name: 'test', disabled: true })
+			}
+
+      action = jest.fn(() => {});
+		}
+
+		const testCommand = new TestCommand()
+		await testCommand.run({ client: {}, message: {}, logger: {} })
+		expect(testCommand.action).not.toHaveBeenCalled()
+	})
+
+	test.todo('warns about insufficient command permissions')
 })

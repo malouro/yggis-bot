@@ -10,6 +10,14 @@ module.exports = {
 		'!**/index.js',
 	],
 	coverageDirectory: 'coverage',
+	coverageThreshold: {
+		global: {
+			branches: 80,
+			functions: 90,
+			lines: 90,
+			statements: 90,
+		},
+	},
 	setupFiles: [
 		'<rootDir>/test/setup/setupMocks',
 		'<rootDir>/test/setup/setupE2E',

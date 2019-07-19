@@ -14,10 +14,8 @@ describe('Bot Setup Utilities', () => {
 
 		test('should contain all commands', () => {
 			expect(
-				Commands.every((command) => {
-					const { Name } = command
-					return commandCollection.has(Name.toLocaleLowerCase())
-				}),
+				Commands.every(Command =>
+					commandCollection.has(Command.Name.toLocaleLowerCase())),
 			).toBe(true)
 		})
 	})

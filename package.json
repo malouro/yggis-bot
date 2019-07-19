@@ -41,7 +41,7 @@
     "build:prod": "rollup -c rollup.config.js",
     "check:lint": "eslint src/ test/ scripts/",
     "check:spelling": "npx cspell /src/**/*.js",
-    "format": "prettier --no-config --write '{src,test,scripts}/**/*.js'",
+    "format": "prettier --no-config --write \"{src,test,scripts}/**/*.js\"",
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs"
   },
