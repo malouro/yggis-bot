@@ -4,27 +4,27 @@ about: Create a report to help us improve
 
 ---
 
-Before you open an issue, please check if a similar issue already exists or has been closed before.
+> Note: Before you open an issue, please check to see if a similar issue already exists or has been closed before. Thanks!
 
 **Describe the bug**
-A clear and concise description of what the bug is.
+A clear and concise description of the bug
 
-**To Reproduce**
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+**Steps to reproduce**
+Steps to reproduce the behavior/bug
 
 **Expected behavior**
-A clear and concise description of what you expected to happen.
+A clear and concise description of what you expected to happen
+
+**Actual behavior**
 
 **Screenshots**
-If applicable, add screenshots to help explain your problem.
+If applicable, add screenshots to help explain your problem
 
-**Desktop (please complete the following information):**
- - OS: [e.g. Windows]
- - Version of Yggis [e.g. 1.4.2]
+**Environment**
+ - OS: [e.g. Windows, Mac, Linux]
+ - Version of Yggis [e.g. v1.4.2]
+ - Version of Node
+ - Version of Yarn/Npm
 
 **Additional context**
-Add any other context about the problem here.
+Add any other context about the problem here

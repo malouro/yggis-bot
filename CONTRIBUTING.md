@@ -5,7 +5,7 @@ Please read the text so that you understand how to conduct while contributing to
 
 ## Semantic Versioning
 
-yggis use [SemVer](http://semver.org/) for versioning.
+`yggis` uses [SemVer](http://semver.org/) for versioning.
 
 ## Documentation
 
