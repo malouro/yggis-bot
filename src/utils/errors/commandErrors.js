@@ -15,4 +15,13 @@ class MissingPropertyError extends CommandError {
 	}
 }
 
-export { CommandError, MissingPropertyError }
+class InvalidPropertyError extends CommandError {
+	constructor(property, context) {
+		super(`Incorrect property definition for \`${property}\` (${context})`)
+
+		this.name = 'IncorrectProperty'
+		this.property = property
+	}
+}
+
+export { CommandError, MissingPropertyError, InvalidPropertyError }

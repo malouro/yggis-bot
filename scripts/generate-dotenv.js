@@ -1,25 +1,36 @@
 const fs = require('fs')
 const path = require('path')
 const { argv } = require('yargs')
-	.usage('Usage: $0 --token [token] --userid [number]')
-	.alias('token', 't')
-	.alias('userid', 'u')
-	.alias('test', 'T')
-
-	.demandOption(['token'])
-	.default('userid', '')
-	.default('test', false)
-
-	.describe('token', 'Token for your Discord bot')
-	.describe('userid', 'Your Discord user ID')
-	.describe('test', 'Whether or not this config is for a test environment')
+	.usage('Usage: node $0 --token [token] (options)')
+	.options({
+		t: {
+			alias: 'token',
+			demandOption: true,
+			describe: 'Token for your Discord bot',
+			type: 'string',
+		},
+		u: {
+			alias: 'userID',
+			demandOption: false,
+			describe: 'Your Discord user ID',
+			default: '',
+			type: 'string',
+		},
+		o: {
+			alias: 'outputFile',
+			demandOption: false,
+			describe: 'Filename/path to output the env config to',
+			default: '.env',
+			type: 'string',
+		},
+	})
 
 const content = `
-# ${argv.test ? 'Test ' : ''}.env config for Yggis-bot
-TOKEN=${argv.token}
-MASTER_ID=${argv.userid}
+# env config for Yggis-bot
+TOKEN=${argv.t}
+MASTER_ID=${argv.u}
 `
 
-const fileName = argv.test ? '.env.test' : '.env'
+const fileName = argv.o
 
 fs.writeFileSync(path.join(process.cwd(), fileName), content.trim())

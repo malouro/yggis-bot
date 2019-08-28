@@ -1,15 +1,17 @@
 import {
 	getArgumentsFromMessage,
-	// getCommandFromMessage,
-	// makeCommandFromModule,
+	getCommandFromMessage,
+	makeCommandFromModule,
 } from '../../../src/utils/commands'
+
+import Ping from '../../../src/commands/debug/Ping'
 
 describe('Command Utilities', () => {
 	describe('`getArgumentsFromMessage`', () => {
 		test('gets arguments from a message', () => {
 			const expectedLength = 6
 			const result = getArgumentsFromMessage({
-				content: `This message should have ${6} arguments.`,
+				content: `This message should have ${expectedLength} arguments.`,
 			})
 
 			expect(result).toBeInstanceOf(Array)
@@ -26,6 +28,36 @@ describe('Command Utilities', () => {
 
 			expect(resultForNoMessage).toBeInstanceOf(Array)
 			expect(resultForNoMessage).toHaveLength(0)
+		})
+	})
+
+	describe('`getCommandFromMessage`', () => {
+		test('gets command from a message', () => {
+			const expectation = 'test'
+			const testConfig = { commandPrefix: '!' }
+			const result = getCommandFromMessage(
+				[
+					`${testConfig.commandPrefix}${expectation}`,
+					'message',
+					'with',
+					'multiple',
+					'args',
+				],
+				testConfig,
+			)
+
+			expect(result).toBe(expectation)
+		})
+	})
+
+	describe('`makeCommandFromModule`', () => {
+		test('makes a command object from a module', () => {
+			const result = makeCommandFromModule(Ping)
+
+			expect(result).toMatchObject({
+				Name: 'Ping',
+				CommandConstructor: Ping,
+			})
 		})
 	})
 })

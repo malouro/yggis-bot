@@ -2,6 +2,8 @@ import { EventEmitter } from 'events'
 import { Bot } from '../src/classes'
 import { loggerNames } from '../src/utils/logger'
 
+process.env.MASTER_ID = 'MasterID'
+
 /* Mock for bot configuration file */
 export const MockConfig = {
 	commandPrefix: 'testPrefix',
@@ -39,6 +41,14 @@ export const MockCommandOptions = {
 	client: {},
 	message: {
 		reply: jest.fn(message => message),
+		member: {
+			id: 'TestMemberID',
+			guild: {
+				id: 'TestGuildID',
+				owner: { id: 'TestMemberID' },
+			},
+			hasPermission: jest.fn(() => true),
+		},
 	},
 	logger: MockLogger,
 }

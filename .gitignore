@@ -12,8 +12,7 @@ logs
 *.log
 
 # env
-.env
-.env.test
+.env*
 
 # coverage
 lib-cov

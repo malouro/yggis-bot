@@ -1,1 +1,1 @@
-export { CommandError, MissingPropertyError } from './commandErrors'
+export { CommandError, MissingPropertyError, InvalidPropertyError } from './commandErrors'

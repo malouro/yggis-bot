@@ -1,1 +1,5 @@
-/** Can the user actually use the command? This is where that will be checked */
+import { getUserPermLevel } from '../user'
+
+export default function canUseCommand(user, requiredPermLevel) {
+	return getUserPermLevel(user) >= requiredPermLevel
+}
