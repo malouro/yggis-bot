@@ -24,7 +24,7 @@ module.exports = {
 	],
 	testEnvironment: 'node',
 	testMatch: [
-		'<rootDir>/test/**/*.test.js?(x)',
+		'<rootDir>/test/unit-&-integration/**/*.test.js?(x)',
 	],
 	testPathIgnorePatterns: [
 		'node_modules',

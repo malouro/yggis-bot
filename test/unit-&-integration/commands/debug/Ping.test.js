@@ -20,7 +20,7 @@ describe('Ping Command', () => {
 		const result1 = await runCommand(PingCommand, { client: { ping: 0.69 } })
 		const result2 = await runCommand(PingCommand, { client: { ping: 0.42 } })
 
-		expect(result1.message.reply).toHaveNthReturnedWith(1, 'Pong! `1 ms`')
-		expect(result2.message.reply).toHaveNthReturnedWith(2, 'Pong! `0 ms`')
+		expect(result1.message.reply).toHaveNthReturnedWith(1, expect.stringContaining('`1 ms`'))
+		expect(result2.message.reply).toHaveNthReturnedWith(2, expect.stringContaining('`0 ms`'))
 	})
 })

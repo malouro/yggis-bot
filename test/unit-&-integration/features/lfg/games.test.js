@@ -20,30 +20,25 @@ describe('LFG Games', () => {
 	})
 
 	test('aliases are unique across games', () => {
-		expect(Array.from(new Set(allGameAliases))).toMatchDiffSnapshot(
-			allGameAliases,
-		)
+		expect(Array.from(new Set(allGameAliases))).toMatchDiffSnapshot(allGameAliases)
 	})
 
 	test('aliases should be unique to game keys', () => {
 		expect(allGameAliases.some(alias => gameKeys.includes(alias))).toBe(false)
 	})
 
-	test('default game mode should be in the `gameModes` config or be "any"', () => {
-		gameValues.forEach((game) => {
-			const validateDefaultGameMode = () => {
-				if (game.defaultGameMode === 'any') {
-					return true
-				}
-				if (game.gameModes && game.defaultGameMode in game.gameModes) {
-					return true
-				}
-				return `${game.name} does not have a proper \`defaultGameMode\``
-			}
-
-			expect(validateDefaultGameMode()).toBe(true)
-		})
-	})
+	test.each(
+		[...gameValues],
+	)(
+		'%s\'s default game mode should be in its `gameModes` config or be "any"',
+		(game) => {
+			expect(
+				game.defaultGameMode === 'any'
+				|| (game.gameModes && game.defaultGameMode in game.gameModes)
+				|| false,
+			).toBe(true)
+		},
+	)
 
 	test.todo('every game needs an image?')
 })

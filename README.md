@@ -13,44 +13,34 @@
 Anyone installing or running Yggis should be able to do the following:
 
 - Run the Discord bot locally and with minimal initial configuration. (setup & run, that's it!)
-- Be able to configure the bot in a multitude of robust ways, for your own use & on your own server(s) of choice with relative ease.
+- Be able to configure the bot in a multitude of robust ways, for your own personal use & on your own server(s) of choice with (relative) ease.
 - Logging of all events
 - Commands!
   - LFG
   - StreamLink
 
+... Granted, a number of these are a work in progress and probably not implemented or implemented fully yet. Check out the Yggis project board for more information on the progress & status of these features.
+
 ## Requirements
 
-- Node v10
-- Yarn
-- Discord Bot Token
+- Node.js 10 LTS
+- A Discord application/bot token
+- Yarn (if contributing or working locally)
 
 
 ## What is Yggis?
 
-_Use this section to introduce your project. You can explain the goal of your project, why you created it, what are the use cases where it is useful._
-
-## Getting Started
-
-### Installation
-
-```
-npm install --save yggis
-```
-
-### Usage
-
-_Use this section to explain how someone would use your project. It can be the API, some examples..._
+A Discord bot utilizing the wonderful [Discord.js](https://discord.js.org/). Yggis is the official "sequel" to [Ggis](https://github.com/malouro/ggis-bot). Built from the ground up to be more scalable, better structured and tested fully.
 
 
 ## Contributing
 
-Please read [CONTRIBUTING.md](./CONTRIBUTING.md) for details on our code of
-conduct, and the process for submitting pull requests to us.
+Please read [CONTRIBUTING.md](./CONTRIBUTING.md) for details on the code of
+conduct, and the process for submitting pull requests.
 
 ## Versioning
 
-Yggis use [SemVer](http://semver.org/) for versioning.
+Yggis uses [SemVer](http://semver.org/) for versioning.
 
 ## Acknowledgment
 
