@@ -22,6 +22,7 @@ describe('Bot Class', () => {
 
 	test('sets activity, based on config, when `onReady` is fired', async () => {
 		const customClient = MockClient
+
 		customClient.user = {
 			setActivity: jest.fn(),
 		}
@@ -57,6 +58,7 @@ describe('Bot Class', () => {
 	test('handles messages that start with the commandPrefix as a command', () => {
 		const mockCommands = new Collection()
 		const mockTestCommand = { run: jest.fn() }
+
 		mockCommands.set('test', mockTestCommand)
 
 		const testBot = new Bot({

@@ -43,6 +43,7 @@ describe('Command Class', () => {
 
 		test('fires a given custom `preAction` event', async () => {
 			const testCommand = new TestCommand()
+
 			await runCommand(testCommand)
 			expect(testCommand.preAction).toHaveReturnedWith('preAction')
 		})
@@ -50,12 +51,14 @@ describe('Command Class', () => {
 
 		test('fires a given `postAction` event', async () => {
 			const testCommand = new TestCommand()
+
 			await runCommand(testCommand)
 			expect(testCommand.postAction).toHaveReturnedWith('postAction')
 		})
 
 		test('fires a given `action` event', async () => {
 			const testCommand = new TestCommand()
+
 			await runCommand(testCommand)
 			expect(testCommand.action).toHaveReturnedWith('action')
 		})
@@ -72,6 +75,7 @@ describe('Command Class', () => {
 			}
 
 			const testCommand = new DisabledCommand()
+
 			await runCommand(testCommand)
 			expect(testCommand.action).not.toHaveBeenCalled()
 		})
