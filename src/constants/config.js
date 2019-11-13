@@ -4,10 +4,9 @@ const statusMessageOptions = {
 	type: 'WATCHING',
 	url: '',
 }
-const config = {
+
+export default ({
 	commandPrefix,
 	statusMessage,
 	statusMessageOptions,
-}
-
-export default config
+})

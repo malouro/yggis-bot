@@ -1,4 +1,4 @@
-export default ({
+const LeagueOfLegends = {
 	lol: {
 		name: 'League of Legends',
 		aliases: [
@@ -14,7 +14,9 @@ export default ({
 		},
 		defaultGameMode: 'aram',
 	},
+}
 
+const OverWatch = {
 	ow: {
 		name: 'Overwatch',
 		aliases: [
@@ -22,4 +24,11 @@ export default ({
 		],
 		defaultGameMode: 'any',
 	},
-})
+}
+
+const games = {
+	...LeagueOfLegends,
+	...OverWatch,
+}
+
+export default games
