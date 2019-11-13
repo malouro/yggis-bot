@@ -1,6 +1,7 @@
 # Yggis
 
 [![CircleCI](https://circleci.com/gh/malouro/yggis-bot.svg?style=svg)](https://circleci.com/gh/malouro/yggis-bot)
+[![codecov](https://codecov.io/gh/malouro/yggis-bot/branch/master/graph/badge.svg)](https://codecov.io/gh/malouro/yggis-bot)
 [![dependencies Status](https://david-dm.org/malouro/yggis-bot/status.svg)](https://david-dm.org/malouro/yggis-bot)
 [![devDependencies Status](https://david-dm.org/malouro/yggis-bot/dev-status.svg)](https://david-dm.org/malouro/yggis-bot?type=dev)
 [![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
@@ -27,11 +28,9 @@ Anyone installing or running Yggis should be able to do the following:
 - A Discord application/bot token
 - Yarn (if contributing or working locally)
 
-
 ## What is Yggis?
 
 A Discord bot utilizing the wonderful [Discord.js](https://discord.js.org/). Yggis is the official "sequel" to [Ggis](https://github.com/malouro/ggis-bot). Built from the ground up to be more scalable, better structured and tested fully.
-
 
 ## Contributing
 
@@ -50,4 +49,3 @@ Use this section for acknowledgments. Is your project based on other projects? H
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 for details.
-
