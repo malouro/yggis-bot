@@ -22,7 +22,7 @@ jobs:
 
       - run: 
           name: Install
-          command: yarn install
+          command: yarn install && yarn global add codecov
 
       - save_cache:
           paths:
@@ -35,4 +35,4 @@ jobs:
 
       - run:
           name: Tests
-          command: yarn test:coverage
+          command: yarn test:coverage && codecov

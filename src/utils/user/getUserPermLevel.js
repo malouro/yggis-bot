@@ -14,7 +14,7 @@
  */
 
 export default function getUserPermLevel(member) {
-	// if (!member) return 0
+	if (!member) return 0
 	if (member.id === process.env.MASTER_ID) { return 5 }
 	if (member.guild.owner.id === member.id) { return 4 }
 	if (member.hasPermission('ADMINISTRATOR')) { return 3 }

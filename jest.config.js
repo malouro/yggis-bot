@@ -20,7 +20,6 @@ module.exports = {
 	},
 	setupFiles: [
 		'<rootDir>/test/setup/setupMocks',
-		'<rootDir>/test/setup/setupE2E',
 	],
 	testEnvironment: 'node',
 	testMatch: [

@@ -16,6 +16,13 @@ const { argv } = require('yargs')
 			default: '',
 			type: 'string',
 		},
+		g: {
+			alias: 'guildID',
+			demandOption: false,
+			describe: 'Your Discord guild (server) ID',
+			default: '',
+			type: 'string',
+		},
 		o: {
 			alias: 'outputFile',
 			demandOption: false,
@@ -29,6 +36,7 @@ const content = `
 # env config for Yggis-bot
 TOKEN=${argv.t}
 MASTER_ID=${argv.u}
+GUILD_ID=${argv.g}
 `
 
 const fileName = argv.o

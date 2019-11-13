@@ -2,9 +2,10 @@ import { EventEmitter } from 'events'
 import { Bot } from '../src/classes'
 import { loggerNames } from '../src/utils/logger'
 
-process.env.MASTER_ID = 'MasterID'
+export const MockToken = `M${'a'.repeat(23)}.${'a'.repeat(6)}.${'a'.repeat(27)}`
+export const MockMasterID = 'MasterID'
 
-/* Mock for bot configuration file */
+/* Setup for the mocked Bot */
 export const MockConfig = {
 	commandPrefix: 'testPrefix',
 	statusMessage: 'testStatusMessage',
@@ -14,22 +15,32 @@ export const MockConfig = {
 	},
 }
 
-/* Mock for oauth Discord Bot token */
-export const MockToken = `M${'a'.repeat(23)}.${'a'.repeat(6)}.${'a'.repeat(27)}`
+export const MockMember = {
+	hasPermission: () => false,
+	id: 'NotTheMaster :(',
+	guild: { owner: { id: 'NotTheOwner :(' } },
+}
 
-/* Mock logger from /utils/ */
+export const MockClient = new EventEmitter()
+
 const MockLogger = {}
+
 loggerNames.forEach((type) => {
 	MockLogger[type] = {
 		log: jest.fn(logMessage => logMessage),
 	}
 })
+
 export { MockLogger }
 
-/* Mock Discord.js Client */
-export const MockClient = new EventEmitter()
-
-/* Mock Yggis bot */
+/**
+ * @property {Discord.Client} client
+ * 	Mocked Discord Client instance
+ * @property {Object} config
+ * 	The MockConfig defined above; serves as the configuration for the MockBot
+ * @property {Winston.Logger} logger
+ * 	A mocked logger instance that will capture all log events with a Jest mock function
+ */
 export const MockBot = new Bot({
 	client: MockClient,
 	config: MockConfig,
@@ -55,7 +66,8 @@ export const MockCommandOptions = {
 
 /* Run a given command. Allows for default options & overrides */
 export async function runCommand(command, overrides = {}) {
-	const Mocks = Object.assign({}, MockCommandOptions, overrides)
-	await command.run(Mocks)
-	return Mocks
+	const commandOptions = Object.assign({}, MockCommandOptions, overrides)
+
+	await command.run(commandOptions)
+	return commandOptions
 }
