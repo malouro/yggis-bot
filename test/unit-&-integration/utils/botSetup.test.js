@@ -5,7 +5,7 @@ import { getCommands } from '../../../src/utils/setup'
 import Commands from '../../../src/commands'
 
 describe('Bot Setup Utilities', () => {
-	describe('`getCommands` function', () => {
+	describe('`getCommands`', () => {
 		const commandCollection = getCommands()
 
 		test('should be a Discord Collection', () => {
