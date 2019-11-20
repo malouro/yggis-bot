@@ -6,6 +6,8 @@
         "discordbot",
         "overwatch",
         "printf",
+        "promisify",
+        "stderror",
         "vuepress",
         "yggis"
     ],

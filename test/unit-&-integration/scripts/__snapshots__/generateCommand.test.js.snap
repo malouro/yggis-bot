@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`generate-command has a command help menu 1`] = `
+"Usage: node generate-command.js --
+
+Options:
+  --help                     Show help                                 [boolean]
+  --version                  Show version number                       [boolean]
+  -n, --name, --commandName  Name of the command to make     [string] [required]
+  -c, --category             Category/directory for the command
+                                               [string] [required] [default: \\"\\"]
+  -a, --aliases              List of aliases for the command
+                                                           [array] [default: []]
+  -o, --outputDir            Filename/path to output the new command to
+                                                        [string] [default: \\"./\\"]
+"
+`;
+
+exports[`generate-command makes a command with given options: File content 1`] = `
+"import { Command } from './../src/classes'
+
+export default class Test extends Command {
+	constructor() {
+		super({
+			name: 'Test ',
+			aliases: ['alias1', 'alias2', 'alias3'],
+		})
+	}
+
+	// eslint-disable-next-line no-unused-vars
+	action({ client, message, logger }) {
+		// Define the action of the command in here
+	}
+}
+"
+`;
+
+exports[`generate-command makes a command with given options: stdout 1`] = `""`;

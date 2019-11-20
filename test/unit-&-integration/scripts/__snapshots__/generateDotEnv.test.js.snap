@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`generate-dotenv has a command help menu 1`] = `
+"Usage: node generate-dotenv.js --token [token] (options)
+
+Options:
+  --help            Show help                                          [boolean]
+  --version         Show version number                                [boolean]
+  -t, --token       Token for your Discord bot               [string] [required]
+  -u, --userID      Your Discord user ID                  [string] [default: \\"\\"]
+  -g, --guildID     Your Discord guild (server) ID        [string] [default: \\"\\"]
+  -o, --outputFile  Filename/path to output the env config to
+                                                      [string] [default: \\".env\\"]
+"
+`;
+
+exports[`generate-dotenv makes a .env file with given options: File content 1`] = `
+"# env config
+TOKEN=TestToken
+MASTER_ID=TestUserID
+GUILD_ID=TestGuildID"
+`;
+
+exports[`generate-dotenv makes a .env file with given options: stdout 1`] = `""`;

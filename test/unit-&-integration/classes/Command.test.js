@@ -118,7 +118,7 @@ describe('Command Class', () => {
 			).toThrowError(new MissingPropertyError('name'))
 		})
 
-		test('fails when given a permission level out of expected range', () => {
+		test('throws an error when given a permission level out of expected range', () => {
 			const expectedError = new InvalidPropertyError('permLevel', 'Not an integer in range (0, 5)')
 
 			expect(
@@ -126,6 +126,23 @@ describe('Command Class', () => {
 			).toThrowError(expectedError)
 			expect(
 				() => new Command({ name: 'test', permLevel: 6 }),
+			).toThrowError(expectedError)
+		})
+
+		test('throws an error when given a permission level that is NaN', () => {
+			const expectedError = new InvalidPropertyError('permLevel', 'Not an integer in range (0, 5)')
+
+			expect(
+				() => new Command({ name: 'test', permLevel: null }),
+			).toThrowError(expectedError)
+			expect(
+				() => new Command({ name: 'test', permLevel: undefined }),
+			).toThrowError(expectedError)
+			expect(
+				() => new Command({ name: 'test', permLevel: 'a string' }),
+			).toThrowError(expectedError)
+			expect(
+				() => new Command({ name: 'test', permLevel: NaN }),
 			).toThrowError(expectedError)
 		})
 	})

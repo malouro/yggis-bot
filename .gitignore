@@ -18,10 +18,11 @@ logs
 # env
 .env*
 
-# coverage
+# test & coverage
 lib-cov
 coverage
 .nyc_output
+test-generations/
 
 # misc
 .DS_STORE

@@ -33,11 +33,12 @@
   ],
   "scripts": {
     "start": "babel-node src/Yggis",
-    "setup": "yarn && yarn generate",
-    "script:generate": "node ./scripts/generate-dotenv.js",
+    "setup": "yarn && yarn generate:dotenv",
     "test": "jest --watch",
     "test:coverage": "jest --coverage",
     "test:e2e": "jest --config=\"./jest.e2e.config.js\"",
+    "generate:dotenv": "node ./scripts/generate-dotenv.js",
+    "generate:command": "node ./scripts/generate-command.js",
     "check:lint": "eslint src/ test/ scripts/",
     "check:spelling": "npx cspell /src/**/*.js",
     "check:format": "yarn format:safe",
@@ -68,6 +69,7 @@
     "eslint-plugin-react": "^7.13.0",
     "jest": "^24.8.0",
     "prettier": "^1.17.1",
-    "snapshot-diff": "^0.5.1"
+    "snapshot-diff": "^0.5.1",
+    "wait-for-expect": "^3.0.1"
   }
 }

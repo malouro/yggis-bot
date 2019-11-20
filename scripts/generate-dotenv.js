@@ -33,7 +33,7 @@ const { argv } = require('yargs')
 	})
 
 const content = `
-# env config for Yggis-bot
+# env config
 TOKEN=${argv.t}
 MASTER_ID=${argv.u}
 GUILD_ID=${argv.g}

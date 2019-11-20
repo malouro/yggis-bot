@@ -2,6 +2,11 @@ import { Collection } from 'discord.js'
 
 import Commands from '../../commands'
 
+/**
+ * @func getCommands
+ * @returns {Discord.Collection} CommandCollection
+ * @desc Turns an array of `Yggis.Command`s into a `Discord.Collection` of usable `Command`s
+ */
 export default function getCommands() {
 	const CommandCollection = new Collection()
 
