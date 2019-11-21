@@ -6,6 +6,7 @@
 	},
 	"extends": "../.eslintrc.json",
 	"rules": {
-		"import/no-unresolved": 0
+		"import/no-unresolved": 0,
+		"max-classes-per-file": 0
 	}
 }

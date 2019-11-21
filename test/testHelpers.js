@@ -66,7 +66,7 @@ export const MockCommandOptions = {
 
 /* Run a given command. Allows for default options & overrides */
 export async function runCommand(command, overrides = {}) {
-	const commandOptions = Object.assign({}, MockCommandOptions, overrides)
+	const commandOptions = { ...MockCommandOptions, ...overrides }
 
 	await command.run(commandOptions)
 	return commandOptions
