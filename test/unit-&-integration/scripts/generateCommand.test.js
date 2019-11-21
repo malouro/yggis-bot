@@ -4,6 +4,11 @@ import { exec } from 'child_process'
 import { promisify } from 'util'
 import waitForExpect from 'wait-for-expect'
 
+/** to lint the generated file */
+import { CLIEngine as EslintCLIEngine } from 'eslint'
+import eslintRules from '../../../.eslintrc.json'
+
+/** to test the generated file contains the appropriate class */
 import Command from '../../../src/classes/Command'
 
 const asyncExec = promisify(exec)
@@ -60,6 +65,8 @@ const cleanUp = async (fileName) => {
 
 describe('generate-command', () => {
 	const testDir = './test-generations/'
+	const testCommandName = 'Test'
+	const testOutput = `${testDir + testCommandName}.js`
 	const pathToTestDir = path.resolve(__dirname, '../../../test-generations')
 
 	beforeAll(async () => {
@@ -72,25 +79,26 @@ describe('generate-command', () => {
 		await waitForExpect(() => {
 			expect(() => fs.statSync(pathToTestDir)).not.toThrow()
 		})
-	})
 
-	test('makes a command with given options', async () => {
-		const testCommandName = 'Test'
-		const testOutput = `${testDir + testCommandName}.js`
-
+		// Execute the generate-command script
+		// Makes a dummy test command to test against
 		await generateCommand([
 			`--outputDir="${testDir}"`,
 			`--name="${testCommandName}"`,
 			'--aliases alias1 alias2 alias3',
 		], ({ stdout }) => {
-			expect(stdout).toMatchSnapshot('stdout')
+			expect(stdout).toMatchSnapshot('successful stdout')
 		})
+	})
 
+	afterAll(async () => {
+		cleanUp(testOutput)
+	})
+
+	test('makes a file with expected file content', async () => {
 		const fileContents = fs.readFileSync(getPathToFile(testOutput), 'UTF8')
 
 		expect(fileContents).toMatchSnapshot('File content')
-
-		await cleanUp(testOutput)
 	})
 
 	test('has a command help menu', (done) => {
@@ -112,23 +120,26 @@ describe('generate-command', () => {
 		})
 	})
 
-	test('generated file is a usable Yggis Command', async () => {
-		const testCommandName = 'TestUsable'
-		const testOutput = `${testDir + testCommandName}.js`
-
-		await generateCommand([
-			`--outputDir="${testDir}"`,
-			`--name="${testCommandName}"`,
-			'--aliases alias1 alias2 alias3',
-		])
-
-		expect(fs.statSync(getPathToFile(testOutput))).toBeTruthy()
-
+	test('generated file is a usable Yggis Command with given options', async () => {
 		// eslint-disable-next-line global-require,import/no-dynamic-require
-		const CommandToTest = require(getPathToFile(testOutput)).default
+		const TestCommandModule = require(getPathToFile(testOutput)).default
+		const CommandToTest = new TestCommandModule()
 
-		expect(new CommandToTest()).toBeInstanceOf(Command)
+		expect(CommandToTest).toBeInstanceOf(Command)
+		expect(CommandToTest.name).toBe('Test')
+		expect(CommandToTest.aliases).toStrictEqual([
+			'alias1',
+			'alias2',
+			'alias3',
+		])
+	})
 
-		await cleanUp(testOutput)
+	test('generated file passes linting', async () => {
+		const eslintEngine = new EslintCLIEngine(eslintRules)
+
+		const results = eslintEngine.executeOnFiles([getPathToFile(testOutput)])
+
+		expect(results.errorCount).toBe(0)
+		expect(results.warningCount).toBe(0)
 	})
 })

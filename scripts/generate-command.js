@@ -38,16 +38,21 @@ const commandClassRelativePath = path.relative(
 	path.resolve(process.cwd(), outputDir),
 	path.resolve(__dirname, '../src/classes'),
 ).replace(/\\/g, '/')
+
+if (commandClassRelativePath.startsWith('./../')) {
+	commandClassRelativePath.slice(0, 1)
+}
+
 const CommandTitle = camelCase(argv.n)[0].toUpperCase() + camelCase(argv.n).slice(1)
 const formattedArgs = argv.a.map(val => `'${val}'`).join(', ')
 
 const content = `
-import { Command } from './${commandClassRelativePath}'
+import { Command } from '${commandClassRelativePath}'
 
 export default class ${CommandTitle} extends Command {
 	constructor() {
 		super({
-			name: '${CommandTitle} ',
+			name: '${CommandTitle}',
 			aliases: [${formattedArgs}],
 		})
 	}

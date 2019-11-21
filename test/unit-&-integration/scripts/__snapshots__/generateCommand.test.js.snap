@@ -1,5 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[` 1`] = `""`;
+
 exports[`generate-command has a command help menu 1`] = `
 "Usage: node generate-command.js --
 
@@ -16,13 +18,13 @@ Options:
 "
 `;
 
-exports[`generate-command makes a command with given options: File content 1`] = `
-"import { Command } from './../src/classes'
+exports[`generate-command makes a file with expected file content: File content 1`] = `
+"import { Command } from '../src/classes'
 
 export default class Test extends Command {
 	constructor() {
 		super({
-			name: 'Test ',
+			name: 'Test',
 			aliases: ['alias1', 'alias2', 'alias3'],
 		})
 	}
@@ -34,5 +36,3 @@ export default class Test extends Command {
 }
 "
 `;
-
-exports[`generate-command makes a command with given options: stdout 1`] = `""`;
