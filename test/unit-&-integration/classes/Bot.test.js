@@ -78,4 +78,29 @@ describe('Bot Class', () => {
 			}),
 		)
 	})
+
+	test('sets a command categories list given commands that are configured with categories', () => {
+		const mockCommands = new Collection()
+
+		mockCommands.set('test1-1', { category: 'test1' })
+		mockCommands.set('test1-2', { category: 'test1' })
+		mockCommands.set('test2', { category: 'test2' })
+
+		const testBot = new Bot({
+			commands: mockCommands,
+		})
+
+		expect(testBot.categories).toStrictEqual([
+			'test1',
+			'test2',
+		])
+	})
+
+	test('has an empty command category list when no commands are supplied', () => {
+		const testBot = new Bot({
+			commands: new Collection(),
+		})
+
+		expect(testBot.categories).toStrictEqual([])
+	})
 })

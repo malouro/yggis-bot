@@ -7,9 +7,12 @@ export default class Command {
 	constructor(options = {}) {
 		/* Default options if not provided */
 		Object.assign(this, {
+			category: 'misc',
 			aliases: [],
 			disabled: false,
 			permLevel: 0,
+			description: '',
+			usage: { name: '', args: [] },
 		}, options)
 
 		/* Command properties to verify */
@@ -41,7 +44,9 @@ export default class Command {
 		noop()
 	}
 
-	async run({ client, message, logger }) {
+	async run({
+		bot, client, message, args, logger,
+	}) {
 		if (this.disabled) {
 			return null
 		}
@@ -50,8 +55,14 @@ export default class Command {
 			return message.reply('You do not have the required permissions to use this command. 😥')
 		}
 
-		await this.preAction({ client, message, logger })
-		await this.action({ client, message, logger })
-		await this.postAction({ client, message, logger })
+		await this.preAction({
+			bot, client, message, args, logger,
+		})
+		await this.action({
+			bot, client, message, args, logger,
+		})
+		await this.postAction({
+			bot, client, message, args, logger,
+		})
 	}
 }

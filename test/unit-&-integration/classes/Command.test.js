@@ -65,6 +65,18 @@ describe('Command Class', () => {
 	})
 
 	describe('Command options', () => {
+		test('sets the category for the command', () => {
+			const testCommand = new Command({ name: 'test', category: 'test' })
+
+			expect(testCommand.category).toBe('test')
+		})
+
+		test('has a category by default, even when options do not specify category', () => {
+			const testCommand = new Command({ name: 'test' })
+
+			expect(testCommand.category).toBe('misc')
+		})
+
 		test('is disabled when `disabled = true`', async () => {
 			class DisabledCommand extends Command {
 				constructor() {

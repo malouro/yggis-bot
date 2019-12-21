@@ -1,6 +1,8 @@
 import { EventEmitter } from 'events'
-import { Bot } from '../src/classes'
+import { Bot, Command } from '../src/classes'
 import { loggerNames } from '../src/utils/logger'
+import { getCommands } from '../src/utils/setup'
+import { makeCommandFromModule } from '../src/utils/commands'
 
 export const MockToken = `M${'a'.repeat(23)}.${'a'.repeat(6)}.${'a'.repeat(27)}`
 export const MockMasterID = 'MasterID'
@@ -33,6 +35,16 @@ loggerNames.forEach((type) => {
 
 export { MockLogger }
 
+export class MockCommand extends Command {
+	constructor() {
+		super({
+			name: 'Test',
+		})
+	}
+}
+
+export const MockCommandList = getCommands([makeCommandFromModule(MockCommand)])
+
 /**
  * @property {Discord.Client} client
  * 	Mocked Discord Client instance
@@ -45,10 +57,12 @@ export const MockBot = new Bot({
 	client: MockClient,
 	config: MockConfig,
 	logger: MockLogger,
+	commands: MockCommandList,
 })
 
 /* Mock options to configure commands with */
 export const MockCommandOptions = {
+	bot: MockBot,
 	client: {},
 	message: {
 		reply: jest.fn(message => message),
@@ -60,11 +74,19 @@ export const MockCommandOptions = {
 			},
 			hasPermission: jest.fn(() => true),
 		},
+		channel: {
+			id: 'TestChannelID',
+			send: jest.fn(message => message),
+		},
 	},
 	logger: MockLogger,
 }
 
-/* Run a given command. Allows for default options & overrides */
+
+/**
+ * @func runCommand
+ * @param command Direct import of the command being tested
+ */
 export async function runCommand(command, overrides = {}) {
 	const commandOptions = { ...MockCommandOptions, ...overrides }
 

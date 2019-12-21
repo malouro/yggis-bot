@@ -4,7 +4,13 @@ export default class Ping extends Command {
 	constructor() {
 		super({
 			name: 'Ping',
-			aliases: ['test'],
+			category: 'debug',
+			aliases: [],
+			description: 'See the bot\'s response time to the server.',
+			usage: {
+				name: 'ping',
+				args: [],
+			},
 		})
 	}
 

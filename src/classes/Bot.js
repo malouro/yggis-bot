@@ -27,7 +27,8 @@ export default class Bot {
 
 		/* setup commands */
 		this.commands = commands
-		this.commandPrefix = config.commandPrefix
+		this.commandPrefix = this.config.commandPrefix
+		this.categories = this.getCategories()
 
 		/* logger utils */
 		this.logger = logger
@@ -36,6 +37,18 @@ export default class Bot {
 		this.client = client
 		this.client.on('ready', this.onReady.bind(this))
 		this.client.on('message', this.onMessage.bind(this))
+	}
+
+	getCategories() {
+		const categories = []
+
+		this.commands.forEach(({ category }) => {
+			if (!categories.includes(category)) {
+				categories.push(category)
+			}
+		})
+
+		return categories
 	}
 
 	onReady() {
@@ -55,13 +68,15 @@ export default class Bot {
 		let commandName = null
 
 		if (message.content.startsWith(this.config.commandPrefix)) {
-			args = getArgumentsFromMessage(message)
+			args = getArgumentsFromMessage(message) || []
 			commandName = getCommandFromMessage(args, this.config)
 
 			if (this.commands.has(commandName)) {
 				this.commands.get(commandName).run({
-					message,
+					bot: this,
 					client: this.client,
+					message,
+					args,
 					logger: this.logger,
 				})
 			}
