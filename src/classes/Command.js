@@ -45,24 +45,42 @@ export default class Command {
 	}
 
 	async run({
-		bot, client, message, args, logger,
+		bot,
+		client,
+		message,
+		args,
+		logger,
 	}) {
 		if (this.disabled) {
 			return null
 		}
 
 		if (!canUseCommand(message.member, this.permLevel)) {
-			return message.reply('You do not have the required permissions to use this command. 😥')
+			return message.reply(
+				'You do not have the required permissions to use this command. 😥'
+			)
 		}
 
 		await this.preAction({
-			bot, client, message, args, logger,
+			bot,
+			client,
+			message,
+			args,
+			logger,
 		})
 		await this.action({
-			bot, client, message, args, logger,
+			bot,
+			client,
+			message,
+			args,
+			logger,
 		})
 		await this.postAction({
-			bot, client, message, args, logger,
+			bot,
+			client,
+			message,
+			args,
+			logger,
 		})
 	}
 }

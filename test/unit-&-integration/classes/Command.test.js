@@ -1,5 +1,8 @@
 import { Command } from '../../../src/classes'
-import { MissingPropertyError, InvalidPropertyError } from '../../../src/utils/errors'
+import {
+	MissingPropertyError,
+	InvalidPropertyError,
+} from '../../../src/utils/errors'
 import { runCommand } from '../../testHelpers'
 
 describe('Command Class', () => {
@@ -47,7 +50,6 @@ describe('Command Class', () => {
 			await runCommand(testCommand)
 			expect(testCommand.preAction).toHaveReturnedWith('preAction')
 		})
-
 
 		test('fires a given `postAction` event', async () => {
 			const testCommand = new TestCommand()
@@ -125,37 +127,41 @@ describe('Command Class', () => {
 
 	describe('Error handling', () => {
 		test('throws an error when a `name` isn\'t given', () => {
-			expect(
-				() => new Command(),
-			).toThrowError(new MissingPropertyError('name'))
+			expect(() => new Command()).toThrowError(new MissingPropertyError('name'))
 		})
 
 		test('throws an error when given a permission level out of expected range', () => {
-			const expectedError = new InvalidPropertyError('permLevel', 'Not an integer in range (0, 5)')
+			const expectedError = new InvalidPropertyError(
+				'permLevel',
+				'Not an integer in range (0, 5)'
+			)
 
-			expect(
-				() => new Command({ name: 'test', permLevel: -1 }),
-			).toThrowError(expectedError)
-			expect(
-				() => new Command({ name: 'test', permLevel: 6 }),
-			).toThrowError(expectedError)
+			expect(() => new Command({ name: 'test', permLevel: -1 })).toThrowError(
+				expectedError
+			)
+			expect(() => new Command({ name: 'test', permLevel: 6 })).toThrowError(
+				expectedError
+			)
 		})
 
 		test('throws an error when given a permission level that is NaN', () => {
-			const expectedError = new InvalidPropertyError('permLevel', 'Not an integer in range (0, 5)')
+			const expectedError = new InvalidPropertyError(
+				'permLevel',
+				'Not an integer in range (0, 5)'
+			)
 
+			expect(() => new Command({ name: 'test', permLevel: null })).toThrowError(
+				expectedError
+			)
 			expect(
-				() => new Command({ name: 'test', permLevel: null }),
+				() => new Command({ name: 'test', permLevel: undefined })
 			).toThrowError(expectedError)
 			expect(
-				() => new Command({ name: 'test', permLevel: undefined }),
+				() => new Command({ name: 'test', permLevel: 'a string' })
 			).toThrowError(expectedError)
-			expect(
-				() => new Command({ name: 'test', permLevel: 'a string' }),
-			).toThrowError(expectedError)
-			expect(
-				() => new Command({ name: 'test', permLevel: NaN }),
-			).toThrowError(expectedError)
+			expect(() => new Command({ name: 'test', permLevel: NaN })).toThrowError(
+				expectedError
+			)
 		})
 	})
 })

@@ -5,11 +5,11 @@ actionText: Get Started →
 actionLink: /Guide.html
 features:
 - title: Simple
-  details: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+  details: Some text will go here.
 - title: Effective
-  details: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+  details: Some text will go here.
 - title: Lightweight
-  details: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+  details: Some text will go here.
 footer: MIT Licensed
 ---
 

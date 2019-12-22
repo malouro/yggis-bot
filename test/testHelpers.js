@@ -1,11 +1,15 @@
+// eslint-disable-next-line no-unused-vars
+import { Collection, Client, GuildMember } from 'discord.js'
 import { EventEmitter } from 'events'
 import { Bot, Command } from '../src/classes'
 import { loggerNames } from '../src/utils/logger'
 import { getCommands } from '../src/utils/setup'
 import { makeCommandFromModule } from '../src/utils/commands'
-import { Collection, Client, GuildMember } from 'discord.js'
 
-/** @description A mock of a Discord OAUTH token */
+
+/**
+ * @description A mock of a Discord OAUTH token
+ */
 export const MockToken = `M${'a'.repeat(23)}.${'a'.repeat(6)}.${'a'.repeat(27)}`
 
 
@@ -19,12 +23,14 @@ export const MockMasterID = 'MasterID'
 
 
 /**
- * @typedef {{ commandPrefix: string, statusMessage: string, statusMessageOptions: { type: string, url: string }}}
- * 
  * @description
- * A mock of the config to use for the test bot. Follows the template defined in `/src/constants/config.js`
+ * - A mock of the config to use for the test bot.
+ * - Follows the template defined in `/src/constants/config.js`
  */
 export const MockConfig = {
+	commandCategories: {
+
+	},
 	commandPrefix: 'testPrefix',
 	statusMessage: 'testStatusMessage',
 	statusMessageOptions: {
@@ -36,7 +42,7 @@ export const MockConfig = {
 
 /**
  * @type {GuildMember}
- * 
+ *
  * @description
  * A basic mock of a Discord.js GuildMember
  */
@@ -49,7 +55,7 @@ export const MockMember = {
 
 /**
  * @type {EventEmitter}
- * 
+ *
  * @description
  * A basic mock of a Discord.js Client
  */
@@ -71,7 +77,7 @@ export { MockLogger }
 
 /**
  * @type {Command}
- * 
+ *
  * @description
  * A basic mock command to run tests with or on.
  */
@@ -86,10 +92,10 @@ export class MockCommand extends Command {
 
 /**
  * @param {Object} options - List of options to configure the mock command with
- * 
+ *
  * @description
  * - This will make a command with the Command class defined in `/src/classes/`.
- * - The key name of the command class (and prototype property of `name`) will default to 'MockCommand'.
+ * - The key name of the command class (and property of `name`) will default to 'MockCommand'.
  */
 export const makeMockCommand = ({ name = 'MockCommand', ...otherOptions }) => ({
 	[name]: class extends Command {
@@ -107,14 +113,12 @@ export const makeMockCommand = ({ name = 'MockCommand', ...otherOptions }) => ({
  * @type {Collection<String, Command>}
  *
  * @description
- * Uses the `getCommands` utility function to make a `Discord.Collection` containing the `MockCommand` defined above.
+ * Uses the `getCommands` utility function to make a collection containing mock command(s)
  */
 export const MockCommandList = getCommands([makeCommandFromModule(MockCommand)])
 
 
 /**
- * @typedef {{ client: Client, config: Object, logger: Logger, commands: Collection<String, Command> }}
- *
  * @description
  * Default options to initialize the test bot with.
  */
@@ -128,7 +132,7 @@ export const defaultMockBotOptions = {
 
 /**
  * @type {Bot}
- * 
+ *
  * A test bot that uses the default options
  */
 export const MockBot = new Bot({
@@ -138,10 +142,12 @@ export const MockBot = new Bot({
 
 /**
  * - Makes a test bot with the given options.
- * - Use the config option called `mockCommand` to setup the given command in the test bot's command collection.
+ * - Use `mockCommand` to setup the given command in the test bot's command collection.
  */
 export const makeMockBot = ({ mockCommand, ...overrides }) => {
-	const commands = mockCommand ? getCommands([makeCommandFromModule(mockCommand)]) : MockCommandList
+	const commands = mockCommand
+		? getCommands([makeCommandFromModule(mockCommand)])
+		: MockCommandList
 
 	return new Bot({
 		commands,
@@ -176,11 +182,12 @@ export const MockCommandOptions = {
 
 
 /**
- * @param {Command} command The command to run. Needs to be instantiated before passed into this function
- * 
+ * @param {Command} command The command to run.
+ * - Needs to be instantiated before passed into this function
+ *
  * @description
  * - Executes the `run` method of the given command.
- * - Returns back the given command options, which should include mock results within `message` if applicable.
+ * - Returns back the command options, including mock results within `message` if applicable.
  */
 export async function runCommand(command, overrides = {}) {
 	const commandOptions = { ...MockCommandOptions, ...overrides }

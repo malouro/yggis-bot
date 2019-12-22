@@ -75,25 +75,31 @@ describe('Bot Class', () => {
 		expect(mockTestCommand.run).toHaveBeenCalledWith(
 			expect.objectContaining({
 				message: { content: `${MockConfig.commandPrefix}test Message` },
-			}),
+			})
 		)
 	})
 
-	test('sets a command categories list given commands that are configured with categories', () => {
+	test('sets a command commandCategories list given commands that are configured with commandCategories', () => {
 		const mockCommands = new Collection()
 
-		mockCommands.set('test1-1', { category: 'test1' })
-		mockCommands.set('test1-2', { category: 'test1' })
-		mockCommands.set('test2', { category: 'test2' })
+		mockCommands.set('commandA', { name: 'commandA', category: 'cat1' })
+		mockCommands.set('commandB', { name: 'commandB', category: 'cat1' })
+		mockCommands.set('commandC', { name: 'commandC', category: 'cat2' })
 
 		const testBot = new Bot({
 			commands: mockCommands,
 		})
 
-		expect(testBot.categories).toStrictEqual([
-			'test1',
-			'test2',
+		expect(Array.from(testBot.commandCategories.keys())).toStrictEqual([
+			'cat1',
+			'cat2',
 		])
+		expect(testBot.commandCategories.get('cat1')).toMatchObject({
+			commands: expect.arrayContaining(['commandA', 'commandB']),
+		})
+		expect(testBot.commandCategories.get('cat2')).toMatchObject({
+			commands: expect.arrayContaining(['commandC']),
+		})
 	})
 
 	test('has an empty command category list when no commands are supplied', () => {
@@ -101,6 +107,6 @@ describe('Bot Class', () => {
 			commands: new Collection(),
 		})
 
-		expect(testBot.categories).toStrictEqual([])
+		expect(Array.from(testBot.commandCategories.keys())).toStrictEqual([])
 	})
 })

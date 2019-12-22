@@ -28,12 +28,12 @@ export default class Help extends Command {
 	}
 
 	// TODO
+	// eslint-disable-next-line no-unused-vars
 	buildMainHelpMenu(config, commands, categories) {
 		return 'This is the main help menu.'
 	}
 
-	// TODO
-	buildCommandHelpMenu(config, command) {
+	buildCommandHelpMenu(config, command, invalidUsage = false) {
 		const { description, usage } = command
 
 		const chainableArgs = []
@@ -91,7 +91,9 @@ export default class Help extends Command {
 		const commandUsage = `\`${config.commandPrefix}${usage.name}\` ${getArgsUsage()}`
 
 		return [
-			title,
+			invalidUsage
+				? `Invalid \`${config.commandPrefix}${this.name}\` usage.`
+				: title,
 			'',
 			description,
 			'',
@@ -127,7 +129,7 @@ export default class Help extends Command {
 			)
 		} else {
 			// !help {invalidUsage}
-			this.messageOutput = this.usage
+			this.messageOutput = this.buildCommandHelpMenu(bot.config, this, true)
 		}
 	}
 

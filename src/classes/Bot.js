@@ -1,4 +1,4 @@
-import Discord from 'discord.js'
+import Discord, { Collection } from 'discord.js'
 
 import defaultConfig from '../constants/config'
 import defaultLogger from '../utils/logger'
@@ -28,7 +28,7 @@ export default class Bot {
 		/* setup commands */
 		this.commands = commands
 		this.commandPrefix = this.config.commandPrefix
-		this.categories = this.getCategories()
+		this.commandCategories = this.getCategories()
 
 		/* logger utils */
 		this.logger = logger
@@ -40,11 +40,21 @@ export default class Bot {
 	}
 
 	getCategories() {
-		const categories = []
+		const categories = new Collection()
 
-		this.commands.forEach(({ category }) => {
-			if (!categories.includes(category)) {
-				categories.push(category)
+		this.commands.forEach(({ name: commandName, category }) => {
+			if (!categories.has(category)) {
+				categories.set(category, {
+					...(this.config.commandCategories[category] || null),
+					commands: [commandName],
+				})
+			} else {
+				const categoryData = categories.get(category)
+
+				categories.set(category, {
+					...categoryData,
+					commands: [...categoryData.commands, commandName],
+				})
 			}
 		})
 

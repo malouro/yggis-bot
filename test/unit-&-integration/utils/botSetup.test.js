@@ -26,8 +26,8 @@ describe('Bot Setup Utilities', () => {
 				makeCommandFromModule(
 					makeMockCommand({
 						name: 'Test',
-						aliases: ['test-alias']
-					})
+						aliases: ['test-alias'],
+					}),
 				),
 			])
 

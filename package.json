@@ -40,7 +40,7 @@
     "generate:dotenv": "node ./scripts/generate-dotenv.js",
     "generate:command": "node ./scripts/generate-command.js",
     "check:lint": "eslint src/ test/ scripts/",
-    "check:spelling": "npx cspell /src/**/*.js",
+    "check:spelling": "npx cspell /src/** /test/** /docs/**",
     "check:format": "yarn format:safe",
     "format": "yarn format:safe --write",
     "format:safe": "prettier \"{src,test,scripts}/**/*.js\"",
