@@ -1,3 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Help Command returns a help menu 1`] = `"This is the main help menu."`;
+exports[`Help Command Help Command help menu returns the command's help menu 1`] = `
+"**Help Command**
+
+Help menus & support
+
+\`!help\` \`<command|category>\`
+
+\`command\`
+Get help on how to use a specific command.
+
+\`category\`
+Learn more about commands available under a given category."
+`;
+
+exports[`Help Command Main help menu returns the main help menu 1`] = `"This is the main help menu."`;
