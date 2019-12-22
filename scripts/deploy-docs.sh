@@ -1,5 +1,7 @@
 #!/usr/bin/env sh
 
+# cSpell:disable
+
 # abort on errors
 set -e
 

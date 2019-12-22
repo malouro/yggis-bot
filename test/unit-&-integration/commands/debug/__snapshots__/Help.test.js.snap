@@ -17,3 +17,19 @@ Learn more about commands available under a given category."
 `;
 
 exports[`Help Command Main help menu returns the main help menu 1`] = `"This is the main help menu."`;
+
+exports[`Help Command has a main help menu that looks like this 1`] = `"This is the main help menu."`;
+
+exports[`Help Command has its own command help menu that looks like this 1`] = `
+"**Help Command**
+
+Help menus & support
+
+\`!help\` \`<command|category>\`
+
+\`command\`
+Get help on how to use a specific command.
+
+\`category\`
+Learn more about commands available under a given category."
+`;

@@ -30,7 +30,7 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
 
       - run:
-          name: Linting & formatting
+          name: Linting, formatting & spellcheck
           command: yarn check:lint && yarn check:spelling
 
       - run:

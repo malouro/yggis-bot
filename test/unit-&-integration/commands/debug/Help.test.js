@@ -2,24 +2,37 @@ import { runCommand, makeMockBot } from '../../../testHelpers'
 
 import Help from '../../../../src/commands/debug/Help'
 
+/**
+ * @todo Hit 90% coverage at least
+ * @todo Write more test todo's for conditional branches
+ * @todo Extrapolate common actions/tests as functions
+ */
+
 describe('Help Command', () => {
 	const HelpCommand = new Help()
 	const bot = makeMockBot({ mockCommand: Help })
 
-	describe('Main help menu', () => {
-		test('returns the main help menu', async () => {
-			const {
+	describe('has a main help menu', () => {
+		let mockedSend = null
+		let mainHelpMenu = null
+
+		beforeEach(async () => {
+			({
 				message: {
 					channel: { send: mockedSend },
 				},
-			} = await runCommand(HelpCommand, { args: ['!help'] })
-			const mainHelpMenu = mockedSend.mock.results[0].value
+			} = await runCommand(HelpCommand, {
+				args: ['!help'],
+			}))
 
-			expect(mainHelpMenu).toMatchSnapshot()
+			mainHelpMenu = mockedSend.mock.results[0].value
 		})
+
+		test('that returns a string', () => expect(typeof mainHelpMenu).toBe('string'))
+		test('that looks like this', () => expect(mainHelpMenu).toMatchSnapshot())
 	})
 
-	describe('Help Command help menu', () => {
+	describe('has its own command help menu', () => {
 		let mockedSend = null
 		let helpCommandHelpMenu = null
 
@@ -36,30 +49,25 @@ describe('Help Command', () => {
 			helpCommandHelpMenu = mockedSend.mock.results[0].value
 		})
 
-		test('returns the command\'s help menu', async () => {
-			expect(helpCommandHelpMenu).toMatchSnapshot()
-		})
+		test('that looks like this', () => expect(helpCommandHelpMenu).toMatchSnapshot())
 
 		test.each(
 			HelpCommand.usage.args.map(
 				arg => [arg.name, arg.description]
 			),
 		)(
-			'the help command\'s help menu shows the `%s` argument\'s description',
-			async (argName, argDescription = '') => {
+			'that shows the `%s` argument\'s description',
+			(argName, argDescription = '') =>
 				expect(helpCommandHelpMenu).toEqual(expect.stringContaining(argDescription))
-			},
 		)
 	})
 
-	describe('Command help menu', () => {
-		test.todo(
-			'displays chainable and non-chainable arguments in the command help menu'
-		)
-		test.todo('displays a command\'s argument usage when available')
+	describe('makes a command\'s help menu', () => {
+		test.todo('that displays chainable and non-chainable arguments')
+		test.todo('that displays a command\'s argument usage when available')
 	})
 
-	describe('Command category help menu', () => {
+	describe('makes a command category\'s help menu', () => {
 		test('returns a category\'s help menu', async () => {
 			const {
 				message: {
