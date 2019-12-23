@@ -9,47 +9,62 @@ import Help from '../../../../src/commands/debug/Help'
  */
 
 describe('Help Command', () => {
+	const mockBot = makeMockBot({ mockCommand: Help })
 	const HelpCommand = new Help()
-	const bot = makeMockBot({ mockCommand: Help })
 
-	describe('has a main help menu', () => {
-		let mockedSend = null
-		let mainHelpMenu = null
-
-		beforeEach(async () => {
-			({
-				message: {
-					channel: { send: mockedSend },
-				},
-			} = await runCommand(HelpCommand, {
-				args: ['!help'],
-			}))
-
-			mainHelpMenu = mockedSend.mock.results[0].value
+	/**
+	 * @description
+	 * - Runs the help command given option overrides
+	 * - Use an array for `args` to list out arguments to be used in the command execution
+	*/
+	const runHelpCommand = async ({
+		args = ['!help'],
+		bot = mockBot,
+		...options
+	} = {}) => {
+		const {
+			message: {
+				channel: { send: mockedSend },
+			},
+		} = await runCommand(HelpCommand, {
+			args,
+			bot,
+			...options,
 		})
 
-		test('that returns a string', () => expect(typeof mainHelpMenu).toBe('string'))
-		test('that looks like this', () => expect(mainHelpMenu).toMatchSnapshot())
+		return mockedSend.mock.results[0].value
+	}
+
+	describe('makes a main help menu', () => {
+		let mainHelpMenu = null
+
+		beforeAll(async () => {
+			mainHelpMenu = await runHelpCommand()
+		})
+
+		test('that returns a string', () => {
+			expect(typeof mainHelpMenu).toBe('string')
+		})
+		test('that looks like this', () => {
+			expect(mainHelpMenu).toMatchSnapshot()
+		})
+	})
+
+	describe('makes a command\'s help menu', () => {
+		test.todo('that displays chainable and non-chainable arguments')
+		test.todo('that displays a command\'s argument usage when available')
 	})
 
 	describe('has its own command help menu', () => {
-		let mockedSend = null
 		let helpCommandHelpMenu = null
 
-		beforeEach(async () => {
-			({
-				message: {
-					channel: { send: mockedSend },
-				},
-			} = await runCommand(HelpCommand, {
-				args: ['!help', 'help'],
-				bot,
-			}))
-
-			helpCommandHelpMenu = mockedSend.mock.results[0].value
+		beforeAll(async () => {
+			helpCommandHelpMenu = await runHelpCommand({ args: ['!help', 'help'] })
 		})
 
-		test('that looks like this', () => expect(helpCommandHelpMenu).toMatchSnapshot())
+		test('that looks like this', () => {
+			expect(helpCommandHelpMenu).toMatchSnapshot()
+		})
 
 		test.each(
 			HelpCommand.usage.args.map(
@@ -62,24 +77,20 @@ describe('Help Command', () => {
 		)
 	})
 
-	describe('makes a command\'s help menu', () => {
-		test.todo('that displays chainable and non-chainable arguments')
-		test.todo('that displays a command\'s argument usage when available')
-	})
-
 	describe('makes a command category\'s help menu', () => {
-		test('returns a category\'s help menu', async () => {
-			const {
-				message: {
-					channel: { send: mockedSend },
-				},
-			} = await runCommand(HelpCommand, {
-				args: ['!help', 'debug'],
-				bot,
-			})
-			const debugCategoryHelpMenu = mockedSend.mock.results[0].value
+		let debugCategoryHelpMenu = null
 
+		beforeAll(async () => {
+			debugCategoryHelpMenu = await runHelpCommand({ args: ['!help', 'debug'] })
+		})
+
+		test('that displays a category\'s help menu', () => {
+			expect(debugCategoryHelpMenu).toEqual(expect.stringMatching('`debug`'))
 			expect(debugCategoryHelpMenu).toMatchSnapshot()
 		})
+
+		test.todo('with chainable arguments displayed')
+		test.todo('with non-chainable arguments displayed')
+		test.todo('with both chainable & non-chainable arguments displayed')
 	})
 })
