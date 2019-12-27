@@ -1,4 +1,6 @@
 import Discord, { Collection } from 'discord.js'
+import camelCase from 'lodash/camelCase'
+import upperFirst from 'lodash/upperFirst'
 
 import defaultConfig from '../constants/config'
 import defaultLogger from '../utils/logger'
@@ -45,7 +47,9 @@ export default class Bot {
 		this.commands.forEach(({ name: commandName, category }) => {
 			if (!categories.has(category)) {
 				categories.set(category, {
-					...(this.config.commandCategories[category] || null),
+					...(this.config.commandCategories[category] || {
+						name: upperFirst(camelCase(category))
+					}),
 					commands: [commandName.toLocaleLowerCase()],
 				})
 			} else {

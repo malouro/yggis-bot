@@ -81,6 +81,38 @@ describe('Bot Class', () => {
 		)
 	})
 
+	test.each([
+		['A', 'a capital letter'],
+		['$', 'a symbol that\'s not a "!"'],
+		['Ç', 'a non-typical letter symbol'],
+		['1,000.000', 'a long number'],
+	])(
+		'can handle %s (%s) as the commandPrefix',
+		(commandPrefix) => {
+			const mockCommands = new Collection()
+			const mockTestCommand = new MockCommand()
+
+			mockTestCommand.run = jest.fn()
+			mockCommands.set('test', mockTestCommand)
+
+			const testBot = new Bot({
+				client: MockClient,
+				commands: mockCommands,
+				config: {
+					...MockConfig,
+					commandPrefix
+				},
+				logger: MockLogger
+			})
+
+			testBot.onMessage({
+				content: `${commandPrefix}test Message`,
+			})
+
+			expect(mockTestCommand.run).toHaveBeenCalled()
+		},
+	)
+
 	test('sets a command commandCategories list given commands that are configured with commandCategories', () => {
 		const mockCommands = new Collection()
 

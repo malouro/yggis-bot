@@ -1,6 +1,6 @@
-import { runCommand } from '../../../testHelpers'
-
 import Ping from '../../../../src/commands/debug/Ping'
+
+import { runCommand } from '../../../testHelpers'
 
 describe('Ping Command', () => {
 	const PingCommand = new Ping()

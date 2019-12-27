@@ -12,7 +12,7 @@ export default class Command {
 			disabled: false,
 			permLevel: 0,
 			description: '',
-			usage: { name: '', args: [] },
+			usage: { name: this.name || '', args: [] },
 		}, options)
 
 		/* Command properties to verify */

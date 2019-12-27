@@ -8,7 +8,6 @@ export default class Help extends Command {
 			aliases: [],
 			description: 'Help menus & support',
 			usage: {
-				name: 'help',
 				args: [
 					{
 						name: 'command',
@@ -60,6 +59,7 @@ export default class Help extends Command {
 
 			if (chainableArgs.length > 0) {
 				argsUsageOutput = argsUsageOutput.concat(
+					nonChainableArgs.length > 0 ? ' ' : '',
 					'`(',
 					chainableArgs.join(', '),
 					')`',
@@ -73,30 +73,28 @@ export default class Help extends Command {
 			let argsDetailsOutput = ''
 
 			usage.args.forEach((arg, index) => {
-				if (arg.description) {
-					argsDetailsOutput = argsDetailsOutput.concat(
-						index === 0 ? '\n' : '\n\n',
-						`\`${arg.name}\``,
-						'\n',
-						arg.description,
-						arg.usage ? `${'\n'.repeat(2)}\`${arg.usage}\`` : '',
-					)
-				}
+				argsDetailsOutput = argsDetailsOutput.concat(
+					index === 0 ? '\n' : '\n\n',
+					`\`${arg.name}\``,
+					'\n',
+					arg.description || '(Missing description.)',
+					arg.usage ? `${'\n'.repeat(2)}\`${arg.usage}\`` : '',
+				)
 			})
 
 			return argsDetailsOutput
 		}
 
 		const title = `**${command.name} Command**`
-		const commandUsage = `\`${commandPrefix}${usage.name}\` ${getArgsUsage()}`
+		const commandUsage = `\`${commandPrefix}${command.name.toLocaleLowerCase()}\` ${getArgsUsage()}`
 
 		return [
 			invalidUsage
-				? `Invalid \`${commandPrefix}${usage.name}\` usage.`
+				? `Invalid \`${commandPrefix}${command.name.toLocaleLowerCase()}\` usage.`
 				: title,
 			invalidUsage
 				? ''
-				: `\n${description}\n`,
+				: `\n${description || '(Missing description.)'}\n`,
 			commandUsage,
 			getDetailedArgsDescription(),
 		].join('\n')
@@ -113,9 +111,7 @@ export default class Help extends Command {
 
 		return [
 			title,
-			'',
-			description,
-			'',
+			description ? `\n${description}\n` : '',
 			commandList
 		].join('\n')
 	}
