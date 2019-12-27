@@ -1,7 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Help Command has a main help menu that looks like this 1`] = `"This is the main help menu."`;
-
 exports[`Help Command has its own command help menu that looks like this 1`] = `
 "**Help Command**
 
@@ -17,3 +15,17 @@ Learn more about commands available under a given category."
 `;
 
 exports[`Help Command makes a command category's help menu that displays a category's help menu 1`] = `"This is the command category help menu"`;
+
+exports[`Help Command makes a main help menu that looks like this 1`] = `"This is the main help menu."`;
+
+exports[`Help Command makes a main help menu when invalid usage is given 1`] = `
+"Invalid \`!help\` usage.
+
+\`!help\` \`<command|category>\`
+
+\`command\`
+Get help on how to use a specific command.
+
+\`category\`
+Learn more about commands available under a given category."
+`;

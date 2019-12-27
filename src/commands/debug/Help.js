@@ -33,7 +33,7 @@ export default class Help extends Command {
 		return 'This is the main help menu.'
 	}
 
-	buildCommandHelpMenu(config, command, invalidUsage = false) {
+	buildCommandHelpMenu(commandPrefix, command, invalidUsage = false) {
 		const { description, usage } = command
 
 		const chainableArgs = []
@@ -88,48 +88,65 @@ export default class Help extends Command {
 		}
 
 		const title = `**${command.name} Command**`
-		const commandUsage = `\`${config.commandPrefix}${usage.name}\` ${getArgsUsage()}`
+		const commandUsage = `\`${commandPrefix}${usage.name}\` ${getArgsUsage()}`
 
 		return [
 			invalidUsage
-				? `Invalid \`${config.commandPrefix}${this.name}\` usage.`
+				? `Invalid \`${commandPrefix}${usage.name}\` usage.`
 				: title,
-			'',
-			description,
-			'',
+			invalidUsage
+				? ''
+				: `\n${description}\n`,
 			commandUsage,
 			getDetailedArgsDescription(),
 		].join('\n')
 	}
 
 	// TODO
-	buildCategoryHelpMenu() {
-		return 'This is the command category help menu'
+	buildCategoryHelpMenu(commandPrefix, category) {
+		const { name, description, commands } = category
+		const title = `**${name} Commands**`
+
+		const commandList = commands
+			.map(command => `\`${commandPrefix}${command}\``)
+			.join(', ')
+
+		return [
+			title,
+			'',
+			description,
+			'',
+			commandList
+		].join('\n')
 	}
 
 	preAction({ args, bot }) {
 		if (args.length === 1) {
 			// !help (no args)
 			this.messageOutput = this.buildMainHelpMenu(
-				bot.config,
+				bot.commandPrefix,
 				bot.commands,
 				bot.commandCategories,
 			)
 		} else if (bot.commands.has(args[1])) {
 			// !help <command>
 			this.messageOutput = this.buildCommandHelpMenu(
-				bot.config,
+				bot.commandPrefix,
 				bot.commands.get(args[1].toLocaleLowerCase()),
 			)
 		} else if (bot.commandCategories.has(args[1])) {
 			// !help <category>
 			this.messageOutput = this.buildCategoryHelpMenu(
-				bot.config,
-				bot.commands.get(args[1].toLocaleLowerCase()),
+				bot.commandPrefix,
+				bot.commandCategories.get(args[1].toLocaleLowerCase()),
 			)
 		} else {
 			// !help {invalidUsage}
-			this.messageOutput = this.buildCommandHelpMenu(bot.config, this, true)
+			this.messageOutput = this.buildCommandHelpMenu(
+				bot.commandPrefix,
+				this,
+				true
+			)
 		}
 	}
 

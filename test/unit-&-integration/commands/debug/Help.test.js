@@ -35,6 +35,10 @@ describe('Help Command', () => {
 		return mockedSend.mock.results[0].value
 	}
 
+	afterEach(() => {
+		jest.clearAllMocks()
+	})
+
 	describe('makes a main help menu', () => {
 		let mainHelpMenu = null
 
@@ -45,8 +49,15 @@ describe('Help Command', () => {
 		test('that returns a string', () => {
 			expect(typeof mainHelpMenu).toBe('string')
 		})
+
 		test('that looks like this', () => {
 			expect(mainHelpMenu).toMatchSnapshot()
+		})
+
+		test('when invalid usage is given', async () => {
+			const invalidUsageHelpMenu = await runHelpCommand({ args: ['!help', 'invalid'] })
+
+			expect(invalidUsageHelpMenu).toMatchSnapshot()
 		})
 	})
 
@@ -85,12 +96,16 @@ describe('Help Command', () => {
 		})
 
 		test('that displays a category\'s help menu', () => {
-			expect(debugCategoryHelpMenu).toEqual(expect.stringMatching('`debug`'))
+			expect(debugCategoryHelpMenu).toEqual(expect.stringContaining('Debug'))
+			expect(debugCategoryHelpMenu).toEqual(expect.stringContaining(`\`${mockBot.commandPrefix}help\``))
 			expect(debugCategoryHelpMenu).toMatchSnapshot()
 		})
 
 		test.todo('with chainable arguments displayed')
 		test.todo('with non-chainable arguments displayed')
 		test.todo('with both chainable & non-chainable arguments displayed')
+		test('with argument usage details', () => {
+
+		})
 	})
 })

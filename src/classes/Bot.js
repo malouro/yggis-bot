@@ -46,14 +46,14 @@ export default class Bot {
 			if (!categories.has(category)) {
 				categories.set(category, {
 					...(this.config.commandCategories[category] || null),
-					commands: [commandName],
+					commands: [commandName.toLocaleLowerCase()],
 				})
 			} else {
 				const categoryData = categories.get(category)
 
 				categories.set(category, {
 					...categoryData,
-					commands: [...categoryData.commands, commandName],
+					commands: [...categoryData.commands, commandName.toLocaleLowerCase()],
 				})
 			}
 		})

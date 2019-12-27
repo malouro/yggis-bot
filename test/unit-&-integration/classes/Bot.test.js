@@ -6,6 +6,7 @@ import {
 	MockClient,
 	MockToken,
 	MockLogger,
+	MockCommand,
 } from '../../testHelpers'
 
 describe('Bot Class', () => {
@@ -57,8 +58,9 @@ describe('Bot Class', () => {
 
 	test('handles messages that start with the commandPrefix as a command', () => {
 		const mockCommands = new Collection()
-		const mockTestCommand = { run: jest.fn() }
+		const mockTestCommand = new MockCommand()
 
+		mockTestCommand.run = jest.fn()
 		mockCommands.set('test', mockTestCommand)
 
 		const testBot = new Bot({
@@ -95,10 +97,10 @@ describe('Bot Class', () => {
 			'cat2',
 		])
 		expect(testBot.commandCategories.get('cat1')).toMatchObject({
-			commands: expect.arrayContaining(['commandA', 'commandB']),
+			commands: expect.arrayContaining(['commanda', 'commandb']),
 		})
 		expect(testBot.commandCategories.get('cat2')).toMatchObject({
-			commands: expect.arrayContaining(['commandC']),
+			commands: expect.arrayContaining(['commandc']),
 		})
 	})
 

@@ -12,7 +12,7 @@ describe('Ping Command', () => {
 		})
 
 		expect(result.message.reply).toHaveReturnedWith(
-			expect.stringContaining(`\`${expectedPing} ms\``),
+			expect.stringContaining(`\`${expectedPing} ms\``)
 		)
 	})
 
