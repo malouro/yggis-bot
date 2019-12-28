@@ -34,5 +34,9 @@ jobs:
           command: yarn check:lint && yarn check:spelling
 
       - run:
-          name: Tests
+          name: Unit & integration tests
           command: yarn test:coverage && npx codecov
+
+      - run:
+          name: End-to-end tests
+          command: yarn test:e2e
