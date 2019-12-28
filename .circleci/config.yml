@@ -15,31 +15,31 @@ jobs:
 
       # Download and cache dependencies
       - restore_cache:
-        keys:
-          - v1-dependencies-{{ checksum "package.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
 
       - run:
-        name: Install
-        command: yarn install
+          name: Install
+          command: yarn install
 
       - save_cache:
-        paths:
-          - node_modules
-        key: v1-dependencies-{{ checksum "package.json" }}
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
 
       - run:
-        name: Linting, formatting & spellcheck
-        command: yarn check:lint && yarn check:spelling
+          name: Linting, formatting & spellcheck
+          command: yarn check:lint && yarn check:spelling
 
       - run:
-        name: Unit & integration tests
-        command: JEST_SUITE_NAME="Unit & integration tests" JEST_JUNIT_OUTPUT_DIR="./coverage/results/unit" JEST_JUNIT_OUTPUT_NAME="results.xml" yarn test:coverage --ci --reporters="default" --reporters="jest-junit" && npx codecov
+          name: Unit & integration tests
+          command: JEST_SUITE_NAME="Unit & integration tests" JEST_JUNIT_OUTPUT_DIR="./coverage/results/unit" JEST_JUNIT_OUTPUT_NAME="results.xml" yarn test:coverage --ci --reporters="default" --reporters="jest-junit" && npx codecov
 
       - run:
-        name: End-to-end tests
-        command: JEST_SUITE_NAME="End-to-end tests" JEST_JUNIT_OUTPUT_DIR="./coverage/results/e2e" JEST_JUNIT_OUTPUT_NAME="results.xml" yarn test:e2e
+          name: End-to-end tests
+          command: JEST_SUITE_NAME="End-to-end tests" JEST_JUNIT_OUTPUT_DIR="./coverage/results/e2e" JEST_JUNIT_OUTPUT_NAME="results.xml" yarn test:e2e
 
       - store_test_results:
-        path: coverage/results
+          path: coverage/results
