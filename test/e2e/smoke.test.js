@@ -7,20 +7,22 @@ import { getCommands } from '../../src/utils/setup'
 jest.setTimeout(10000) // In case of slow network connection, or other unpredictable circumstances
 
 /**
- * For reference, here are the status codes that we can check to see if the bot connects properly
+ * @summary
  *
- * == Status codes: ==
- * 0: READY
- * 1: CONNECTING
- * 2: RECONNECTING
- * 3: IDLE
- * 4: NEARLY
- * 5: DISCONNECTED
+ * This test checks that bot can (at a bare minimum) log in and connect to a server
  *
- * @ref https://discord.js.org/#/docs/main/stable/typedef/Status
+ * This test relies on...
+ *
+ * - A Discord application already existing
+ * - The bot being invited into a test server
+ * - Environment variables set up in CI & locally via a .env.test file
+ * - These environment variables are as follows:
+ *
+ *   @var TOKEN: Discord application auth token for a test bot
+ *   @var GUILD_ID: ID of the test server the bot is connected to
  */
 
-describe('End-to-end environment', () => {
+describe('Smoke tests', () => {
 	const config = {
 		statusMessage: 'test',
 		statusMessageOptions: {
@@ -37,16 +39,28 @@ describe('End-to-end environment', () => {
 
 	/**
 	 * Start up & disconnect the bot before and after each test
+	 *
+	 * For reference, here are the status codes that we can check to see if the bot connects properly
+	 *
+	 * =={ Status codes }==
+	 * 0: READY
+	 * 1: CONNECTING
+	 * 2: RECONNECTING
+	 * 3: IDLE
+	 * 4: NEARLY
+	 * 5: DISCONNECTED
+	 *
+	 * @ref https://discord.js.org/#/docs/main/stable/typedef/Status
 	 */
 	beforeAll(async () => {
 		if (Yggis.client.status !== 0) {
 			Yggis.start()
 		}
-
 		await waitForExpect(() => {
 			expect(Yggis.client.status).toBe(0)
 		})
 	})
+
 	afterAll(async () => {
 		await Yggis.client.destroy()
 		await waitForExpect(() => {
