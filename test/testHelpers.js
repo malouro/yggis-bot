@@ -163,6 +163,10 @@ export const MockCommandOptions = {
 	bot: MockBot,
 	client: {},
 	message: {
+		author: {
+			id: 'TestMemberID',
+			bot: false,
+		},
 		reply: jest.fn(message => message),
 		member: {
 			id: 'TestMemberID',

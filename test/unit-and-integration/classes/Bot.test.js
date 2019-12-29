@@ -47,6 +47,7 @@ describe('Bot Class', () => {
 		const testBot = MockBot
 
 		await testBot.client.emit('message', {
+			author: { bot: false },
 			content: 'Test Message',
 		})
 
@@ -54,6 +55,21 @@ describe('Bot Class', () => {
 			level: 'info',
 			message: 'Message received: "Test Message"',
 		})
+	})
+
+	test('ignores messages from bots', async () => {
+		process.env.NODE_ENV = 'production'
+
+		const testBot = MockBot
+
+		await testBot.client.emit('message', {
+			author: { bot: true },
+			content: 'Test Message',
+		})
+
+		expect(MockLogger.bot.log).not.toHaveBeenCalled()
+
+		process.env.NODE_ENV = 'test'
 	})
 
 	test('handles messages that start with the commandPrefix as a command', () => {
@@ -71,12 +87,15 @@ describe('Bot Class', () => {
 		})
 
 		testBot.onMessage({
+			author: { bot: false },
 			content: `${MockConfig.commandPrefix}test Message`,
 		})
 
 		expect(mockTestCommand.run).toHaveBeenCalledWith(
 			expect.objectContaining({
-				message: { content: `${MockConfig.commandPrefix}test Message` },
+				message: expect.objectContaining({
+					content: `${MockConfig.commandPrefix}test Message`
+				}),
 			})
 		)
 	})
@@ -106,6 +125,7 @@ describe('Bot Class', () => {
 			})
 
 			testBot.onMessage({
+				author: { bot: false },
 				content: `${commandPrefix}test Message`,
 			})
 
