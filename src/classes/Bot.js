@@ -13,6 +13,7 @@ import {
 
 export default class Bot {
 	constructor({
+		name = 'Yggis',
 		client = new Discord.Client(),
 		commands = new Discord.Collection(),
 		config,
@@ -28,8 +29,11 @@ export default class Bot {
 			...config,
 		}
 
+		/* bot name */
+		this.name = name
+
 		/* setup commands */
-		this.commands = commands
+		this.commands = new Map([...commands.entries()].sort())
 		this.commandPrefix = this.config.commandPrefix
 		this.commandCategories = this.getCategories()
 

@@ -54,6 +54,31 @@ describe('Help Command', () => {
 			expect(mainHelpMenu).toMatchSnapshot()
 		})
 
+		test('that looks like this when there are multiple commands', async () => {
+			const mockCommand1 = makeMockCommand({ name: 'command1' })
+			const mockCommand2 = makeMockCommand({ name: 'command2' })
+			const mockBotWithCommands = makeMockBot({
+				commands: getCommands([
+					makeCommandFromModule(Help),
+					makeCommandFromModule(mockCommand1),
+					makeCommandFromModule(mockCommand2),
+				])
+			})
+
+			const {
+				message: {
+					channel: { send: mockedSend },
+				},
+			} = await runCommand(HelpCommand, {
+				bot: mockBotWithCommands,
+				args: ['!help'],
+			})
+
+			const helpMenuResult = mockedSend.mock.results[0].value
+
+			expect(helpMenuResult).toMatchSnapshot()
+		})
+
 		test('when invalid usage is given', async () => {
 			const invalidUsageHelpMenu = await runHelpCommand({ args: ['!help', 'invalid'] })
 

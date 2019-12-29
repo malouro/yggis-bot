@@ -6,7 +6,7 @@ export default class Help extends Command {
 			name: 'Help',
 			category: 'debug',
 			aliases: [],
-			description: 'Help menus & support',
+			description: 'Help menus, support and information. Find out what commands exist and how to use them.',
 			usage: {
 				args: [
 					{
@@ -26,10 +26,18 @@ export default class Help extends Command {
 		this.messageOutput = ''
 	}
 
-	// TODO
-	// eslint-disable-next-line no-unused-vars
-	buildMainHelpMenu(config, commands, categories) {
-		return 'This is the main help menu.'
+	buildMainHelpMenu({ commandPrefix, name: botName }, commands, categories) {
+		const commandList = Array.from(commands.values())
+			.map(command => `\`${commandPrefix}${command.name.toLocaleLowerCase()}\``)
+			.join(', ')
+
+		return [
+			`**__${botName} Help Menu__**`,
+			'',
+			'**Commands**',
+			'',
+			commandList,
+		].join('\n')
 	}
 
 	buildCommandHelpMenu(commandPrefix, command, invalidUsage = false) {
@@ -100,7 +108,6 @@ export default class Help extends Command {
 		].join('\n')
 	}
 
-	// TODO
 	buildCategoryHelpMenu(commandPrefix, category) {
 		const { name, description, commands } = category
 		const title = `**${name} Commands**`
@@ -120,7 +127,7 @@ export default class Help extends Command {
 		if (args.length === 1) {
 			// !help (no args)
 			this.messageOutput = this.buildMainHelpMenu(
-				bot.commandPrefix,
+				bot,
 				bot.commands,
 				bot.commandCategories,
 			)

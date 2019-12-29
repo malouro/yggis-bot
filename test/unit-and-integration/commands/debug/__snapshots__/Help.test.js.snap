@@ -11,7 +11,7 @@ Commands that assist with debugging and support.
 exports[`Help Command has its own command help menu that looks like this 1`] = `
 "**Help Command**
 
-Help menus & support
+Help menus, support and information. Find out what commands exist and how to use them.
 
 \`!help\` \`<command|category>\`
 
@@ -71,7 +71,21 @@ Arg#2
 \`Use that like this.\`"
 `;
 
-exports[`Help Command makes a main help menu that looks like this 1`] = `"This is the main help menu."`;
+exports[`Help Command makes a main help menu that looks like this 1`] = `
+"**__Yggis Help Menu__**
+
+**Commands**
+
+\`!help\`"
+`;
+
+exports[`Help Command makes a main help menu that looks like this when there are multiple commands 1`] = `
+"**__Yggis Help Menu__**
+
+**Commands**
+
+\`!command1\`, \`!command2\`, \`!help\`"
+`;
 
 exports[`Help Command makes a main help menu when invalid usage is given 1`] = `
 "Invalid \`!help\` usage.

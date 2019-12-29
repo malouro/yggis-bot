@@ -12,11 +12,13 @@ import {
 describe('Bot Class', () => {
 	test('constructs a Bot', () => {
 		const testBot = new Bot({
+			name: 'TestBot',
 			config: MockConfig,
 			token: MockToken,
 		})
 
 		expect(testBot).toBeInstanceOf(Bot)
+		expect(testBot.name).toBe('TestBot')
 		expect(testBot.config).toMatchObject(MockConfig)
 		expect(testBot.token).toBe(MockToken)
 	})
