@@ -77,8 +77,9 @@ export default class Bot {
 	}
 
 	onMessage(message) {
-		let args = []
+		if (message.author.bot && process.env.NODE_ENV !== 'test') return null
 
+		let args = []
 		let commandName = null
 
 		if (message.content.startsWith(this.config.commandPrefix)) {

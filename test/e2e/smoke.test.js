@@ -20,6 +20,7 @@ jest.setTimeout(10000) // In case of slow network connection, or other unpredict
  *
  *   @var TOKEN: Discord application auth token for a test bot
  *   @var GUILD_ID: ID of the test server the bot is connected to
+ *   @var TEST_CHANNEL_ID: ID of a channel in the test server to test command usage in
  */
 
 describe('Smoke tests', () => {
@@ -80,6 +81,53 @@ describe('Smoke tests', () => {
 				name: config.statusMessage,
 				type: 3 // WATCHING
 			}),
+		})
+	})
+
+	test('commands should function', async () => {
+		const clearedUp = [false, false]
+		const botLogSpy = jest.spyOn(Yggis.logger.bot, 'log')
+		const pingCommandLogSpy = jest.spyOn(Yggis.logger.debug, 'log')
+		const commandToTry = `${Yggis.commandPrefix}ping`
+		const channelToTestIn = Yggis
+			.client
+			.channels
+			.get(process.env.TEST_CHANNEL_ID)
+
+
+		Yggis.client.on('message', (message) => {
+			if (/Pong!/.test(message.content)) {
+				message
+					.delete()
+					.then(() => {
+						clearedUp[1] = true
+					})
+			}
+		})
+
+		channelToTestIn
+			.send(commandToTry)
+			.then((message) => {
+				message
+					.delete()
+					.then(() => {
+						clearedUp[0] = true
+					})
+					.catch((errorDeletingCommand) => {
+						throw new Error(errorDeletingCommand)
+					})
+			})
+
+		await waitForExpect(() => {
+			expect(botLogSpy).toHaveBeenCalledWith(expect.objectContaining({
+				message: expect.stringContaining(`Message received: "${commandToTry}"`)
+			}))
+
+			expect(pingCommandLogSpy).toHaveBeenCalledWith(expect.objectContaining({
+				message: expect.stringContaining('has used the `Ping` command!')
+			}))
+
+			expect(clearedUp).toStrictEqual([true, true])
 		})
 	})
 })
