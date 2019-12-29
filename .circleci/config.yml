@@ -45,7 +45,7 @@ jobs:
 
       - run:
           name: End-to-end tests
-          command: yarn test:e2e --ci --runInBand
+          command: yarn test:e2e --ci --runInBand --reporters=default --reporters=jest-junit
           environment:
             JEST_SUITE_NAME: 'End-to-end tests'
             JEST_JUNIT_OUTPUT_DIR: './reports/junit/'
