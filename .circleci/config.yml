@@ -36,6 +36,10 @@ jobs:
             yarn check:spelling
 
       - run:
+          name: Security audit
+          command: yarn audit --level moderate
+
+      - run:
           name: Unit & integration tests
           command: yarn test:coverage --ci --runInBand --reporters=default --reporters=jest-junit && npx codecov
           environment:
