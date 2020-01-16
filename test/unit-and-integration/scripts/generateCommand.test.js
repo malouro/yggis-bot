@@ -42,7 +42,7 @@ const generateCommand = async (args, callback) => {
  * @func cleanUp Cleanup a generated file after test is done
  * @param {String} fileName Name/path of file to check for and delete
  */
-const cleanUp = async (fileName) => {
+const cleanUp = (fileName) => {
 	const fileToCleanUp = getPathToFile(fileName)
 
 	// eslint-disable-next-line no-bitwise
@@ -91,11 +91,11 @@ describe('generate-command', () => {
 		})
 	})
 
-	afterAll(async () => {
+	afterAll(() => {
 		cleanUp(testOutput)
 	})
 
-	test('makes a file with expected file content', async () => {
+	test('makes a file with expected file content', () => {
 		const fileContents = fs.readFileSync(getPathToFile(testOutput), 'UTF8')
 
 		expect(fileContents).toMatchSnapshot('File content')
@@ -120,7 +120,7 @@ describe('generate-command', () => {
 		})
 	})
 
-	test('generated file is a usable Yggis Command with given options', async () => {
+	test('generated file is a usable Yggis Command with given options', () => {
 		// eslint-disable-next-line global-require,import/no-dynamic-require
 		const TestCommandModule = require(getPathToFile(testOutput)).default
 		const CommandToTest = new TestCommandModule()
@@ -134,7 +134,7 @@ describe('generate-command', () => {
 		])
 	})
 
-	test('generated file passes linting', async () => {
+	test('generated file passes linting', () => {
 		const eslintEngine = new EslintCLIEngine(eslintRules)
 
 		const results = eslintEngine.executeOnFiles([getPathToFile(testOutput)])

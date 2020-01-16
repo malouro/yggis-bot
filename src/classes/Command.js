@@ -32,16 +32,16 @@ export default class Command {
 		}
 	}
 
-	preAction() {
-		noop()
+	preAction(args) {
+		noop(args)
 	}
 
-	action() {
-		noop()
+	action(args) {
+		noop(args)
 	}
 
-	postAction() {
-		noop()
+	postAction(args) {
+		noop(args)
 	}
 
 	async run({
@@ -51,6 +51,14 @@ export default class Command {
 		args,
 		logger,
 	}) {
+		const actionArgs = {
+			bot,
+			client,
+			message,
+			args,
+			logger,
+		}
+
 		if (this.disabled) {
 			return null
 		}
@@ -61,26 +69,8 @@ export default class Command {
 			)
 		}
 
-		await this.preAction({
-			bot,
-			client,
-			message,
-			args,
-			logger,
-		})
-		await this.action({
-			bot,
-			client,
-			message,
-			args,
-			logger,
-		})
-		await this.postAction({
-			bot,
-			client,
-			message,
-			args,
-			logger,
-		})
+		await this.preAction(actionArgs)
+		await this.action(actionArgs)
+		await this.postAction(actionArgs)
 	}
 }

@@ -15,7 +15,7 @@ export default class Help extends Command {
 						chainable: false,
 					},
 					{
-						name: 'category',
+						name: 'commandCategory',
 						description: 'Learn more about commands available under a given category.',
 						chainable: false,
 					},
@@ -26,22 +26,8 @@ export default class Help extends Command {
 		this.messageOutput = ''
 	}
 
-	buildMainHelpMenu({ commandPrefix, name: botName }, commands, categories) {
-		const commandList = Array.from(commands.values())
-			.map(command => `\`${commandPrefix}${command.name.toLocaleLowerCase()}\``)
-			.join(', ')
-
-		return [
-			`**__${botName} Help Menu__**`,
-			'',
-			'**Commands**',
-			'',
-			commandList,
-		].join('\n')
-	}
-
-	buildCommandHelpMenu(commandPrefix, command, invalidUsage = false) {
-		const { description, usage } = command
+	getCommandArgs(command) {
+		const { usage } = command
 
 		const chainableArgs = []
 		const nonChainableArgs = []
@@ -54,47 +40,91 @@ export default class Help extends Command {
 			}
 		})
 
-		const getArgsUsage = () => {
-			let argsUsageOutput = ''
+		return {
+			chainableArgs,
+			nonChainableArgs
+		}
+	}
 
-			if (nonChainableArgs.length > 0) {
-				argsUsageOutput = argsUsageOutput.concat(
-					'`<',
-					nonChainableArgs.join('|'),
-					'>`',
-				)
-			}
+	getCommandArgsUsage(chainableArgs, nonChainableArgs) {
+		let argsUsageOutput = ''
 
-			if (chainableArgs.length > 0) {
-				argsUsageOutput = argsUsageOutput.concat(
-					nonChainableArgs.length > 0 ? ' ' : '',
-					'`(',
-					chainableArgs.join(', '),
-					')`',
-				)
-			}
-
-			return argsUsageOutput
+		if (nonChainableArgs.length > 0) {
+			argsUsageOutput = argsUsageOutput.concat(
+				'`<',
+				nonChainableArgs.join('|'),
+				'>`',
+			)
 		}
 
-		const getDetailedArgsDescription = () => {
-			let argsDetailsOutput = ''
-
-			usage.args.forEach((arg, index) => {
-				argsDetailsOutput = argsDetailsOutput.concat(
-					index === 0 ? '\n' : '\n\n',
-					`\`${arg.name}\``,
-					'\n',
-					arg.description || '(Missing description.)',
-					arg.usage ? `${'\n'.repeat(2)}\`${arg.usage}\`` : '',
-				)
-			})
-
-			return argsDetailsOutput
+		if (chainableArgs.length > 0) {
+			argsUsageOutput = argsUsageOutput.concat(
+				nonChainableArgs.length > 0 ? ' ' : '',
+				'`(',
+				chainableArgs.join(', '),
+				')`',
+			)
 		}
+
+		return argsUsageOutput
+	}
+
+	getDetailedArgsDescription(args) {
+		let argsDetailsOutput = ''
+
+		args.forEach((arg, index) => {
+			argsDetailsOutput = argsDetailsOutput.concat(
+				index === 0 ? '\n' : '\n\n',
+				`\`${arg.name}\``,
+				'\n',
+				arg.description || '(Missing description.)',
+				arg.usage ? `${'\n'.repeat(2)}\`${arg.usage}\`` : '',
+			)
+		})
+
+		return argsDetailsOutput
+	}
+
+	buildMainHelpMenu({ commandPrefix, name: botName }, categories) {
+		const { chainableArgs, nonChainableArgs } = this.getCommandArgs(this)
+
+		const commandList = categories
+			.map(category =>
+				`> ${category.name} commands\n`.concat(
+					category.commands
+						.map(command => `\`${commandPrefix}${command}\``)
+						.join(', ')
+				))
+			.join('\n\n')
+
+		const helpCommandUsage = String.prototype.concat(
+			`\`${commandPrefix}${this.name.toLocaleLowerCase()}\``,
+			' ',
+			`${this.getCommandArgsUsage(chainableArgs, nonChainableArgs)}`
+		)
+
+		return [
+			`**__${botName} Help Menu__**`,
+			'',
+			helpCommandUsage,
+			'',
+			'**Commands**',
+			'',
+			commandList,
+		].join('\n')
+	}
+
+	buildCommandHelpMenu({ commandPrefix }, command, invalidUsage = false) {
+		const { description, usage } = command
+		const { chainableArgs, nonChainableArgs } = this.getCommandArgs(command)
 
 		const title = `**${command.name} Command**`
-		const commandUsage = `\`${commandPrefix}${command.name.toLocaleLowerCase()}\` ${getArgsUsage()}`
+
+		const commandUsage = String.prototype.concat(
+			`\`${commandPrefix}${command.name.toLocaleLowerCase()}\``,
+			' ',
+			`${this.getCommandArgsUsage(chainableArgs, nonChainableArgs)}`
+		)
 
 		return [
 			invalidUsage
@@ -104,11 +134,11 @@ export default class Help extends Command {
 				? ''
 				: `\n${description || '(Missing description.)'}\n`,
 			commandUsage,
-			getDetailedArgsDescription(),
+			this.getDetailedArgsDescription(usage.args),
 		].join('\n')
 	}
 
-	buildCategoryHelpMenu(commandPrefix, category) {
+	buildCategoryHelpMenu({ commandPrefix }, category) {
 		const { name, description, commands } = category
 		const title = `**${name} Commands**`
 
@@ -128,25 +158,24 @@ export default class Help extends Command {
 			// !help (no args)
 			this.messageOutput = this.buildMainHelpMenu(
 				bot,
-				bot.commands,
 				bot.commandCategories,
 			)
 		} else if (bot.commands.has(args[1])) {
 			// !help <command>
 			this.messageOutput = this.buildCommandHelpMenu(
-				bot.commandPrefix,
+				bot,
 				bot.commands.get(args[1].toLocaleLowerCase()),
 			)
 		} else if (bot.commandCategories.has(args[1])) {
 			// !help <category>
 			this.messageOutput = this.buildCategoryHelpMenu(
-				bot.commandPrefix,
+				bot,
 				bot.commandCategories.get(args[1].toLocaleLowerCase()),
 			)
 		} else {
 			// !help {invalidUsage}
 			this.messageOutput = this.buildCommandHelpMenu(
-				bot.commandPrefix,
+				bot,
 				this,
 				true
 			)

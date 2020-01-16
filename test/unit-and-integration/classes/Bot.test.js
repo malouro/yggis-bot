@@ -7,6 +7,7 @@ import {
 	MockToken,
 	MockLogger,
 	MockCommand,
+	makeMockCommand,
 } from '../../testHelpers'
 
 describe('Bot Class', () => {
@@ -23,7 +24,7 @@ describe('Bot Class', () => {
 		expect(testBot.token).toBe(MockToken)
 	})
 
-	test('sets activity, based on config, when `onReady` is fired', async () => {
+	test('sets activity, based on config, when `onReady` is fired', () => {
 		const customClient = MockClient
 
 		customClient.user = {
@@ -135,7 +136,37 @@ describe('Bot Class', () => {
 		},
 	)
 
-	test('sets a command commandCategories list given commands that are configured with commandCategories', () => {
+	test('sorts given commands alphabetically', () => {
+		const commands = [
+			makeMockCommand({ name: 'alpha' }),
+			makeMockCommand({ name: 'omega' }),
+			makeMockCommand({ name: '123' }),
+			makeMockCommand({ name: 'æ' }),
+			makeMockCommand({ name: 'zeta' }),
+		]
+		const mockCommands = new Collection(
+			commands.map(Command => [Command.name, new Command()])
+		)
+
+		const testBot = new Bot({
+			commands: mockCommands,
+			config: {
+				...MockConfig
+			},
+		})
+
+		expect(
+			Array.from(testBot.commands.keys())
+		).toStrictEqual([
+			'123',
+			'alpha',
+			'omega',
+			'zeta',
+			'æ',
+		])
+	})
+
+	test('sets a command categories list when given commands that are configured with command categories', () => {
 		const mockCommands = new Collection()
 
 		mockCommands.set('commandA', { name: 'commandA', category: 'cat1' })

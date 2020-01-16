@@ -13,12 +13,12 @@ exports[`Help Command has its own command help menu that looks like this 1`] = `
 
 Help menus, support and information. Find out what commands exist and how to use them.
 
-\`!help\` \`<command|category>\`
+\`!help\` \`<command|commandCategory>\`
 
 \`command\`
 Get help on how to use a specific command.
 
-\`category\`
+\`commandCategory\`
 Learn more about commands available under a given category."
 `;
 
@@ -74,27 +74,36 @@ Arg#2
 exports[`Help Command makes a main help menu that looks like this 1`] = `
 "**__Yggis Help Menu__**
 
+\`!help\` \`<command|commandCategory>\`
+
 **Commands**
 
+> Debug commands
 \`!help\`"
 `;
 
 exports[`Help Command makes a main help menu that looks like this when there are multiple commands 1`] = `
 "**__Yggis Help Menu__**
 
+\`!help\` \`<command|commandCategory>\`
+
 **Commands**
 
-\`!command1\`, \`!command2\`, \`!help\`"
+> Misc commands
+\`!command1\`, \`!command2\`
+
+> Debug commands
+\`!help\`"
 `;
 
 exports[`Help Command makes a main help menu when invalid usage is given 1`] = `
 "Invalid \`!help\` usage.
 
-\`!help\` \`<command|category>\`
+\`!help\` \`<command|commandCategory>\`
 
 \`command\`
 Get help on how to use a specific command.
 
-\`category\`
+\`commandCategory\`
 Learn more about commands available under a given category."
 `;
