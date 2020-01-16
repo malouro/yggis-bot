@@ -1,4 +1,7 @@
-import Discord from 'discord.js'
+import Discord, { Collection } from 'discord.js'
+
+import camelCase from 'lodash/camelCase'
+import upperFirst from 'lodash/upperFirst'
 
 import defaultConfig from '../constants/config'
 import defaultLogger from '../utils/logger'
@@ -10,6 +13,7 @@ import {
 
 export default class Bot {
 	constructor({
+		name = 'Yggis',
 		client = new Discord.Client(),
 		commands = new Discord.Collection(),
 		config,
@@ -25,9 +29,13 @@ export default class Bot {
 			...config,
 		}
 
+		/* bot name */
+		this.name = name
+
 		/* setup commands */
-		this.commands = commands
-		this.commandPrefix = config.commandPrefix
+		this.commands = new Map([...commands.entries()].sort())
+		this.commandPrefix = this.config.commandPrefix
+		this.commandCategories = this.getCategories()
 
 		/* logger utils */
 		this.logger = logger
@@ -36,6 +44,30 @@ export default class Bot {
 		this.client = client
 		this.client.on('ready', this.onReady.bind(this))
 		this.client.on('message', this.onMessage.bind(this))
+	}
+
+	getCategories() {
+		const categories = new Collection()
+
+		this.commands.forEach(({ name: commandName, category }) => {
+			if (!categories.has(category)) {
+				categories.set(category, {
+					...(this.config.commandCategories[category] || {
+						name: upperFirst(camelCase(category))
+					}),
+					commands: [commandName.toLocaleLowerCase()],
+				})
+			} else {
+				const categoryData = categories.get(category)
+
+				categories.set(category, {
+					...categoryData,
+					commands: [...categoryData.commands, commandName.toLocaleLowerCase()],
+				})
+			}
+		})
+
+		return categories
 	}
 
 	onReady() {
@@ -50,18 +82,21 @@ export default class Bot {
 	}
 
 	onMessage(message) {
-		let args = []
+		if (message.author.bot && process.env.NODE_ENV !== 'test') return null
 
+		let args = []
 		let commandName = null
 
 		if (message.content.startsWith(this.config.commandPrefix)) {
-			args = getArgumentsFromMessage(message)
+			args = getArgumentsFromMessage(message) || []
 			commandName = getCommandFromMessage(args, this.config)
 
 			if (this.commands.has(commandName)) {
 				this.commands.get(commandName).run({
-					message,
+					bot: this,
 					client: this.client,
+					message,
+					args,
 					logger: this.logger,
 				})
 			}

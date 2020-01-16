@@ -30,9 +30,33 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
 
       - run:
-          name: Linting & formatting
-          command: yarn check:lint && yarn check:spelling
+          name: Linting, formatting & spellcheck
+          command: |
+            yarn check:lint --format junit -o reports/junit/js-lint-results.xml
+            yarn check:spelling
 
       - run:
-          name: Tests
-          command: yarn test:coverage && npx codecov
+          name: Security audit
+          command: yarn audit --level moderate
+
+      - run:
+          name: Unit & integration tests
+          command: yarn test:coverage --ci --runInBand --reporters=default --reporters=jest-junit && npx codecov
+          environment:
+            JEST_SUITE_NAME: 'Unit & integration tests'
+            JEST_JUNIT_OUTPUT_DIR: './reports/junit/'
+            JEST_JUNIT_OUTPUT_NAME: 'js-test-results.xml'
+
+      - run:
+          name: End-to-end tests
+          command: yarn test:e2e --ci --runInBand --reporters=default --reporters=jest-junit
+          environment:
+            JEST_SUITE_NAME: 'End-to-end tests'
+            JEST_JUNIT_OUTPUT_DIR: './reports/junit/'
+            JEST_JUNIT_OUTPUT_NAME: 'js-e2e-test-results.xml'
+
+      - store_test_results:
+          path: reports/junit
+
+      - store_artifacts:
+          path: reports/junit

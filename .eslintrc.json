@@ -10,18 +10,6 @@
 		"sourceType": "module"
 	},
 	"rules": {
-		"indent": [
-			"error",
-			"tab"
-		],
-		"semi": [
-			"error",
-			"never"
-		],
-		"no-tabs": 0,
-		"class-methods-use-this": 0,
-		"consistent-return": 0,
-		"implicit-arrow-linebreak": 0,
 		"arrow-parens": [
 			2,
 			"as-needed",
@@ -29,6 +17,25 @@
 				"requireForBlockBody": true
 			}
 		],
+		"class-methods-use-this": 0,
+		"comma-dangle": [
+			"error",
+			{
+				"arrays": "only-multiline",
+				"objects": "only-multiline",
+				"imports": "only-multiline",
+				"exports": "only-multiline",
+				"functions": "ignore"
+			}
+		],
+		"consistent-return": 0,
+		"implicit-arrow-linebreak": 0,
+		"import/prefer-default-export": 0,
+		"indent": [
+			"error",
+			"tab"
+		],
+		"no-tabs": 0,
 		"padding-line-between-statements": [
 			"error",
 			{
@@ -54,6 +61,10 @@
 				]
 			}
 		],
-		"import/prefer-default-export": 0
+		"require-await": "error",
+		"semi": [
+			"error",
+			"never"
+		]
 	}
 }

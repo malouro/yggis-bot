@@ -7,9 +7,12 @@ export default class Command {
 	constructor(options = {}) {
 		/* Default options if not provided */
 		Object.assign(this, {
+			category: 'misc',
 			aliases: [],
 			disabled: false,
 			permLevel: 0,
+			description: '',
+			usage: { name: this.name || '', args: [] },
 		}, options)
 
 		/* Command properties to verify */
@@ -29,29 +32,45 @@ export default class Command {
 		}
 	}
 
-	preAction() {
-		noop()
+	preAction(args) {
+		noop(args)
 	}
 
-	action() {
-		noop()
+	action(args) {
+		noop(args)
 	}
 
-	postAction() {
-		noop()
+	postAction(args) {
+		noop(args)
 	}
 
-	async run({ client, message, logger }) {
+	async run({
+		bot,
+		client,
+		message,
+		args,
+		logger,
+	}) {
+		const actionArgs = {
+			bot,
+			client,
+			message,
+			args,
+			logger,
+		}
+
 		if (this.disabled) {
 			return null
 		}
 
 		if (!canUseCommand(message.member, this.permLevel)) {
-			return message.reply('You do not have the required permissions to use this command. 😥')
+			return message.reply(
+				'You do not have the required permissions to use this command. 😥'
+			)
 		}
 
-		await this.preAction({ client, message, logger })
-		await this.action({ client, message, logger })
-		await this.postAction({ client, message, logger })
+		await this.preAction(actionArgs)
+		await this.action(actionArgs)
+		await this.postAction(actionArgs)
 	}
 }

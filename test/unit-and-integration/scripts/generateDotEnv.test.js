@@ -34,7 +34,7 @@ const generateDotEnv = async (args, callback) => {
  * @func cleanUp Cleanup a generated file after test is done
  * @param {String} fileName Name/path of file to check for and delete
  */
-const cleanUp = async (fileName) => {
+const cleanUp = (fileName) => {
 	const fileToCleanUp = getPathToFile(fileName)
 
 	// eslint-disable-next-line no-bitwise

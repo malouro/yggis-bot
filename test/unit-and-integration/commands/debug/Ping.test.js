@@ -1,6 +1,6 @@
-import { runCommand } from '../../../testHelpers'
-
 import Ping from '../../../../src/commands/debug/Ping'
+
+import { runCommand } from '../../../testHelpers'
 
 describe('Ping Command', () => {
 	const PingCommand = new Ping()
@@ -12,7 +12,7 @@ describe('Ping Command', () => {
 		})
 
 		expect(result.message.reply).toHaveReturnedWith(
-			expect.stringContaining(`\`${expectedPing} ms\``),
+			expect.stringContaining(`\`${expectedPing} ms\``)
 		)
 	})
 

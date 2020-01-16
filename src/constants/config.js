@@ -4,9 +4,16 @@ const statusMessageOptions = {
 	type: 'WATCHING',
 	url: '',
 }
+const commandCategories = {
+	debug: {
+		name: 'Debug',
+		description: 'Commands that assist with debugging and support.',
+	},
+}
 
-export default ({
+export default {
+	commandCategories,
 	commandPrefix,
 	statusMessage,
 	statusMessageOptions,
-})
+}

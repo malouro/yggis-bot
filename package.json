@@ -1,75 +1,84 @@
 {
-  "name": "yggis",
-  "version": "1.0.0",
-  "description": "A Discord Bot",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/malouro/yggis.git"
-  },
-  "keywords": [
-    "discord",
-    "discordbot",
-    "discord-bot"
-  ],
-  "author": "Michael Louro",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/malouro/yggis/issues"
-  },
-  "homepage": "https://github.com/malouro/yggis#readme",
-  "engines": {
-    "node": ">=8.0.0",
-    "npm": ">=5.2.0"
-  },
-  "directories": {
-    "lib": "lib",
-    "test": "test",
-    "doc": "docs"
-  },
-  "files": [
-    "lib/",
-    "types/",
-    "bin/"
-  ],
-  "scripts": {
-    "start": "babel-node src/Yggis",
-    "setup": "yarn && yarn generate:dotenv",
-    "test": "jest --watch",
-    "test:coverage": "jest --coverage",
-    "test:e2e": "jest --config=\"./jest.e2e.config.js\"",
-    "generate:dotenv": "node ./scripts/generate-dotenv.js",
-    "generate:command": "node ./scripts/generate-command.js",
-    "check:lint": "eslint src/ test/ scripts/",
-    "check:spelling": "npx cspell /src/**/*.js",
-    "check:format": "yarn format:safe",
-    "format": "yarn format:safe --write",
-    "format:safe": "prettier \"{src,test,scripts}/**/*.js\"",
-    "docs:dev": "vuepress dev docs",
-    "docs:build": "vuepress build docs"
-  },
-  "dependencies": {
-    "discord.js": "^11.5.1",
-    "dotenv": "^8.0.0",
-    "lodash": "^4.17.15",
-    "lowdb": "^1.0.0",
-    "winston": "^3.2.1",
-    "yargs": "^13.2.4"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.4.5",
-    "@babel/node": "^7.4.5",
-    "@babel/plugin-proposal-class-properties": "^7.4.4",
-    "@babel/preset-env": "^7.4.5",
-    "@types/jest": "^24.0.14",
-    "babel-eslint": "^10.0.1",
-    "eslint": "^6.2.2",
-    "eslint-config-airbnb": "^18.0.1",
-    "eslint-plugin-import": "^2.17.3",
-    "eslint-plugin-jsx-a11y": "^6.2.1",
-    "eslint-plugin-react": "^7.13.0",
-    "jest": "^24.8.0",
-    "prettier": "^1.17.1",
-    "snapshot-diff": "^0.5.1",
-    "wait-for-expect": "^3.0.1"
-  }
+	"name": "yggis",
+	"version": "1.0.0",
+	"description": "A Discord Bot",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/malouro/yggis.git"
+	},
+	"keywords": [
+		"discord",
+		"discordbot",
+		"discord-bot"
+	],
+	"author": "Michael Louro",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/malouro/yggis/issues"
+	},
+	"homepage": "https://github.com/malouro/yggis#readme",
+	"engines": {
+		"node": ">=8.0.0",
+		"npm": ">=5.2.0"
+	},
+	"directories": {
+		"lib": "lib",
+		"test": "test",
+		"doc": "docs"
+	},
+	"files": [
+		"lib/",
+		"types/",
+		"bin/"
+	],
+	"scripts": {
+		"start": "babel-node src/Yggis",
+		"setup": "yarn && yarn generate:dotenv",
+		"test": "jest --watch",
+		"test:coverage": "jest --coverage",
+		"test:e2e": "jest --config=\"./jest.e2e.config.js\"",
+		"generate:dotenv": "node ./scripts/generate-dotenv.js",
+		"generate:command": "node ./scripts/generate-command.js",
+		"check:lint": "eslint src/ test/ scripts/",
+		"check:spelling": "cspell /src/** scripts/** /docs/**",
+		"check:format": "yarn format:safe",
+		"format": "yarn format:safe --write",
+		"format:safe": "prettier \"{src,test,scripts}/**/*.js\"",
+		"docs:dev": "vuepress dev docs",
+		"docs:build": "vuepress build docs"
+	},
+	"dependencies": {
+		"discord.js": "^11.5.1",
+		"dotenv": "^8.0.0",
+		"lodash": "^4.17.15",
+		"lowdb": "^1.0.0",
+		"winston": "^3.2.1",
+		"yargs": "^13.2.4"
+	},
+	"devDependencies": {
+		"@babel/core": "^7.4.5",
+		"@babel/node": "^7.4.5",
+		"@babel/plugin-proposal-class-properties": "^7.4.4",
+		"@babel/preset-env": "^7.4.5",
+		"@types/jest": "^24.0.14",
+		"babel-eslint": "^10.0.1",
+		"cspell": "^4.0.41",
+		"eslint": "^6.2.2",
+		"eslint-config-airbnb": "^18.0.1",
+		"eslint-plugin-import": "^2.17.3",
+		"eslint-plugin-jsx-a11y": "^6.2.1",
+		"eslint-plugin-react": "^7.13.0",
+		"jest": "^24.8.0",
+		"jest-junit": "^10.0.0",
+		"prettier": "^1.17.1",
+		"snapshot-diff": "^0.5.1",
+		"wait-for-expect": "^3.0.1"
+	},
+	"jest-junit": {
+		"uniqueOutputName": "false",
+		"classNameTemplate": "{classname}-{title}",
+		"titleTemplate": "{classname}-{title}",
+		"ancestorSeparator": " › ",
+		"usePathForSuiteName": "true"
+	}
 }

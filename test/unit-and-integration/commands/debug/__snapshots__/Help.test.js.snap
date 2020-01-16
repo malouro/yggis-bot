@@ -1,0 +1,109 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Help Command has its own command category help menu (for the \`debug\` category) that looks like this 1`] = `
+"**Debug Commands**
+
+Commands that assist with debugging and support.
+
+\`!help\`"
+`;
+
+exports[`Help Command has its own command help menu that looks like this 1`] = `
+"**Help Command**
+
+Help menus, support and information. Find out what commands exist and how to use them.
+
+\`!help\` \`<command|commandCategory>\`
+
+\`command\`
+Get help on how to use a specific command.
+
+\`commandCategory\`
+Learn more about commands available under a given category."
+`;
+
+exports[`Help Command makes a command category's help menu with or without command category configuration: should have a category description 1`] = `
+"**Test Commands**
+
+Testing command categories
+
+\`!testcommand\`"
+`;
+
+exports[`Help Command makes a command category's help menu with or without command category configuration: should not have a category description, and the name is generated 1`] = `
+"**NoCat Commands**
+
+\`!nocatconfigcommand\`"
+`;
+
+exports[`Help Command makes a command's help menu that displays a command's available arguments 1`] = `
+"**Command Command**
+
+(Missing description.)
+
+\`!command\` \`<arg2|arg3>\` \`(arg1)\`
+
+\`arg1\`
+Arg#1
+
+\`arg2\`
+Arg#2
+
+\`arg3\`
+(Missing description.)"
+`;
+
+exports[`Help Command makes a command's help menu that displays an argument's usage details when available 1`] = `
+"**ArgUsage Command**
+
+(Missing description.)
+
+\`!argusage\` \`<arg2>\` \`(arg1)\`
+
+\`arg1\`
+Arg#1
+
+\`Use this like that.\`
+
+\`arg2\`
+Arg#2
+
+\`Use that like this.\`"
+`;
+
+exports[`Help Command makes a main help menu that looks like this 1`] = `
+"**__Yggis Help Menu__**
+
+\`!help\` \`<command|commandCategory>\`
+
+**Commands**
+
+> Debug commands
+\`!help\`"
+`;
+
+exports[`Help Command makes a main help menu that looks like this when there are multiple commands 1`] = `
+"**__Yggis Help Menu__**
+
+\`!help\` \`<command|commandCategory>\`
+
+**Commands**
+
+> Misc commands
+\`!command1\`, \`!command2\`
+
+> Debug commands
+\`!help\`"
+`;
+
+exports[`Help Command makes a main help menu when invalid usage is given 1`] = `
+"Invalid \`!help\` usage.
+
+\`!help\` \`<command|commandCategory>\`
+
+\`command\`
+Get help on how to use a specific command.
+
+\`commandCategory\`
+Learn more about commands available under a given category."
+`;

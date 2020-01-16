@@ -3,13 +3,19 @@
     "language": "en",
     "words": [
         "admin",
+        "chainable",
         "discordbot",
+        "dotenv",
         "overwatch",
         "printf",
         "promisify",
         "stderror",
         "vuepress",
         "yggis"
+    ],
+    "flagWords": [],
+    "ignoreRegExpList": [
+        "/'s\\b/"
     ],
     "ignorePaths": [
         "/node_modules",

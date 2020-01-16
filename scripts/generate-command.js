@@ -57,8 +57,10 @@ export default class ${CommandTitle} extends Command {
 		})
 	}
 
-	// eslint-disable-next-line no-unused-vars
-	action({ client, message, logger }) {
+	action({
+		// eslint-disable-next-line no-unused-vars
+		bot, client, message, args, logger,
+	}) {
 		// Define the action of the command in here
 	}
 }
