@@ -9,14 +9,14 @@ jest.setTimeout(10000) // In case of slow network connection, or other unpredict
 /**
  * @summary
  *
- * This test checks that bot can (at a bare minimum) log in and connect to a server
+ * This test checks that the bot can (at a bare minimum) log in and connect to a server
  *
- * This test relies on...
+ * This test depends on...
  *
- * - A Discord application already existing
+ * - A Discord application for the bot already existing
  * - The bot being invited into a test server
  * - Environment variables set up in CI & locally via a .env.test file
- * - These environment variables are as follows:
+ * -- These environment variables are as follows:
  *
  *   @var TOKEN: Discord application auth token for a test bot
  *   @var GUILD_ID: ID of the test server the bot is connected to
@@ -39,7 +39,8 @@ describe('Smoke tests', () => {
 	})
 
 	/**
-	 * Start up & disconnect the bot before and after each test
+	 * Start up & connect the bot before the tests are executed
+	 * Disconnect the bot after the tests run, as part of clean up
 	 *
 	 * For reference, here are the status codes that we can check to see if the bot connects properly
 	 *
