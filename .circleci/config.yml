@@ -33,6 +33,7 @@ jobs:
           name: Linting, formatting & spellcheck
           command: |
             yarn check:lint --format junit -o reports/junit/js-lint-results.xml
+            yarn check:format
             yarn check:spelling
 
       - run:

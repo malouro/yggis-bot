@@ -44,8 +44,8 @@
 		"check:format": "yarn format:safe",
 		"format": "yarn format:safe --write",
 		"format:safe": "prettier --check \"{src,test,scripts}/**/*.js\"",
-		"docs:dev": "vuepress dev docs",
-		"docs:build": "vuepress build docs"
+		"docs:dev": "echo \"No docs to build\" && exit 0",
+		"docs:build": "echo \"No docs to build\" && exit 0"
 	},
 	"dependencies": {
 		"discord.js": "^11.5.1",
