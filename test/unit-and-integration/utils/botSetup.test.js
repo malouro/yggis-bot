@@ -1,7 +1,6 @@
 import { Collection } from 'discord.js';
 
 import { getCommands } from '../../../src/utils/setup';
-import { makeCommandFromModule } from '../../../src/utils/commands';
 import { makeMockCommand } from '../../testHelpers';
 
 import Commands from '../../../src/commands';
@@ -17,20 +16,17 @@ describe('Bot Setup Utilities', () => {
 		test('should contain all commands', () => {
 			expect(
 				Commands.every(Command =>
-					commandCollection.has(Command.Name.toLocaleLowerCase())
+					commandCollection.has(Command.name.toLocaleLowerCase())
 				)
 			).toBe(true);
 		});
 
 		test('should set aliases', () => {
-			const commands = getCommands([
-				makeCommandFromModule(
-					makeMockCommand({
-						name: 'Test',
-						aliases: ['test-alias'],
-					})
-				),
-			]);
+			const TestCommand = makeMockCommand({
+				name: 'Test',
+				aliases: ['test-alias'],
+			});
+			const commands = getCommands([TestCommand]);
 
 			expect(commands.has('test')).toBe(true);
 			expect(commands.has('test-alias')).toBe(true);

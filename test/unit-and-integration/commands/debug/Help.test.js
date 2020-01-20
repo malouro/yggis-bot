@@ -5,7 +5,6 @@ import {
 	MockConfig,
 	makeMockCommand,
 } from '../../../testHelpers';
-import { makeCommandFromModule } from '../../../../src/utils/commands';
 import { getCommands } from '../../../../src/utils/setup';
 
 describe('Help Command', () => {
@@ -58,11 +57,7 @@ describe('Help Command', () => {
 			const mockCommand1 = makeMockCommand({ name: 'command1' });
 			const mockCommand2 = makeMockCommand({ name: 'command2' });
 			const mockBotWithCommands = makeMockBot({
-				commands: getCommands([
-					makeCommandFromModule(Help),
-					makeCommandFromModule(mockCommand1),
-					makeCommandFromModule(mockCommand2),
-				]),
+				commands: getCommands([Help, mockCommand1, mockCommand2]),
 			});
 
 			const {
@@ -132,12 +127,12 @@ describe('Help Command', () => {
 
 		const bot = makeMockBot({
 			commands: getCommands([
-				makeCommandFromModule(Help),
-				makeCommandFromModule(commandWithSomeArgs),
-				makeCommandFromModule(commandWithChainArgs),
-				makeCommandFromModule(commandWithNonChainArgs),
-				makeCommandFromModule(commandWithBoth),
-				makeCommandFromModule(commandWithArgUsage),
+				Help,
+				commandWithSomeArgs,
+				commandWithChainArgs,
+				commandWithNonChainArgs,
+				commandWithBoth,
+				commandWithArgUsage,
 			]),
 		});
 
@@ -225,10 +220,7 @@ describe('Help Command', () => {
 				category: 'no-cat',
 			});
 
-			const commands = getCommands([
-				makeCommandFromModule(testCommand),
-				makeCommandFromModule(noCategoryConfigCommand),
-			]);
+			const commands = getCommands([testCommand, noCategoryConfigCommand]);
 
 			const bot = makeMockBot({
 				commands,

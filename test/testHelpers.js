@@ -4,7 +4,6 @@ import { EventEmitter } from 'events';
 import { Bot, Command } from '../src/classes';
 import { loggerNames } from '../src/utils/logger';
 import { getCommands } from '../src/utils/setup';
-import { makeCommandFromModule } from '../src/utils/commands';
 
 /**
  * @description A mock of a Discord OAUTH token
@@ -107,9 +106,7 @@ export const makeMockCommand = ({ name = 'MockCommand', ...otherOptions }) =>
  * @description
  * Uses the `getCommands` utility function to make a collection containing mock command(s)
  */
-export const MockCommandList = getCommands([
-	makeCommandFromModule(MockCommand),
-]);
+export const MockCommandList = getCommands([MockCommand]);
 
 /**
  * @description
@@ -136,9 +133,7 @@ export const MockBot = new Bot({
  * - Use `mockCommand` to setup the given command in the test bot's command collection.
  */
 export const makeMockBot = ({ mockCommand, ...overrides }) => {
-	const commands = mockCommand
-		? getCommands([makeCommandFromModule(mockCommand)])
-		: MockCommandList;
+	const commands = mockCommand ? getCommands([mockCommand]) : MockCommandList;
 
 	return new Bot({
 		commands,

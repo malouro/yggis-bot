@@ -1,7 +1,7 @@
 import {
 	getArgumentsFromMessage,
 	getCommandFromMessage,
-	makeCommandFromModule,
+	makeCommand,
 } from '../../../src/utils/commands';
 
 import Ping from '../../../src/commands/debug/Ping';
@@ -50,9 +50,9 @@ describe('Command Utilities', () => {
 		});
 	});
 
-	describe('`makeCommandFromModule`', () => {
+	describe('`makeCommand`', () => {
 		test('makes a command object from a module', () => {
-			const result = makeCommandFromModule(Ping);
+			const result = makeCommand(Ping);
 
 			expect(result).toMatchObject({
 				Name: 'Ping',

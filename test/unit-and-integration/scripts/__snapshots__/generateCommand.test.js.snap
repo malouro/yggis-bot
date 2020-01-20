@@ -1,7 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[` 1`] = `""`;
-
 exports[`generate-command has a command help menu 1`] = `
 "Usage: node generate-command.js --
 
@@ -18,21 +16,21 @@ Options:
 "
 `;
 
-exports[`generate-command makes a file with expected file content: File content 1`] = `
-"import { Command } from '../src/classes'
+exports[`generate-command has expected stdout on success 1`] = `""`;
+
+exports[`generate-command makes a file with expected file content 1`] = `
+"import { Command } from '../src/classes';
 
 export default class Test extends Command {
 	constructor() {
 		super({
 			name: 'Test',
 			aliases: ['alias1', 'alias2', 'alias3'],
-		})
+		});
 	}
 
-	action({
-		// eslint-disable-next-line no-unused-vars
-		bot, client, message, args, logger,
-	}) {
+	// eslint-disable-next-line no-unused-vars
+	action({ bot, client, message, args, logger }) {
 		// Define the action of the command in here
 	}
 }

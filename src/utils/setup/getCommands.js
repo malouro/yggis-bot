@@ -2,6 +2,8 @@ import { Collection } from 'discord.js';
 
 import DefaultCommands from '../../commands';
 
+import { makeCommand } from '../commands';
+
 /**
  * @func getCommands
  * @returns {Discord.Collection} CommandCollection
@@ -11,7 +13,8 @@ export default function getCommands(commands = DefaultCommands) {
 	const CommandCollection = new Collection();
 
 	commands.forEach(command => {
-		const { Name, CommandConstructor } = command;
+		const usableCommand = makeCommand(command);
+		const { Name, CommandConstructor } = usableCommand;
 		const CommandToAdd = new CommandConstructor();
 
 		CommandCollection.set(Name.toLocaleLowerCase(), CommandToAdd);

@@ -50,23 +50,22 @@ const CommandTitle =
 const formattedArgs = argv.a.map(val => `'${val}'`).join(', ');
 
 const content = `
-import { Command } from '${commandClassRelativePath}'
+import { Command } from '${commandClassRelativePath}';
 
 export default class ${CommandTitle} extends Command {
 	constructor() {
 		super({
 			name: '${CommandTitle}',
 			aliases: [${formattedArgs}],
-		})
+		});
 	}
 
-	action({
-		// eslint-disable-next-line no-unused-vars
-		bot, client, message, args, logger,
-	}) {
+	// eslint-disable-next-line no-unused-vars
+	action({ bot, client, message, args, logger }) {
 		// Define the action of the command in here
 	}
 }
+
 `;
 
 /**

@@ -1,4 +1,4 @@
-export default function makeCommandFromModule(commandModule) {
+export default function makeCommand(commandModule) {
 	return {
 		Name: commandModule.name,
 		CommandConstructor: commandModule,

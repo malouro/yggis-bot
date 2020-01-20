@@ -67,6 +67,7 @@ describe('generate-command', () => {
 	const testCommandName = 'Test';
 	const testOutput = `${testDir + testCommandName}.js`;
 	const pathToTestDir = path.resolve(__dirname, '../../../test-generations');
+	let stdOutResult = null;
 
 	beforeAll(async () => {
 		fs.stat(pathToTestDir, err => {
@@ -88,7 +89,7 @@ describe('generate-command', () => {
 				'--aliases alias1 alias2 alias3',
 			],
 			({ stdout }) => {
-				expect(stdout).toMatchSnapshot('successful stdout');
+				stdOutResult = stdout;
 			}
 		);
 	});
@@ -97,10 +98,14 @@ describe('generate-command', () => {
 		cleanUp(testOutput);
 	});
 
+	test('has expected stdout on success', () => {
+		expect(stdOutResult).toMatchSnapshot();
+	});
+
 	test('makes a file with expected file content', () => {
 		const fileContents = fs.readFileSync(getPathToFile(testOutput), 'UTF8');
 
-		expect(fileContents).toMatchSnapshot('File content');
+		expect(fileContents).toMatchSnapshot();
 	});
 
 	test('has a command help menu', done => {
