@@ -2,4 +2,4 @@ export {
 	CommandError,
 	MissingPropertyError,
 	InvalidPropertyError,
-} from './commandErrors'
+} from './commandErrors';

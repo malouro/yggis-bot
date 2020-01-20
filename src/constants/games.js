@@ -1,10 +1,7 @@
 const LeagueOfLegends = {
 	lol: {
 		name: 'League of Legends',
-		aliases: [
-			'league',
-			'leg',
-		],
+		aliases: ['league', 'leg'],
 		image: '// Placeholder //',
 		gameModes: {
 			aram: {
@@ -14,21 +11,19 @@ const LeagueOfLegends = {
 		},
 		defaultGameMode: 'aram',
 	},
-}
+};
 
 const OverWatch = {
 	ow: {
 		name: 'Overwatch',
-		aliases: [
-			'overwatch',
-		],
+		aliases: ['overwatch'],
 		defaultGameMode: 'any',
 	},
-}
+};
 
 const games = {
 	...LeagueOfLegends,
 	...OverWatch,
-}
+};
 
-export default games
+export default games;

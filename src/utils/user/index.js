@@ -1,1 +1,1 @@
-export { default as getUserPermLevel } from './getUserPermLevel'
+export { default as getUserPermLevel } from './getUserPermLevel';

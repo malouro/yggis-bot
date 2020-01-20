@@ -1,17 +1,17 @@
 // eslint-disable-next-line no-unused-vars
-import { Collection, Client, GuildMember } from 'discord.js'
-import { EventEmitter } from 'events'
-import { Bot, Command } from '../src/classes'
-import { loggerNames } from '../src/utils/logger'
-import { getCommands } from '../src/utils/setup'
-import { makeCommandFromModule } from '../src/utils/commands'
-
+import { Collection, Client, GuildMember } from 'discord.js';
+import { EventEmitter } from 'events';
+import { Bot, Command } from '../src/classes';
+import { loggerNames } from '../src/utils/logger';
+import { getCommands } from '../src/utils/setup';
+import { makeCommandFromModule } from '../src/utils/commands';
 
 /**
  * @description A mock of a Discord OAUTH token
  */
-export const MockToken = `M${'a'.repeat(23)}.${'a'.repeat(6)}.${'a'.repeat(27)}`
-
+export const MockToken = `M${'a'.repeat(23)}.${'a'.repeat(6)}.${'a'.repeat(
+	27
+)}`;
 
 /**
  * @type {string}
@@ -19,8 +19,7 @@ export const MockToken = `M${'a'.repeat(23)}.${'a'.repeat(6)}.${'a'.repeat(27)}`
  * @description
  * A mock of a Discord user ID to use as the bot's master.
  */
-export const MockMasterID = 'MasterID'
-
+export const MockMasterID = 'MasterID';
 
 /**
  * @description
@@ -28,17 +27,14 @@ export const MockMasterID = 'MasterID'
  * - Follows the template defined in `/src/constants/config.js`
  */
 export const MockConfig = {
-	commandCategories: {
-
-	},
+	commandCategories: {},
 	commandPrefix: 'testPrefix',
 	statusMessage: 'testStatusMessage',
 	statusMessageOptions: {
 		type: 'statusMessageType',
 		url: 'statusMessageUrl',
 	},
-}
-
+};
 
 /**
  * @type {GuildMember}
@@ -50,8 +46,7 @@ export const MockMember = {
 	hasPermission: () => false,
 	id: 'NotTheMaster :(',
 	guild: { owner: { id: 'NotTheOwner :(' } },
-}
-
+};
 
 /**
  * @type {EventEmitter}
@@ -59,21 +54,19 @@ export const MockMember = {
  * @description
  * A basic mock of a Discord.js Client
  */
-export const MockClient = new EventEmitter()
-
+export const MockClient = new EventEmitter();
 
 /**
  * @type {{ [key: string]: { log: jest.fn } }}
  */
-const MockLogger = {}
+const MockLogger = {};
 
-loggerNames.forEach((type) => {
+loggerNames.forEach(type => {
 	MockLogger[type] = {
 		log: jest.fn(logMessage => logMessage),
-	}
-})
-export { MockLogger }
-
+	};
+});
+export { MockLogger };
 
 /**
  * @type {Command}
@@ -85,10 +78,9 @@ export class MockCommand extends Command {
 	constructor() {
 		super({
 			name: 'Test',
-		})
+		});
 	}
 }
-
 
 /**
  * @param {Object} options - List of options to configure the mock command with
@@ -97,17 +89,17 @@ export class MockCommand extends Command {
  * - This will make a command with the Command class defined in `/src/classes/`.
  * - The key name of the command class (and property of `name`) will default to 'MockCommand'.
  */
-export const makeMockCommand = ({ name = 'MockCommand', ...otherOptions }) => ({
-	[name]: class extends Command {
-		constructor() {
-			super({
-				name,
-				...otherOptions,
-			})
-		}
-	}
-}[name])
-
+export const makeMockCommand = ({ name = 'MockCommand', ...otherOptions }) =>
+	({
+		[name]: class extends Command {
+			constructor() {
+				super({
+					name,
+					...otherOptions,
+				});
+			}
+		},
+	}[name]);
 
 /**
  * @type {Collection<String, Command>}
@@ -115,8 +107,9 @@ export const makeMockCommand = ({ name = 'MockCommand', ...otherOptions }) => ({
  * @description
  * Uses the `getCommands` utility function to make a collection containing mock command(s)
  */
-export const MockCommandList = getCommands([makeCommandFromModule(MockCommand)])
-
+export const MockCommandList = getCommands([
+	makeCommandFromModule(MockCommand),
+]);
 
 /**
  * @description
@@ -127,8 +120,7 @@ export const defaultMockBotOptions = {
 	config: MockConfig,
 	logger: MockLogger,
 	commands: MockCommandList,
-}
-
+};
 
 /**
  * @type {Bot}
@@ -136,9 +128,8 @@ export const defaultMockBotOptions = {
  * A test bot that uses the default options
  */
 export const MockBot = new Bot({
-	...defaultMockBotOptions
-})
-
+	...defaultMockBotOptions,
+});
 
 /**
  * - Makes a test bot with the given options.
@@ -147,13 +138,13 @@ export const MockBot = new Bot({
 export const makeMockBot = ({ mockCommand, ...overrides }) => {
 	const commands = mockCommand
 		? getCommands([makeCommandFromModule(mockCommand)])
-		: MockCommandList
+		: MockCommandList;
 
 	return new Bot({
 		commands,
-		...overrides
-	})
-}
+		...overrides,
+	});
+};
 
 /**
  * @description
@@ -182,8 +173,7 @@ export const MockCommandOptions = {
 		},
 	},
 	logger: MockLogger,
-}
-
+};
 
 /**
  * @param {Command} command The command to run.
@@ -194,8 +184,8 @@ export const MockCommandOptions = {
  * - Returns back the command options, including mock results within `message` if applicable.
  */
 export async function runCommand(command, overrides = {}) {
-	const commandOptions = { ...MockCommandOptions, ...overrides }
+	const commandOptions = { ...MockCommandOptions, ...overrides };
 
-	await command.run(commandOptions)
-	return commandOptions
+	await command.run(commandOptions);
+	return commandOptions;
 }

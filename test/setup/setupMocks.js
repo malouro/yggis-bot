@@ -1,3 +1,3 @@
-import { MockMasterID } from '../testHelpers'
+import { MockMasterID } from '../testHelpers';
 
-process.env.MASTER_ID = MockMasterID
+process.env.MASTER_ID = MockMasterID;

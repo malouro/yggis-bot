@@ -1,10 +1,10 @@
-import CommandError from './CommandError'
+import CommandError from './CommandError';
 
 export default class MissingPropertyError extends CommandError {
 	constructor(property) {
-		super(`No property \`${property}\``)
+		super(`No property \`${property}\``);
 
-		this.name = 'MissingProperty'
-		this.property = property
+		this.name = 'MissingProperty';
+		this.property = property;
 	}
 }

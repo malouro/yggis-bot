@@ -1,19 +1,11 @@
-import {
-	createLogger, format, transports, addColors,
-} from 'winston'
+import { createLogger, format, transports, addColors } from 'winston';
 
-const {
-	combine, timestamp, label, printf,
-} = format
+const { combine, timestamp, label, printf } = format;
 
 const formatting = printf(
-	({
-		label: logLabel,
-		level, message,
-		timestamp: logTimestamp,
-	}) =>
-		`► ${logTimestamp} | \x1b[1m[${logLabel}]\x1b[0m ${level} ${message}`,
-)
+	({ label: logLabel, level, message, timestamp: logTimestamp }) =>
+		`► ${logTimestamp} | \x1b[1m[${logLabel}]\x1b[0m ${level} ${message}`
+);
 
 const customLevels = {
 	levels: {
@@ -30,9 +22,9 @@ const customLevels = {
 		debug: 'bold grey',
 		silly: 'italic magenta',
 	},
-}
+};
 
-addColors(customLevels.colors)
+addColors(customLevels.colors);
 
 const createCustomLogger = customLabel =>
 	createLogger({
@@ -40,24 +32,19 @@ const createCustomLogger = customLabel =>
 			format.colorize(),
 			label({ label: customLabel }),
 			timestamp({ format: 'HH:mm:ss.SSS' }),
-			formatting,
+			formatting
 		),
 		levels: customLevels.levels,
 		transports: [new transports.Console()],
-	})
+	});
 
-export const loggerNames = [
-	'bot',
-	'debug',
-	'lfg',
-	'sl',
-]
+export const loggerNames = ['bot', 'debug', 'lfg', 'sl'];
 
 const loggers = {
 	[loggerNames[0]]: createCustomLogger('Bot'),
 	[loggerNames[1]]: createCustomLogger('Debug'),
 	[loggerNames[2]]: createCustomLogger('LFG'),
 	[loggerNames[3]]: createCustomLogger('StreamLink'),
-}
+};
 
-export default loggers
+export default loggers;

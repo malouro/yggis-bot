@@ -1,5 +1,5 @@
-const fs = require('fs')
-const path = require('path')
+const fs = require('fs');
+const path = require('path');
 const { argv } = require('yargs')
 	.usage('Usage: node $0 --token [token] (options)')
 	.options({
@@ -30,15 +30,15 @@ const { argv } = require('yargs')
 			default: '.env',
 			type: 'string',
 		},
-	})
+	});
 
 const content = `
 # env config
 TOKEN=${argv.t}
 MASTER_ID=${argv.u}
 GUILD_ID=${argv.g}
-`
+`;
 
-const fileName = argv.o
+const fileName = argv.o;
 
-fs.writeFileSync(path.join(process.cwd(), fileName), content.trim())
+fs.writeFileSync(path.join(process.cwd(), fileName), content.trim());

@@ -1,6 +1,6 @@
-const fs = require('fs')
-const path = require('path')
-const camelCase = require('lodash/camelCase')
+const fs = require('fs');
+const path = require('path');
+const camelCase = require('lodash/camelCase');
 const { argv } = require('yargs')
 	.usage('Usage: node $0 --')
 	.options({
@@ -31,20 +31,23 @@ const { argv } = require('yargs')
 			default: './',
 			type: 'string',
 		},
-	})
+	});
 
-const outputDir = argv.o
-const commandClassRelativePath = path.relative(
-	path.resolve(process.cwd(), outputDir),
-	path.resolve(__dirname, '../src/classes'),
-).replace(/\\/g, '/')
+const outputDir = argv.o;
+const commandClassRelativePath = path
+	.relative(
+		path.resolve(process.cwd(), outputDir),
+		path.resolve(__dirname, '../src/classes')
+	)
+	.replace(/\\/g, '/');
 
 if (commandClassRelativePath.startsWith('./../')) {
-	commandClassRelativePath.slice(0, 1)
+	commandClassRelativePath.slice(0, 1);
 }
 
-const CommandTitle = camelCase(argv.n)[0].toUpperCase() + camelCase(argv.n).slice(1)
-const formattedArgs = argv.a.map(val => `'${val}'`).join(', ')
+const CommandTitle =
+	camelCase(argv.n)[0].toUpperCase() + camelCase(argv.n).slice(1);
+const formattedArgs = argv.a.map(val => `'${val}'`).join(', ');
 
 const content = `
 import { Command } from '${commandClassRelativePath}'
@@ -64,7 +67,7 @@ export default class ${CommandTitle} extends Command {
 		// Define the action of the command in here
 	}
 }
-`
+`;
 
 /**
  * @todo
@@ -74,5 +77,5 @@ export default class ${CommandTitle} extends Command {
 
 fs.writeFileSync(
 	path.join(process.cwd(), outputDir, `${CommandTitle}.js`),
-	`${content.trim()}\n`,
-)
+	`${content.trim()}\n`
+);

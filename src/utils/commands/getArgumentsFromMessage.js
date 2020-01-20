@@ -1,6 +1,6 @@
 export default function getArgumentsFromMessage(message) {
 	if (!message || !message.content) {
-		return []
+		return [];
 	}
-	return message.content.split(/\s+/)
+	return message.content.split(/\s+/);
 }

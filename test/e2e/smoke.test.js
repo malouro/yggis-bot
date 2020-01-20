@@ -1,10 +1,10 @@
-import waitForExpect from 'wait-for-expect'
+import waitForExpect from 'wait-for-expect';
 
-import { Bot } from '../../src/classes'
-import { MockLogger } from '../testHelpers'
-import { getCommands } from '../../src/utils/setup'
+import { Bot } from '../../src/classes';
+import { MockLogger } from '../testHelpers';
+import { getCommands } from '../../src/utils/setup';
 
-jest.setTimeout(10000) // In case of slow network connection, or other unpredictable circumstances
+jest.setTimeout(10000); // In case of slow network connection, or other unpredictable circumstances
 
 /**
  * @summary
@@ -30,13 +30,13 @@ describe('Smoke tests', () => {
 			type: 'WATCHING',
 			url: '',
 		},
-	}
+	};
 
 	const Yggis = new Bot({
 		config,
 		logger: MockLogger,
-		commands: getCommands()
-	})
+		commands: getCommands(),
+	});
 
 	/**
 	 * Start up & connect the bot before the tests are executed
@@ -56,79 +56,79 @@ describe('Smoke tests', () => {
 	 */
 	beforeAll(async () => {
 		if (Yggis.client.status !== 0) {
-			Yggis.start()
+			Yggis.start();
 		}
 		await waitForExpect(() => {
-			expect(Yggis.client.status).toBe(0)
-		})
-	})
+			expect(Yggis.client.status).toBe(0);
+		});
+	});
 
 	afterAll(async () => {
-		await Yggis.client.destroy()
+		await Yggis.client.destroy();
 		await waitForExpect(() => {
-			expect(Yggis.client.status).toBe(5)
-		})
-	})
+			expect(Yggis.client.status).toBe(5);
+		});
+	});
 
 	test('bot should log in successfully', () => {
-		expect(Yggis.client.status).toBe(0)
-		expect(Yggis.client.guilds.has(process.env.GUILD_ID)).toBe(true)
-	})
+		expect(Yggis.client.status).toBe(0);
+		expect(Yggis.client.guilds.has(process.env.GUILD_ID)).toBe(true);
+	});
 
 	test('bot should have the given status message', () => {
 		expect(Yggis.client.user.presence).toMatchObject({
 			status: 'online',
 			game: expect.objectContaining({
 				name: config.statusMessage,
-				type: 3 // WATCHING
+				type: 3, // WATCHING
 			}),
-		})
-	})
+		});
+	});
 
 	test('commands should function', async () => {
-		const clearedUp = [false, false]
-		const botLogSpy = jest.spyOn(Yggis.logger.bot, 'log')
-		const pingCommandLogSpy = jest.spyOn(Yggis.logger.debug, 'log')
-		const commandToTry = `${Yggis.commandPrefix}ping`
-		const channelToTestIn = Yggis
-			.client
-			.channels
-			.get(process.env.TEST_CHANNEL_ID)
+		const clearedUp = [false, false];
+		const botLogSpy = jest.spyOn(Yggis.logger.bot, 'log');
+		const pingCommandLogSpy = jest.spyOn(Yggis.logger.debug, 'log');
+		const commandToTry = `${Yggis.commandPrefix}ping`;
+		const channelToTestIn = Yggis.client.channels.get(
+			process.env.TEST_CHANNEL_ID
+		);
 
-
-		Yggis.client.on('message', (message) => {
+		Yggis.client.on('message', message => {
 			if (/Pong!/.test(message.content)) {
-				message
-					.delete()
-					.then(() => {
-						clearedUp[1] = true
-					})
+				message.delete().then(() => {
+					clearedUp[1] = true;
+				});
 			}
-		})
+		});
 
-		channelToTestIn
-			.send(commandToTry)
-			.then((message) => {
-				message
-					.delete()
-					.then(() => {
-						clearedUp[0] = true
-					})
-					.catch((errorDeletingCommand) => {
-						throw new Error(errorDeletingCommand)
-					})
-			})
+		channelToTestIn.send(commandToTry).then(message => {
+			message
+				.delete()
+				.then(() => {
+					clearedUp[0] = true;
+				})
+				.catch(errorDeletingCommand => {
+					throw new Error(errorDeletingCommand);
+				});
+		});
 
 		await waitForExpect(() => {
-			expect(botLogSpy).toHaveBeenCalledWith(expect.objectContaining({
-				message: expect.stringContaining(`Message received: "${commandToTry}"`)
-			}))
+			expect(botLogSpy).toHaveBeenCalledWith(
+				expect.objectContaining({
+					message: expect.stringContaining(
+						`Message received: "${commandToTry}"`
+					),
+				})
+			);
 
-			expect(pingCommandLogSpy).toHaveBeenCalledWith(expect.objectContaining({
-				message: expect.stringContaining('has used the `Ping` command!')
-			}))
+			expect(pingCommandLogSpy).toHaveBeenCalledWith(
+				expect.objectContaining({
+					message: expect.stringContaining('has used the `Ping` command!'),
+				})
+			);
 
-			expect(clearedUp).toStrictEqual([true, true])
-		})
-	})
-})
+			expect(clearedUp).toStrictEqual([true, true]);
+		});
+	});
+});

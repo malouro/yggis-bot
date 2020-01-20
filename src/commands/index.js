@@ -1,3 +1,3 @@
-import DebugCommands from './debug'
+import DebugCommands from './debug';
 
-export default [...DebugCommands]
+export default [...DebugCommands];

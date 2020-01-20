@@ -1,10 +1,10 @@
-import { config as dotenvConfig } from 'dotenv'
+import { config as dotenvConfig } from 'dotenv';
 
-import Bot from './classes/Bot'
-import logger from './utils/logger'
-import { getCommands } from './utils/setup'
+import Bot from './classes/Bot';
+import logger from './utils/logger';
+import { getCommands } from './utils/setup';
 
-dotenvConfig()
+dotenvConfig();
 
 const Yggis = new Bot({
 	config: {
@@ -12,6 +12,6 @@ const Yggis = new Bot({
 	},
 	logger,
 	commands: getCommands(),
-})
+});
 
-Yggis.start()
+Yggis.start();

@@ -1,3 +1,3 @@
-import getCommands from './getCommands'
+import getCommands from './getCommands';
 
-export { getCommands }
+export { getCommands };

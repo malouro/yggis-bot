@@ -1,7 +1,7 @@
 export default class CommandError extends Error {
 	constructor(message) {
-		super(message)
+		super(message);
 
-		this.name = 'CommandError'
+		this.name = 'CommandError';
 	}
 }

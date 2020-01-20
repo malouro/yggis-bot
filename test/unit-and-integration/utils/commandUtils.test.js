@@ -2,39 +2,39 @@ import {
 	getArgumentsFromMessage,
 	getCommandFromMessage,
 	makeCommandFromModule,
-} from '../../../src/utils/commands'
+} from '../../../src/utils/commands';
 
-import Ping from '../../../src/commands/debug/Ping'
+import Ping from '../../../src/commands/debug/Ping';
 
 describe('Command Utilities', () => {
 	describe('`getArgumentsFromMessage`', () => {
 		test('gets arguments from a message', () => {
-			const expectedLength = 6
+			const expectedLength = 6;
 			const result = getArgumentsFromMessage({
 				content: `This message should have ${expectedLength} arguments.`,
-			})
+			});
 
-			expect(result).toBeInstanceOf(Array)
-			expect(result).toHaveLength(expectedLength)
-			expect(result).toMatchSnapshot()
-		})
+			expect(result).toBeInstanceOf(Array);
+			expect(result).toHaveLength(expectedLength);
+			expect(result).toMatchSnapshot();
+		});
 
 		test('returns empty array when message is empty or undefined', () => {
-			const resultForEmptyMessage = getArgumentsFromMessage({ content: '' })
-			const resultForNoMessage = getArgumentsFromMessage(undefined)
+			const resultForEmptyMessage = getArgumentsFromMessage({ content: '' });
+			const resultForNoMessage = getArgumentsFromMessage(undefined);
 
-			expect(resultForEmptyMessage).toBeInstanceOf(Array)
-			expect(resultForEmptyMessage).toHaveLength(0)
+			expect(resultForEmptyMessage).toBeInstanceOf(Array);
+			expect(resultForEmptyMessage).toHaveLength(0);
 
-			expect(resultForNoMessage).toBeInstanceOf(Array)
-			expect(resultForNoMessage).toHaveLength(0)
-		})
-	})
+			expect(resultForNoMessage).toBeInstanceOf(Array);
+			expect(resultForNoMessage).toHaveLength(0);
+		});
+	});
 
 	describe('`getCommandFromMessage`', () => {
 		test('gets command from a message', () => {
-			const expectation = 'test'
-			const testConfig = { commandPrefix: '!' }
+			const expectation = 'test';
+			const testConfig = { commandPrefix: '!' };
 			const result = getCommandFromMessage(
 				[
 					`${testConfig.commandPrefix}${expectation}`,
@@ -43,21 +43,21 @@ describe('Command Utilities', () => {
 					'multiple',
 					'args',
 				],
-				testConfig,
-			)
+				testConfig
+			);
 
-			expect(result).toBe(expectation)
-		})
-	})
+			expect(result).toBe(expectation);
+		});
+	});
 
 	describe('`makeCommandFromModule`', () => {
 		test('makes a command object from a module', () => {
-			const result = makeCommandFromModule(Ping)
+			const result = makeCommandFromModule(Ping);
 
 			expect(result).toMatchObject({
 				Name: 'Ping',
 				CommandConstructor: Ping,
-			})
-		})
-	})
-})
+			});
+		});
+	});
+});
