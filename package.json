@@ -1,6 +1,6 @@
 {
 	"name": "yggis",
-	"version": "1.0.0",
+	"version": "1.0.0-beta",
 	"description": "A Discord Bot",
 	"repository": {
 		"type": "git",
