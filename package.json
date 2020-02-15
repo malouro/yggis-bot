@@ -21,19 +21,21 @@
 		"node": ">=8.0.0",
 		"npm": ">=5.2.0"
 	},
-	"directories": {
-		"lib": "lib",
-		"test": "test",
-		"doc": "docs"
-	},
 	"files": [
-		"lib/",
+		"cjs/",
+		"esm/",
 		"types/",
 		"bin/"
 	],
+	"main": "./cjs/index.js",
+	"module": "./es/index.js",
+	"typings": "./types/",
 	"scripts": {
-		"start": "babel-node src/Yggis",
+		"start": "babel-node examples/Yggis",
 		"setup": "yarn && yarn generate:dotenv",
+		"build": "yarn build:cjs && yarn build:esm",
+		"build:cjs": "babel src --out-dir cjs",
+		"build:esm": "babel --no-babelrc src --out-dir esm",
 		"test": "jest --watch",
 		"test:coverage": "jest --coverage",
 		"test:e2e": "jest --config=\"./jest.e2e.config.js\"",
@@ -56,6 +58,7 @@
 		"yargs": "^13.2.4"
 	},
 	"devDependencies": {
+		"@babel/cli": "^7.8.4",
 		"@babel/core": "^7.4.5",
 		"@babel/node": "^7.4.5",
 		"@babel/plugin-proposal-class-properties": "^7.4.4",

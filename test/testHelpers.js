@@ -133,7 +133,9 @@ export const MockBot = new Bot({
  * - Use `mockCommand` to setup the given command in the test bot's command collection.
  */
 export const makeMockBot = ({ mockCommand, ...overrides }) => {
-	const commands = mockCommand ? getCommands([mockCommand]) : MockCommandList;
+	const commands = mockCommand
+		? getCommands([mockCommand], { includeDefaults: false })
+		: MockCommandList;
 
 	return new Bot({
 		commands,

@@ -8,6 +8,10 @@ node_modules/
 .npm
 .node_repl_history
 
+# build
+cjs/
+esm/
+
 # logs
 npm-debug.log*
 yarn-debug.log*

@@ -57,7 +57,9 @@ describe('Help Command', () => {
 			const mockCommand1 = makeMockCommand({ name: 'command1' });
 			const mockCommand2 = makeMockCommand({ name: 'command2' });
 			const mockBotWithCommands = makeMockBot({
-				commands: getCommands([Help, mockCommand1, mockCommand2]),
+				commands: getCommands([Help, mockCommand1, mockCommand2], {
+					includeDefaults: false,
+				}),
 			});
 
 			const {
