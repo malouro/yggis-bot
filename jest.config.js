@@ -18,17 +18,9 @@ module.exports = {
 			statements: 90,
 		},
 	},
-	watchPathIgnorePatterns: [
-		'<rootDir>/test-generations/.*',
-	],
-	setupFiles: [
-		'<rootDir>/test/setup/setupMocks',
-	],
+	watchPathIgnorePatterns: ['<rootDir>/test-generations/.*'],
+	setupFiles: ['<rootDir>/test/setupMocks'],
 	testEnvironment: 'node',
-	testMatch: [
-		'<rootDir>/test/unit-and-integration/**/*.test.js?(x)',
-	],
-	testPathIgnorePatterns: [
-		'node_modules',
-	],
-}
+	testMatch: ['<rootDir>/test/unit-and-integration/**/*.test.js?(x)'],
+	testPathIgnorePatterns: ['node_modules'],
+};

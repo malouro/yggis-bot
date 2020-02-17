@@ -1,27 +1,30 @@
 {
-    "version": "0.1",
-    "language": "en",
-    "words": [
-        "admin",
-        "chainable",
-        "discordbot",
-        "dotenv",
-        "overwatch",
-        "printf",
-        "promisify",
-        "stderror",
-        "vuepress",
-        "yggis"
-    ],
-    "flagWords": [],
-    "ignoreRegExpList": [
-        "/'s\\b/"
-    ],
-    "ignorePaths": [
-        "/node_modules",
-        "package.json"
-    ],
-    "dictionaries": [
-        "typescript"
-    ]
+  "version": "0.1",
+  "language": "en",
+  "words": [
+    "admin",
+    "chainable",
+    "corejs",
+    "discordbot",
+    "dotenv",
+    "overwatch",
+    "printf",
+    "promisify",
+    "stderror",
+    "vuepress",
+    "yggis"
+  ],
+  "flagWords": [],
+  "ignoreRegExpList": [
+    "/'s\\b/"
+  ],
+  "ignorePaths": [
+    "/node_modules",
+    "/esm",
+    "/lib",
+    "package.json"
+  ],
+  "dictionaries": [
+    "typescript"
+  ]
 }

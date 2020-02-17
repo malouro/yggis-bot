@@ -166,6 +166,7 @@ describe('Help Command', () => {
 		test("that displays an argument's usage details when available", async () => {
 			const argUsageResult = await runHelpCommand({
 				bot,
+				/* cspell: disable-next-line */
 				args: ['!help', 'argusage'],
 			});
 
@@ -187,6 +188,7 @@ describe('Help Command', () => {
 		test('with non-chainable arguments displayed', async () => {
 			const nonChainableArgsResult = await runHelpCommand({
 				bot,
+				/* cspell: disable-next-line */
 				args: ['!help', 'nonchain'],
 			});
 

@@ -4,7 +4,7 @@ import { Bot } from '../../src/classes';
 import { MockLogger } from '../testHelpers';
 import { getCommands } from '../../src/utils/setup';
 
-jest.setTimeout(10000); // In case of slow network connection, or other unpredictable circumstances
+jest.setTimeout(30000); // In case of slow network connection, or other unpredictable circumstances
 
 /**
  * @summary

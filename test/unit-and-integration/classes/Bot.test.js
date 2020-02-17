@@ -60,12 +60,12 @@ describe('Bot Class', () => {
 		});
 	});
 
-	test('ignores messages from bots', async () => {
+	test('ignores messages from bots', () => {
 		process.env.NODE_ENV = 'production';
 
 		const testBot = MockBot;
 
-		await testBot.client.emit('message', {
+		testBot.client.emit('message', {
 			author: { bot: true },
 			content: 'Test Message',
 		});
@@ -177,9 +177,11 @@ describe('Bot Class', () => {
 			'cat2',
 		]);
 		expect(testBot.commandCategories.get('cat1')).toMatchObject({
+			/* cspell: disable-next-line */
 			commands: expect.arrayContaining(['commanda', 'commandb']),
 		});
 		expect(testBot.commandCategories.get('cat2')).toMatchObject({
+			/* cspell: disable-next-line */
 			commands: expect.arrayContaining(['commandc']),
 		});
 	});

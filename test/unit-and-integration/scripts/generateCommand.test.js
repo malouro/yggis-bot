@@ -136,9 +136,13 @@ describe('generate-command', () => {
 	test('generated file passes linting', () => {
 		const eslintEngine = new EslintCLIEngine(eslintRules);
 
-		const results = eslintEngine.executeOnFiles([getPathToFile(testOutput)]);
+		const { results } = eslintEngine.executeOnFiles([
+			getPathToFile(testOutput),
+		]);
+		const [{ messages, errorCount, warningCount }] = results;
 
-		expect(results.errorCount).toBe(0);
-		expect(results.warningCount).toBe(0);
+		expect(messages).toHaveLength(0);
+		expect(errorCount).toBe(0);
+		expect(warningCount).toBe(0);
 	});
 });

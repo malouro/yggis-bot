@@ -10,7 +10,6 @@ module.exports = {
 			},
 		],
 	],
-	plugins: ['@babel/plugin-proposal-class-properties'],
 	env: {
 		cjs: {
 			presets: [
@@ -21,10 +20,26 @@ module.exports = {
 							node: 8,
 						},
 						useBuiltIns: 'usage',
+						corejs: {
+							version: 3,
+						},
 					},
 				],
 			],
 			plugins: ['@babel/plugin-transform-classes'],
+		},
+		test: {
+			presets: [
+				[
+					'@babel/preset-env',
+					{
+						targets: {
+							node: 'current',
+						},
+					},
+				],
+			],
+			plugins: ['@babel/plugin-proposal-class-properties'],
 		},
 	},
 };
