@@ -33,7 +33,7 @@ describe('Smoke tests', () => {
 	};
 
 	const Yggis = new Bot({
-		config,
+		...config,
 		logger: MockLogger,
 		commands: getCommands(),
 	});
