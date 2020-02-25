@@ -27,6 +27,7 @@ lib-cov
 coverage
 .nyc_output
 test-generations/
+junit.xml
 
 # misc
 .DS_STORE

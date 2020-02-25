@@ -8,6 +8,7 @@ module.exports = {
 		'!<rootDir>/src/utils/logger.js',
 		'!<rootDir>/src/Yggis.js',
 		'!**/index.js',
+		'!**/*.d.ts',
 	],
 	coverageDirectory: 'coverage',
 	coverageThreshold: {
