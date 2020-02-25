@@ -3,7 +3,7 @@ import Discord, { Collection } from 'discord.js';
 import camelCase from 'lodash/camelCase';
 import upperFirst from 'lodash/upperFirst';
 
-import defaultConfig from '../constants/config';
+import defaultConfig from '../constants/defaultConfig';
 import defaultLogger from '../utils/logger';
 
 import {
@@ -15,8 +15,11 @@ export default class Bot {
 	constructor({
 		name = 'Yggis',
 		client = new Discord.Client(),
+		commandPrefix,
+		commandCategories,
+		statusMessage,
+		statusMessageOptions,
 		commands = new Discord.Collection(),
-		config,
 		logger = defaultLogger,
 		token = process.env.TOKEN,
 	}) {
@@ -24,18 +27,24 @@ export default class Bot {
 		this.token = token;
 
 		/* create config */
-		this.config = {
-			...defaultConfig,
-			...config,
-		};
+		Object.assign(this, defaultConfig);
 
 		/* bot name */
 		this.name = name;
 
 		/* setup commands */
 		this.commands = new Map([...commands.entries()].sort());
-		this.commandPrefix = this.config.commandPrefix;
-		this.commandCategories = this.getCategories();
+		this.commandPrefix = commandPrefix || this.commandPrefix;
+		this.commandCategories = {
+			...defaultConfig.commandCategories,
+			...commandCategories,
+		};
+		this._commandCategories = this.getCategories();
+
+		/* setup status message */
+		this.statusMessage = statusMessage || this.statusMessage;
+		this.statusMessageOptions =
+			statusMessageOptions || this.statusMessageOptions;
 
 		/* logger utils */
 		this.logger = logger;
@@ -52,7 +61,7 @@ export default class Bot {
 		this.commands.forEach(({ name: commandName, category }) => {
 			if (!categories.has(category)) {
 				categories.set(category, {
-					...(this.config.commandCategories[category] || {
+					...(this.commandCategories[category] || {
 						name: upperFirst(camelCase(category)),
 					}),
 					commands: [commandName.toLocaleLowerCase()],
@@ -71,10 +80,7 @@ export default class Bot {
 	}
 
 	onReady() {
-		this.client.user.setActivity(
-			this.config.statusMessage,
-			this.config.statusMessageOptions
-		);
+		this.client.user.setActivity(this.statusMessage, this.statusMessageOptions);
 		this.logger.bot.log({
 			level: 'info',
 			message: 'Ready!',
@@ -87,9 +93,9 @@ export default class Bot {
 		let args = [];
 		let commandName = null;
 
-		if (message.content.startsWith(this.config.commandPrefix)) {
+		if (message.content.startsWith(this.commandPrefix)) {
 			args = getArgumentsFromMessage(message) || [];
-			commandName = getCommandFromMessage(args, this.config);
+			commandName = getCommandFromMessage(args, this.commandPrefix);
 
 			if (this.commands.has(commandName)) {
 				this.commands.get(commandName).run({

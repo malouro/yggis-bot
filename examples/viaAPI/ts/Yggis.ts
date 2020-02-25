@@ -2,8 +2,8 @@
 
 import { config as dotenvConfig } from 'dotenv';
 
-import { Bot, getCommands } from '../src';
-import Command from '../src/classes/Command';
+import { Bot, getCommands } from '../../../src';
+import Command from '../../../src/classes/Command';
 
 dotenvConfig();
 

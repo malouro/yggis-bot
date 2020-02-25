@@ -131,9 +131,8 @@ export default class Help extends Command {
 
 		return [
 			invalidUsage
-				? `Invalid \`${commandPrefix}${command.name.toLocaleLowerCase()}\` usage.`
-				: title,
-			invalidUsage ? '' : `\n${description || '(Missing description.)'}\n`,
+				? `Invalid \`${commandPrefix}${command.name.toLocaleLowerCase()}\` usage.\n`
+				: `${title}\n\n${description || '(Missing description.)'}\n`,
 			commandUsage,
 			this.getDetailedArgsDescription(usage.args),
 		].join('\n');
@@ -147,31 +146,36 @@ export default class Help extends Command {
 			.map(command => `\`${commandPrefix}${command}\``)
 			.join(', ');
 
-		return [title, description ? `\n${description}\n` : '', commandList].join(
-			'\n'
-		);
+		// prettier-ignore
+		return [
+			title,
+			description ? `\n${description}\n` : '',
+			commandList
+		].join('\n');
 	}
 
 	preAction({ args, bot }) {
 		if (args.length === 1) {
 			// !help (no args)
-			this.messageOutput = this.buildMainHelpMenu(bot, bot.commandCategories);
+			/* eslint-disable no-underscore-dangle */
+			this.messageOutput = this.buildMainHelpMenu(bot, bot._commandCategories);
 		} else if (bot.commands.has(args[1])) {
 			// !help <command>
 			this.messageOutput = this.buildCommandHelpMenu(
 				bot,
 				bot.commands.get(args[1].toLocaleLowerCase())
 			);
-		} else if (bot.commandCategories.has(args[1])) {
+		} else if (bot._commandCategories.has(args[1])) {
 			// !help <category>
 			this.messageOutput = this.buildCategoryHelpMenu(
 				bot,
-				bot.commandCategories.get(args[1].toLocaleLowerCase())
+				bot._commandCategories.get(args[1].toLocaleLowerCase())
 			);
 		} else {
 			// !help {invalidUsage}
 			this.messageOutput = this.buildCommandHelpMenu(bot, this, true);
 		}
+		/* eslint-enable no-underscore-dangle */
 	}
 
 	action({ message }) {

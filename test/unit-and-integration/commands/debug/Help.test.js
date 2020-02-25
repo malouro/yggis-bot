@@ -2,7 +2,7 @@ import Help from '../../../../src/commands/debug/Help';
 import {
 	runCommand,
 	makeMockBot,
-	MockConfig,
+	MockDefaultConfig,
 	makeMockCommand,
 } from '../../../testHelpers';
 import { getCommands } from '../../../../src/utils/setup';
@@ -228,14 +228,12 @@ describe('Help Command', () => {
 
 			const bot = makeMockBot({
 				commands,
-				config: {
-					...MockConfig,
-					commandPrefix: '!',
-					commandCategories: {
-						test: {
-							name: 'Test',
-							description: 'Testing command categories',
-						},
+				...MockDefaultConfig,
+				commandPrefix: '!',
+				commandCategories: {
+					test: {
+						name: 'Test',
+						description: 'Testing command categories',
 					},
 				},
 			});

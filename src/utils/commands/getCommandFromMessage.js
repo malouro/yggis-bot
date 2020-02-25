@@ -5,6 +5,6 @@
  * @function getCommandFromMessage
  * 	@param
  */
-export default function getCommandFromMessage(args, config) {
-	return args[0].replace(config.commandPrefix, '').toLocaleLowerCase();
+export default function getCommandFromMessage(args, commandPrefix) {
+	return args[0].replace(commandPrefix, '').toLocaleLowerCase();
 }

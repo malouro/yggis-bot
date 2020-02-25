@@ -2,7 +2,7 @@ import { Collection } from 'discord.js';
 import { Bot } from '../../../src/classes';
 import {
 	MockBot,
-	MockConfig,
+	MockDefaultConfig,
 	MockClient,
 	MockToken,
 	MockLogger,
@@ -14,13 +14,13 @@ describe('Bot Class', () => {
 	test('constructs a Bot', () => {
 		const testBot = new Bot({
 			name: 'TestBot',
-			config: MockConfig,
 			token: MockToken,
+			...MockDefaultConfig,
 		});
 
 		expect(testBot).toBeInstanceOf(Bot);
 		expect(testBot.name).toBe('TestBot');
-		expect(testBot.config).toMatchObject(MockConfig);
+		expect(testBot).toMatchObject(MockDefaultConfig);
 		expect(testBot.token).toBe(MockToken);
 	});
 
@@ -33,16 +33,16 @@ describe('Bot Class', () => {
 
 		const testBot = new Bot({
 			client: customClient,
-			config: MockConfig,
 			logger: MockLogger,
 			token: MockToken,
+			...MockDefaultConfig,
 		});
 
 		testBot.client.emit('ready');
 
 		expect(customClient.user.setActivity).toHaveBeenCalledWith(
-			MockConfig.statusMessage,
-			MockConfig.statusMessageOptions
+			MockDefaultConfig.statusMessage,
+			MockDefaultConfig.statusMessageOptions
 		);
 	});
 
@@ -85,19 +85,19 @@ describe('Bot Class', () => {
 		const testBot = new Bot({
 			client: MockClient,
 			commands: mockCommands,
-			config: MockConfig,
 			logger: MockLogger,
+			...MockDefaultConfig,
 		});
 
 		testBot.onMessage({
 			author: { bot: false },
-			content: `${MockConfig.commandPrefix}test Message`,
+			content: `${MockDefaultConfig.commandPrefix}test Message`,
 		});
 
 		expect(mockTestCommand.run).toHaveBeenCalledWith(
 			expect.objectContaining({
 				message: expect.objectContaining({
-					content: `${MockConfig.commandPrefix}test Message`,
+					content: `${MockDefaultConfig.commandPrefix}test Message`,
 				}),
 			})
 		);
@@ -118,11 +118,9 @@ describe('Bot Class', () => {
 		const testBot = new Bot({
 			client: MockClient,
 			commands: mockCommands,
-			config: {
-				...MockConfig,
-				commandPrefix,
-			},
 			logger: MockLogger,
+			...MockDefaultConfig,
+			commandPrefix,
 		});
 
 		testBot.onMessage({
@@ -147,9 +145,7 @@ describe('Bot Class', () => {
 
 		const testBot = new Bot({
 			commands: mockCommands,
-			config: {
-				...MockConfig,
-			},
+			...MockDefaultConfig,
 		});
 
 		expect(Array.from(testBot.commands.keys())).toStrictEqual([
@@ -172,18 +168,20 @@ describe('Bot Class', () => {
 			commands: mockCommands,
 		});
 
-		expect(Array.from(testBot.commandCategories.keys())).toStrictEqual([
+		/* eslint-disable no-underscore-dangle */
+		expect(Array.from(testBot._commandCategories.keys())).toStrictEqual([
 			'cat1',
 			'cat2',
 		]);
-		expect(testBot.commandCategories.get('cat1')).toMatchObject({
+		expect(testBot._commandCategories.get('cat1')).toMatchObject({
 			/* cspell: disable-next-line */
 			commands: expect.arrayContaining(['commanda', 'commandb']),
 		});
-		expect(testBot.commandCategories.get('cat2')).toMatchObject({
+		expect(testBot._commandCategories.get('cat2')).toMatchObject({
 			/* cspell: disable-next-line */
 			commands: expect.arrayContaining(['commandc']),
 		});
+		/* eslint-enable no-underscore-dangle */
 	});
 
 	test('has an empty command category list when no commands are supplied', () => {
@@ -191,6 +189,6 @@ describe('Bot Class', () => {
 			commands: new Collection(),
 		});
 
-		expect(Array.from(testBot.commandCategories.keys())).toStrictEqual([]);
+		expect(Array.from(testBot._commandCategories.keys())).toStrictEqual([]);
 	});
 });

@@ -1,7 +1,6 @@
 import {
 	getArgumentsFromMessage,
 	getCommandFromMessage,
-	makeCommand,
 } from '../../../src/utils/commands';
 
 import Ping from '../../../src/commands/debug/Ping';
@@ -34,30 +33,19 @@ describe('Command Utilities', () => {
 	describe('`getCommandFromMessage`', () => {
 		test('gets command from a message', () => {
 			const expectation = 'test';
-			const testConfig = { commandPrefix: '!' };
+			const testCommandPrefix = '!';
 			const result = getCommandFromMessage(
 				[
-					`${testConfig.commandPrefix}${expectation}`,
+					`${testCommandPrefix}${expectation}`,
 					'message',
 					'with',
 					'multiple',
 					'args',
 				],
-				testConfig
+				testCommandPrefix,
 			);
 
 			expect(result).toBe(expectation);
-		});
-	});
-
-	describe('`makeCommand`', () => {
-		test('makes a command object from a module', () => {
-			const result = makeCommand(Ping);
-
-			expect(result).toMatchObject({
-				Name: 'Ping',
-				CommandConstructor: Ping,
-			});
 		});
 	});
 });

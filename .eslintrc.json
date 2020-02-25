@@ -32,6 +32,12 @@
 			"tab"
 		],
 		"no-tabs": 0,
+		"no-underscore-dangle": [
+			"error",
+			{
+				"allowAfterThis": true
+			}
+		],
 		"padding-line-between-statements": [
 			"error",
 			{

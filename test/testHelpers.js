@@ -23,9 +23,9 @@ export const MockMasterID = 'MasterID';
 /**
  * @description
  * - A mock of the config to use for the test bot.
- * - Follows the template defined in `/src/constants/config.js`
+ * - Follows the template of default values defined in `/src/constants/config.js`
  */
-export const MockConfig = {
+export const MockDefaultConfig = {
 	commandCategories: {},
 	commandPrefix: 'testPrefix',
 	statusMessage: 'testStatusMessage',
@@ -114,9 +114,9 @@ export const MockCommandList = getCommands([MockCommand]);
  */
 export const defaultMockBotOptions = {
 	client: MockClient,
-	config: MockConfig,
 	logger: MockLogger,
 	commands: MockCommandList,
+	...MockDefaultConfig,
 };
 
 /**
