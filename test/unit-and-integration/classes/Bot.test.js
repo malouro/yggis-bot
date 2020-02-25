@@ -189,6 +189,7 @@ describe('Bot Class', () => {
 			commands: new Collection(),
 		});
 
+		/* eslint-disable-next-line no-underscore-dangle */
 		expect(Array.from(testBot._commandCategories.keys())).toStrictEqual([]);
 	});
 });

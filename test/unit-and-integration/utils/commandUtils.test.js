@@ -3,8 +3,6 @@ import {
 	getCommandFromMessage,
 } from '../../../src/utils/commands';
 
-import Ping from '../../../src/commands/debug/Ping';
-
 describe('Command Utilities', () => {
 	describe('`getArgumentsFromMessage`', () => {
 		test('gets arguments from a message', () => {
@@ -42,7 +40,7 @@ describe('Command Utilities', () => {
 					'multiple',
 					'args',
 				],
-				testCommandPrefix,
+				testCommandPrefix
 			);
 
 			expect(result).toBe(expectation);
