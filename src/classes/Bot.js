@@ -5,11 +5,11 @@ import upperFirst from 'lodash/upperFirst';
 
 import defaultConfig from '../constants/defaultConfig';
 import defaultLogger from '../utils/logger';
-
 import {
 	getArgumentsFromMessage,
 	getCommandFromMessage,
 } from '../utils/commands';
+import { MissingTokenError } from '../utils/errors';
 
 export default class Bot {
 	constructor({
@@ -21,16 +21,22 @@ export default class Bot {
 		statusMessageOptions,
 		commands = new Discord.Collection(),
 		logger = defaultLogger,
-		token = process.env.TOKEN,
-	}) {
+		token,
+	} = {}) {
 		/* oauth token for Discord bot */
-		this.token = token;
+		if (
+			(!token || typeof token !== 'string') &&
+			(!process.env.TOKEN || typeof process.env.TOKEN !== 'string')
+		) {
+			throw new MissingTokenError();
+		}
+		this.token = token || process.env.TOKEN;
 
-		/* create config */
+		/* setup with defaults */
 		Object.assign(this, defaultConfig);
 
 		/* bot name */
-		this.name = name;
+		this.name = name || this.name;
 
 		/* setup commands */
 		this.commands = new Map([...commands.entries()].sort());
