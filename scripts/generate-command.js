@@ -68,13 +68,14 @@ export default class ${CommandTitle} extends Command {
 
 `;
 
-/**
- * @todo
- * - mkdir if non-existing
- * - show stdout of file output and/or results?
- */
+const writeDir = path.join(process.cwd(), outputDir);
+const writePath = path.join(writeDir, `${CommandTitle}.js`);
 
-fs.writeFileSync(
-	path.join(process.cwd(), outputDir, `${CommandTitle}.js`),
-	`${content.trim()}\n`
-);
+if (!fs.existsSync(writeDir)) {
+	fs.mkdirSync(writeDir);
+}
+
+fs.writeFileSync(path.join(writePath), `${content.trim()}\n`);
+
+/** @todo ? */
+// console.log(`Done writing file to ${writePath}`);

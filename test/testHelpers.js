@@ -6,19 +6,11 @@ import { loggerNames } from '../src/utils/logger';
 import { getCommands } from '../src/utils/setup';
 
 /**
- * @description A mock of a Discord OAUTH token
- */
-export const MockToken = `M${'a'.repeat(23)}.${'a'.repeat(6)}.${'a'.repeat(
-	27
-)}`;
-
-/**
- * @type {string}
- *
  * @description
- * A mock of a Discord user ID to use as the bot's master.
+ * - Constant values that are used during or before test setup
+ * - Typically this means mock environment variables
  */
-export const MockMasterID = 'MasterID';
+export * from './testConstants';
 
 /**
  * @description

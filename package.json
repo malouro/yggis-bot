@@ -31,10 +31,9 @@
 	"module": "es/",
 	"typings": "types/",
 	"scripts": {
-		"start": "babel-node examples/Yggis",
+		"start": "babel-node examples/viaAPI/js/Yggis",
 		"setup": "yarn && yarn generate:dotenv",
 		"build": "yarn build:esm && yarn build:cjs",
-		"prebuild": "yarn clean",
 		"build:cjs": "babel --env-name cjs -d lib/ src/",
 		"build:esm": "babel --env-name esm -d esm/ src/",
 		"clean": "npx rimraf esm/ lib/ coverage/ test-generations/",

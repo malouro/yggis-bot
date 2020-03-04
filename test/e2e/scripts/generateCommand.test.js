@@ -2,14 +2,10 @@ import fs from 'fs';
 import path from 'path';
 import { exec } from 'child_process';
 import { promisify } from 'util';
-import waitForExpect from 'wait-for-expect';
 
 /** to lint the generated file */
 import { CLIEngine as EslintCLIEngine } from 'eslint';
 import eslintRules from '../../../.eslintrc.json';
-
-/** to test the generated file contains the appropriate class */
-import Command from '../../../src/classes/Command';
 
 const asyncExec = promisify(exec);
 const getPathToFile = fileName => path.resolve(process.cwd(), fileName);
@@ -63,23 +59,12 @@ const cleanUp = fileName => {
 };
 
 describe('generate-command', () => {
-	const testDir = './test-generations/';
+	const testDir = 'test-generations/';
 	const testCommandName = 'Test';
 	const testOutput = `${testDir + testCommandName}.js`;
-	const pathToTestDir = path.resolve(__dirname, '../../../test-generations');
 	let stdOutResult = null;
 
 	beforeAll(async () => {
-		fs.stat(pathToTestDir, err => {
-			if (err) {
-				fs.mkdirSync(pathToTestDir);
-			}
-		});
-
-		await waitForExpect(() => {
-			expect(() => fs.statSync(pathToTestDir)).not.toThrow();
-		});
-
 		// Execute the generate-command script
 		// Makes a dummy test command to test against
 		await generateCommand(
@@ -128,7 +113,6 @@ describe('generate-command', () => {
 		const TestCommandModule = require(getPathToFile(testOutput)).default;
 		const CommandToTest = new TestCommandModule();
 
-		expect(CommandToTest).toBeInstanceOf(Command);
 		expect(CommandToTest.name).toBe('Test');
 		expect(CommandToTest.aliases).toStrictEqual(['alias1', 'alias2', 'alias3']);
 	});
