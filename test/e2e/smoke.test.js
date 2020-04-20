@@ -2,7 +2,6 @@ import waitForExpect from 'wait-for-expect';
 
 import { Bot } from '../../src/classes';
 import { MockLogger } from '../testHelpers';
-import { getCommands } from '../../src/utils/setup';
 
 jest.setTimeout(30000); // In case of slow network connection, or other unpredictable circumstances
 
@@ -35,7 +34,7 @@ describe('Smoke tests', () => {
 	const Yggis = new Bot({
 		...config,
 		logger: MockLogger,
-		commands: getCommands(),
+		includeDefaultCommands: true,
 	});
 
 	/**
@@ -89,7 +88,7 @@ describe('Smoke tests', () => {
 		const clearedUp = [false, false];
 		const botLogSpy = jest.spyOn(Yggis.logger.bot, 'log');
 		const pingCommandLogSpy = jest.spyOn(Yggis.logger.debug, 'log');
-		const commandToTry = `${Yggis.commandPrefix}ping`;
+		const commandToTry = 'ping';
 		const channelToTestIn = Yggis.client.channels.get(
 			process.env.TEST_CHANNEL_ID
 		);
@@ -102,16 +101,18 @@ describe('Smoke tests', () => {
 			}
 		});
 
-		channelToTestIn.send(commandToTry).then(message => {
-			message
-				.delete()
-				.then(() => {
-					clearedUp[0] = true;
-				})
-				.catch(errorDeletingCommand => {
-					throw new Error(errorDeletingCommand);
-				});
-		});
+		channelToTestIn
+			.send(`${Yggis.commandPrefix}${commandToTry}`)
+			.then(message => {
+				message
+					.delete()
+					.then(() => {
+						clearedUp[0] = true;
+					})
+					.catch(errorDeletingCommand => {
+						throw new Error(errorDeletingCommand);
+					});
+			});
 
 		await waitForExpect(() => {
 			expect(botLogSpy).toHaveBeenCalledWith(
