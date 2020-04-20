@@ -1,4 +1,3 @@
-import { Collection } from 'discord.js';
 import { Bot } from '../../../src/classes';
 import {
 	MockBot,
@@ -78,25 +77,25 @@ describe('Bot Class', () => {
 		});
 
 		test('handles messages that start with the commandPrefix as a command', () => {
-			const mockCommands = new Collection();
-			const mockTestCommand = new MockCommand();
-
-			mockTestCommand.run = jest.fn();
-			mockCommands.set('test', mockTestCommand);
-
+			const mockTestCommand = MockCommand;
 			const testBot = new Bot({
 				client: MockClient,
-				commands: mockCommands,
+				commands: [mockTestCommand],
 				logger: MockLogger,
 				...MockDefaultConfig,
 			});
+
+			const injectMockCommand = testBot.commands.get('test');
+
+			injectMockCommand.run = jest.fn();
+			testBot.commands.set('test', injectMockCommand);
 
 			testBot.onMessage({
 				author: { bot: false },
 				content: `${MockDefaultConfig.commandPrefix}test Message`,
 			});
 
-			expect(mockTestCommand.run).toHaveBeenCalledWith(
+			expect(testBot.commands.get('test').run).toHaveBeenCalledWith(
 				expect.objectContaining({
 					message: expect.objectContaining({
 						content: `${MockDefaultConfig.commandPrefix}test Message`,
@@ -111,26 +110,26 @@ describe('Bot Class', () => {
 			['Ç', 'a non-typical letter symbol'],
 			['1,000.000', 'a long number'],
 		])('can handle %s (%s) as the commandPrefix', commandPrefix => {
-			const mockCommands = new Collection();
-			const mockTestCommand = new MockCommand();
-
-			mockTestCommand.run = jest.fn();
-			mockCommands.set('test', mockTestCommand);
-
+			const mockTestCommand = MockCommand;
 			const testBot = new Bot({
 				client: MockClient,
-				commands: mockCommands,
+				commands: [mockTestCommand],
 				logger: MockLogger,
 				...MockDefaultConfig,
 				commandPrefix,
 			});
+
+			const injectMockCommand = testBot.commands.get('test');
+
+			injectMockCommand.run = jest.fn();
+			testBot.commands.set('test', injectMockCommand);
 
 			testBot.onMessage({
 				author: { bot: false },
 				content: `${commandPrefix}test Message`,
 			});
 
-			expect(mockTestCommand.run).toHaveBeenCalled();
+			expect(testBot.commands.get('test').run).toHaveBeenCalled();
 		});
 
 		test('sorts given commands alphabetically', () => {
@@ -141,12 +140,10 @@ describe('Bot Class', () => {
 				makeMockCommand({ name: 'æ' }),
 				makeMockCommand({ name: 'zeta' }),
 			];
-			const mockCommands = new Collection(
-				commands.map(Command => [Command.name, new Command()])
-			);
 
 			const testBot = new Bot({
-				commands: mockCommands,
+				commands,
+				includeDefaultCommands: false,
 				...MockDefaultConfig,
 			});
 
@@ -160,14 +157,15 @@ describe('Bot Class', () => {
 		});
 
 		test('sets a command categories list when given commands that are configured with command categories', () => {
-			const mockCommands = new Collection();
-
-			mockCommands.set('commandA', { name: 'commandA', category: 'cat1' });
-			mockCommands.set('commandB', { name: 'commandB', category: 'cat1' });
-			mockCommands.set('commandC', { name: 'commandC', category: 'cat2' });
+			const mockCommands = [
+				makeMockCommand({ name: 'commandA', category: 'cat1' }),
+				makeMockCommand({ name: 'commandB', category: 'cat1' }),
+				makeMockCommand({ name: 'commandC', category: 'cat2' }),
+			];
 
 			const testBot = new Bot({
 				commands: mockCommands,
+				includeDefaultCommands: false,
 			});
 
 			/* eslint-disable no-underscore-dangle */
@@ -188,7 +186,8 @@ describe('Bot Class', () => {
 
 		test('has an empty command category list when no commands are supplied', () => {
 			const testBot = new Bot({
-				commands: new Collection(),
+				commands: [],
+				includeDefaultCommands: false,
 			});
 
 			/* eslint-disable-next-line no-underscore-dangle */

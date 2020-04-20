@@ -1,7 +1,7 @@
-import { Command } from '../../classes';
+import Command from '../../classes/Command';
 
 export default class Help extends Command {
-	constructor() {
+	constructor({ t } = { t: () => null }) {
 		super({
 			name: 'Help',
 			category: 'debug',
@@ -25,6 +25,7 @@ export default class Help extends Command {
 			},
 		});
 
+		this.t = t;
 		this.messageOutput = '';
 	}
 

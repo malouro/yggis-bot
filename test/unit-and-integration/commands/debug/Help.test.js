@@ -2,14 +2,14 @@ import Help from '../../../../src/commands/debug/Help';
 import {
 	runCommand,
 	makeMockBot,
-	MockDefaultConfig,
 	makeMockCommand,
+	MockTranslateFunc,
+	MockDefaultConfig,
 } from '../../../testHelpers';
-import { getCommands } from '../../../../src/utils/setup';
 
 describe('Help Command', () => {
 	const mockBot = makeMockBot({ mockCommand: Help });
-	const HelpCommand = new Help();
+	const HelpCommand = new Help({ t: MockTranslateFunc });
 
 	/**
 	 * @description
@@ -57,9 +57,7 @@ describe('Help Command', () => {
 			const mockCommand1 = makeMockCommand({ name: 'command1' });
 			const mockCommand2 = makeMockCommand({ name: 'command2' });
 			const mockBotWithCommands = makeMockBot({
-				commands: getCommands([Help, mockCommand1, mockCommand2], {
-					includeDefaults: false,
-				}),
+				commands: [Help, mockCommand1, mockCommand2],
 			});
 
 			const {
@@ -128,14 +126,14 @@ describe('Help Command', () => {
 		});
 
 		const bot = makeMockBot({
-			commands: getCommands([
+			commands: [
 				Help,
 				commandWithSomeArgs,
 				commandWithChainArgs,
 				commandWithNonChainArgs,
 				commandWithBoth,
 				commandWithArgUsage,
-			]),
+			],
 		});
 
 		const chainArgRegex = /\([\w,\s]+\)/;
@@ -224,7 +222,7 @@ describe('Help Command', () => {
 				category: 'no-cat',
 			});
 
-			const commands = getCommands([testCommand, noCategoryConfigCommand]);
+			const commands = [testCommand, noCategoryConfigCommand];
 
 			const bot = makeMockBot({
 				commands,

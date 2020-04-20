@@ -9,7 +9,7 @@ import DefaultCommands from '../../commands';
  */
 export default function getCommands(
 	customCommands = [],
-	{ includeDefaults } = { includeDefaults: true }
+	{ includeDefaults, t } = { includeDefaults: true, t: null }
 ) {
 	const CommandCollection = new Collection();
 	const commands = customCommands.concat(
@@ -17,7 +17,9 @@ export default function getCommands(
 	);
 
 	commands.forEach(CommandConstructor => {
-		const CommandToAdd = new CommandConstructor();
+		const CommandToAdd = t
+			? new CommandConstructor({ t })
+			: new CommandConstructor();
 
 		CommandCollection.set(CommandToAdd.name.toLocaleLowerCase(), CommandToAdd);
 

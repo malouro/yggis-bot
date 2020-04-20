@@ -23,6 +23,8 @@ export { default as DefaultCommands } from './commands';
 
 export { default as logger } from './utils/logger';
 
+export { translate } from './utils/i18n';
+
 export {
 	canUseCommand,
 	getArgumentsFromMessage,

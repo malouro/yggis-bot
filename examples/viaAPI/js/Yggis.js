@@ -1,6 +1,6 @@
 import { config as dotenvConfig } from 'dotenv';
 
-import { Bot, getCommands, Command } from '../../../src';
+import { Bot, Command } from '../../../src';
 
 /**
  * # .env file contents:
@@ -22,9 +22,7 @@ class ExampleCommand extends Command {
 
 const Yggis = new Bot({
 	commandPrefix: '~',
-	commands: getCommands([ExampleCommand], {
-		includeDefaults: true,
-	}),
+	commands: [ExampleCommand],
 });
 
 Yggis.start();

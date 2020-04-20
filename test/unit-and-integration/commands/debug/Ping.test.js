@@ -1,9 +1,9 @@
 import Ping from '../../../../src/commands/debug/Ping';
 
-import { runCommand } from '../../../testHelpers';
+import { runCommand, MockTranslateFunc } from '../../../testHelpers';
 
 describe('Ping Command', () => {
-	const PingCommand = new Ping();
+	const PingCommand = new Ping({ t: MockTranslateFunc() });
 
 	test('returns a message with a ping', async () => {
 		const expectedPing = 420;

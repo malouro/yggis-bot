@@ -19,11 +19,13 @@ export default class Command {
 			options
 		);
 
+		this.t = options.t ? options.t : () => null;
+
 		/* Command properties to verify */
-		this.validateOptions();
+		this._validateOptions();
 	}
 
-	validateOptions() {
+	_validateOptions() {
 		if (!this.name) {
 			throw new MissingPropertyError('name');
 		}
@@ -66,7 +68,7 @@ export default class Command {
 
 		if (!canUseCommand(message.member, this.permLevel)) {
 			return message.reply(
-				'You do not have the required permissions to use this command. 😥'
+				this.t('COMMON', 'commands', 'missingPermissionsToRunCommand')
 			);
 		}
 

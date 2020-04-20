@@ -1,4 +1,4 @@
-import Discord, { Collection } from 'discord.js';
+import { Client, Collection } from 'discord.js';
 
 import camelCase from 'lodash/camelCase';
 import upperFirst from 'lodash/upperFirst';
@@ -10,16 +10,22 @@ import {
 	getCommandFromMessage,
 } from '../utils/commands';
 import { MissingTokenError } from '../utils/errors';
+import getCommands from '../utils/setup/getCommands';
+import { translate } from '../utils/i18n';
+import defaultTranslations from '../../i18n/en-US';
 
 export default class Bot {
 	constructor({
 		name = 'Yggis',
-		client = new Discord.Client(),
+		client = new Client(),
+		language = 'en-US',
+		translations,
 		commandPrefix,
 		commandCategories,
 		statusMessage,
 		statusMessageOptions,
-		commands = new Discord.Collection(),
+		commands = [],
+		includeDefaultCommands = true,
 		logger = defaultLogger,
 		token,
 	} = {}) {
@@ -30,6 +36,7 @@ export default class Bot {
 		) {
 			throw new MissingTokenError();
 		}
+
 		this.token = token || process.env.TOKEN;
 
 		/* setup with defaults */
@@ -38,14 +45,27 @@ export default class Bot {
 		/* bot name */
 		this.name = name || this.name;
 
+		/* i18n */
+		this.language = language || this.language;
+
+		/** @todo find better way to set up translations */
+		this.translations = translations || {
+			'en-US': defaultTranslations,
+		};
+		this.t = translate({
+			defaultSpace: 'COMMON',
+			translations: this.translations,
+			language: this.language,
+		});
+
 		/* setup commands */
-		this.commands = new Map([...commands.entries()].sort());
+		this.commands = this._getCommands({ commands, includeDefaultCommands });
 		this.commandPrefix = commandPrefix || this.commandPrefix;
 		this.commandCategories = {
 			...defaultConfig.commandCategories,
 			...commandCategories,
 		};
-		this._commandCategories = this.getCategories();
+		this._commandCategories = this._getCategories();
 
 		/* setup status message */
 		this.statusMessage = statusMessage || this.statusMessage;
@@ -61,7 +81,7 @@ export default class Bot {
 		this.client.on('message', this.onMessage.bind(this));
 	}
 
-	getCategories() {
+	_getCategories() {
 		const categories = new Collection();
 
 		this.commands.forEach(({ name: commandName, category }) => {
@@ -83,6 +103,19 @@ export default class Bot {
 		});
 
 		return categories;
+	}
+
+	_getCommands({ commands, includeDefaultCommands }) {
+		const commandCollection = getCommands(commands, {
+			includeDefaults: includeDefaultCommands,
+			t: this.t,
+		});
+
+		const battleReadyCommands = new Map(
+			[...commandCollection.entries()].sort()
+		);
+
+		return battleReadyCommands;
 	}
 
 	onReady() {
