@@ -5,7 +5,7 @@ export default {
 	COMMON: {
 		...common,
 	},
-	COMMAND: {
+	COMMANDS: {
 		...defaultCommands,
 	},
 };

@@ -68,6 +68,26 @@ loggerNames.forEach(type => {
 export { MockLogger };
 
 /**
+ * @todo <Write JS Docs>
+ * @param {*} param0
+ */
+export function MockTranslateFunc(
+	{ defaultSpace, language, translations } = {
+		defaultSpace: 'COMMON',
+		language: 'test',
+		translations: {
+			test: defaultTranslations,
+		},
+	}
+) {
+	return translate({
+		defaultSpace,
+		language,
+		translations,
+	});
+}
+
+/**
  * @type {Command}
  *
  * @description
@@ -88,7 +108,11 @@ export class MockCommand extends Command {
  * - This will make a command with the Command class defined in `/src/classes/`.
  * - The key name of the command class (and property of `name`) will default to 'MockCommand'.
  */
-export const makeMockCommand = ({ name = 'MockCommand', ...otherOptions }) =>
+export const makeMockCommand = ({
+	name = 'MockCommand',
+	t = MockTranslateFunc,
+	...otherOptions
+}) =>
 	({
 		[name]: class extends Command {
 			constructor() {
@@ -96,6 +120,7 @@ export const makeMockCommand = ({ name = 'MockCommand', ...otherOptions }) =>
 					name,
 					...otherOptions,
 				});
+				this.t = t;
 			}
 		},
 	}[name]);
@@ -184,20 +209,4 @@ export async function runCommand(command, overrides = {}) {
 
 	await command.run(commandOptions);
 	return commandOptions;
-}
-
-export function MockTranslateFunc(
-	{ defaultSpace, language, translations } = {
-		defaultSpace: 'COMMON',
-		language: 'test',
-		translations: {
-			test: defaultTranslations,
-		},
-	}
-) {
-	return translate({
-		defaultSpace,
-		language,
-		translations,
-	});
 }

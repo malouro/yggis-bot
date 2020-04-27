@@ -13,15 +13,15 @@ export default class Ping extends Command {
 			},
 		});
 
-		this.t = t;
-		this.description =
-			this.t('COMMAND', 'ping', 'description') || this.description;
+		/* setup i18n */
+		this.t = key => t('COMMANDS', 'ping', key);
+
+		this.name = this.t('name') || this.name;
+		this.description = this.t('description') || this.description;
 	}
 
 	action({ client, message, logger }) {
-		message.reply(
-			this.t('COMMAND', 'ping', 'response')(Math.round(client.ping))
-		);
+		message.reply(this.t('response')(Math.round(client.ping)));
 
 		logger.debug.log({
 			level: 'info',

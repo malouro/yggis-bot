@@ -19,10 +19,13 @@ export default class Command {
 			options
 		);
 
-		this.t = options.t ? options.t : () => null;
-
 		/* Command properties to verify */
 		this._validateOptions();
+
+		this.t = options.t ? options.t : () => null;
+
+		this.translationKey =
+			options.translationKey || this.name.toLocaleLowerCase();
 	}
 
 	_validateOptions() {

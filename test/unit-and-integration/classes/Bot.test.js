@@ -25,6 +25,25 @@ describe('Bot Class', () => {
 			expect(testBot.token).toBe(MockToken);
 		});
 
+		test('logs in with the given token', done => {
+			const testBot = new Bot({
+				token: MockToken,
+			});
+			const loginSpy = jest.spyOn(testBot.client, 'login');
+
+			// MockToken should be rejected, or reject with no network connection
+			testBot.start().catch(() => {
+				expect(loginSpy).toHaveBeenCalledWith(MockToken);
+				done();
+			});
+		});
+
+		test('constructs a Bot when no config is given', () => {
+			const testBot = new Bot();
+
+			expect(testBot).toBeInstanceOf(Bot);
+		});
+
 		test('sets activity, based on config, when `onReady` is fired', () => {
 			const customClient = MockClient;
 
@@ -95,13 +114,22 @@ describe('Bot Class', () => {
 				content: `${MockDefaultConfig.commandPrefix}test Message`,
 			});
 
-			expect(testBot.commands.get('test').run).toHaveBeenCalledWith(
+			expect(testBot.commands.get('test').run).toHaveBeenCalledTimes(1);
+			expect(testBot.commands.get('test').run).toHaveBeenNthCalledWith(
+				1,
 				expect.objectContaining({
 					message: expect.objectContaining({
 						content: `${MockDefaultConfig.commandPrefix}test Message`,
 					}),
 				})
 			);
+
+			testBot.onMessage({
+				author: { bot: false },
+				content: `${MockDefaultConfig.commandPrefix}notACommand Message`,
+			});
+
+			expect(testBot.commands.get('test').run).toHaveBeenCalledTimes(1);
 		});
 
 		test.each([
@@ -192,6 +220,43 @@ describe('Bot Class', () => {
 
 			/* eslint-disable-next-line no-underscore-dangle */
 			expect(Array.from(testBot._commandCategories.keys())).toStrictEqual([]);
+		});
+
+		test('sets up i18n', () => {
+			const testTranslations = {
+				test: {
+					TEST: {
+						string: 'some string',
+						func: jest
+							.fn()
+							.mockImplementation(
+								val => `some function called with parameter "${val}"`
+							),
+						subspace: {
+							key: 'translation',
+						},
+					},
+				},
+			};
+			const testBot = new Bot({
+				commands: [MockCommand],
+				includeDefaultCommands: false,
+				language: 'test',
+				translations: testTranslations,
+			});
+
+			expect(testBot.t).toBeInstanceOf(Function);
+
+			const string = testBot.t('TEST', null, 'string');
+			const func = testBot.t('TEST', null, 'func')('test');
+			const subspace = testBot.t('TEST', 'subspace', 'key');
+
+			expect(testBot.translations).toMatchObject(testTranslations);
+			expect(testTranslations.test.TEST.func).toHaveBeenCalled();
+
+			expect(string).toBe('some string');
+			expect(func).toBe('some function called with parameter "test"');
+			expect(subspace).toBe('translation');
 		});
 	});
 

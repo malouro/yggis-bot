@@ -12,7 +12,7 @@ describe('Ping Command', () => {
 		});
 
 		expect(result.message.reply).toHaveReturnedWith(
-			expect.stringContaining(`\`${expectedPing} ms\``)
+			expect.stringContaining(`${expectedPing}`)
 		);
 	});
 
@@ -22,11 +22,11 @@ describe('Ping Command', () => {
 
 		expect(result1.message.reply).toHaveNthReturnedWith(
 			1,
-			expect.stringContaining('`1 ms`')
+			expect.stringContaining('1')
 		);
 		expect(result2.message.reply).toHaveNthReturnedWith(
 			2,
-			expect.stringContaining('`0 ms`')
+			expect.stringContaining('0')
 		);
 	});
 });

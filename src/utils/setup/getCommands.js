@@ -12,6 +12,7 @@ export default function getCommands(
 	{ includeDefaults, t } = { includeDefaults: true, t: null }
 ) {
 	const CommandCollection = new Collection();
+	const CommandAliasesCollection = new Collection();
 	const commands = customCommands.concat(
 		includeDefaults ? DefaultCommands : []
 	);
@@ -24,9 +25,9 @@ export default function getCommands(
 		CommandCollection.set(CommandToAdd.name.toLocaleLowerCase(), CommandToAdd);
 
 		CommandToAdd.aliases.forEach(alias => {
-			CommandCollection.set(alias.toLocaleLowerCase(), CommandToAdd);
+			CommandAliasesCollection.set(alias.toLocaleLowerCase(), CommandToAdd);
 		});
 	});
 
-	return CommandCollection;
+	return [CommandCollection, CommandAliasesCollection];
 }

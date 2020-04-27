@@ -18,14 +18,17 @@ export default class Bot {
 	constructor({
 		name = 'Yggis',
 		client = new Client(),
+		t,
 		language = 'en-US',
 		translations,
+		includeDefaultTranslations = true,
 		commandPrefix,
-		commandCategories,
-		statusMessage,
-		statusMessageOptions,
 		commands = [],
 		includeDefaultCommands = true,
+		commandCategories,
+		includeDefaultCommandCategories = true,
+		statusMessage,
+		statusMessageOptions,
 		logger = defaultLogger,
 		token,
 	} = {}) {
@@ -49,23 +52,28 @@ export default class Bot {
 		this.language = language || this.language;
 
 		/** @todo find better way to set up translations */
-		this.translations = translations || {
-			'en-US': defaultTranslations,
-		};
-		this.t = translate({
-			defaultSpace: 'COMMON',
-			translations: this.translations,
-			language: this.language,
-		});
+		this.translations = includeDefaultTranslations
+			? { 'en-US': defaultTranslations, ...translations }
+			: translations || { 'en-US': defaultTranslations };
+		this.t =
+			t ||
+			translate({
+				defaultSpace: 'COMMON',
+				translations: this.translations,
+				language: this.language,
+			});
 
 		/* setup commands */
-		this.commands = this._getCommands({ commands, includeDefaultCommands });
+		[this.commands, this.commandAliases] = this.getCommands({
+			commands,
+			includeDefaultCommands,
+		});
 		this.commandPrefix = commandPrefix || this.commandPrefix;
-		this.commandCategories = {
-			...defaultConfig.commandCategories,
-			...commandCategories,
-		};
-		this._commandCategories = this._getCategories();
+		this.commandCategories =
+			includeDefaultCommands || includeDefaultCommandCategories
+				? { ...defaultConfig.commandCategories, ...commandCategories }
+				: commandCategories;
+		this._commandCategories = this.getCategories();
 
 		/* setup status message */
 		this.statusMessage = statusMessage || this.statusMessage;
@@ -81,7 +89,7 @@ export default class Bot {
 		this.client.on('message', this.onMessage.bind(this));
 	}
 
-	_getCategories() {
+	getCategories() {
 		const categories = new Collection();
 
 		this.commands.forEach(({ name: commandName, category }) => {
@@ -105,8 +113,8 @@ export default class Bot {
 		return categories;
 	}
 
-	_getCommands({ commands, includeDefaultCommands }) {
-		const commandCollection = getCommands(commands, {
+	getCommands({ commands, includeDefaultCommands }) {
+		const [commandCollection, aliasCollection] = getCommands(commands, {
 			includeDefaults: includeDefaultCommands,
 			t: this.t,
 		});
@@ -115,7 +123,7 @@ export default class Bot {
 			[...commandCollection.entries()].sort()
 		);
 
-		return battleReadyCommands;
+		return [battleReadyCommands, aliasCollection];
 	}
 
 	onReady() {
@@ -144,6 +152,14 @@ export default class Bot {
 					args,
 					logger: this.logger,
 				});
+			} else if (this.commandAliases.has(commandName)) {
+				this.commandAliases.get(commandName).run({
+					bot: this,
+					client: this.client,
+					message,
+					args,
+					logger: this.logger,
+				});
 			}
 		}
 
@@ -153,7 +169,7 @@ export default class Bot {
 		});
 	}
 
-	start() {
-		this.client.login(this.token);
+	async start() {
+		await this.client.login(this.token);
 	}
 }
