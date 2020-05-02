@@ -46,10 +46,10 @@ export default class Bot {
 		Object.assign(this, defaultConfig);
 
 		/* bot name */
-		this.name = name || this.name;
+		this.name = name;
 
 		/* i18n */
-		this.language = language || this.language;
+		this.language = language;
 
 		/** @todo find better way to set up translations */
 		this.translations = includeDefaultTranslations
@@ -153,7 +153,7 @@ export default class Bot {
 					logger: this.logger,
 				});
 			} else if (this.commandAliases.has(commandName)) {
-				this.commandAliases.get(commandName).run({
+				this.commands.get(this.commandAliases.get(commandName)).run({
 					bot: this,
 					client: this.client,
 					message,

@@ -28,7 +28,7 @@ export default {
 		commandHeader: commandName => `**${commandName} Command**`,
 		categoryHeader: category => `**${category} Commands**`,
 		/* Error handling */
-		invalidCommandUsage: (commandName, commandPrefix) =>
+		invalidCommandUsage: (commandPrefix, commandName) =>
 			`Invalid Invalid \`${commandPrefix}${commandName}\` usage.\n`,
 	},
 	categories: {

@@ -71,7 +71,8 @@ export default class Command {
 
 		if (!canUseCommand(message.member, this.permLevel)) {
 			return message.reply(
-				this.t('COMMON', 'commands', 'missingPermissionsToRunCommand')
+				this.t('COMMON', 'commands', 'missingPermissionsToRunCommand') ||
+					"You don't have the required permissions to use this command. 😥"
 			);
 		}
 

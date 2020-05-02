@@ -96,7 +96,10 @@ describe('Bot Class', () => {
 		});
 
 		test('handles messages that start with the commandPrefix as a command', () => {
-			const mockTestCommand = MockCommand;
+			const mockTestCommand = makeMockCommand({
+				name: 'Test',
+				aliases: ['test2'],
+			});
 			const testBot = new Bot({
 				client: MockClient,
 				commands: [mockTestCommand],
@@ -113,13 +116,25 @@ describe('Bot Class', () => {
 				author: { bot: false },
 				content: `${MockDefaultConfig.commandPrefix}test Message`,
 			});
+			testBot.onMessage({
+				author: { bot: false },
+				content: `${MockDefaultConfig.commandPrefix}test2 Message`,
+			});
 
-			expect(testBot.commands.get('test').run).toHaveBeenCalledTimes(1);
+			expect(testBot.commands.get('test').run).toHaveBeenCalledTimes(2);
 			expect(testBot.commands.get('test').run).toHaveBeenNthCalledWith(
 				1,
 				expect.objectContaining({
 					message: expect.objectContaining({
 						content: `${MockDefaultConfig.commandPrefix}test Message`,
+					}),
+				})
+			);
+			expect(testBot.commands.get('test').run).toHaveBeenNthCalledWith(
+				2,
+				expect.objectContaining({
+					message: expect.objectContaining({
+						content: `${MockDefaultConfig.commandPrefix}test2 Message`,
 					}),
 				})
 			);
@@ -129,7 +144,7 @@ describe('Bot Class', () => {
 				content: `${MockDefaultConfig.commandPrefix}notACommand Message`,
 			});
 
-			expect(testBot.commands.get('test').run).toHaveBeenCalledTimes(1);
+			expect(testBot.commands.get('test').run).toHaveBeenCalledTimes(2);
 		});
 
 		test.each([

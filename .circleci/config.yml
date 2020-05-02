@@ -8,7 +8,7 @@ orbs:
 jobs:
   build:
     docker:
-      - image: circleci/node:dubnium
+      - image: circleci/node:ebrium
 
     steps:
       - checkout

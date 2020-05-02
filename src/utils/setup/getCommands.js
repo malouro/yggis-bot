@@ -25,7 +25,10 @@ export default function getCommands(
 		CommandCollection.set(CommandToAdd.name.toLocaleLowerCase(), CommandToAdd);
 
 		CommandToAdd.aliases.forEach(alias => {
-			CommandAliasesCollection.set(alias.toLocaleLowerCase(), CommandToAdd);
+			CommandAliasesCollection.set(
+				alias.toLocaleLowerCase(),
+				CommandToAdd.name.toLocaleLowerCase()
+			);
 		});
 	});
 

@@ -31,7 +31,7 @@
 	"module": "es/",
 	"typings": "types/",
 	"scripts": {
-		"start": "babel-node examples/viaAPI/js/Yggis",
+		"start": "babel-node examples/js/Yggis",
 		"setup": "yarn && yarn generate:dotenv",
 		"build": "yarn build:esm && yarn build:cjs",
 		"build:cjs": "babel --env-name cjs -d lib/ src/",
