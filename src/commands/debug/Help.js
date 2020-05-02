@@ -1,5 +1,10 @@
 import Command from '../../classes/Command';
 
+/**
+ * @todo
+ * Upgrade Node & use optional chaining for i18n translations
+ */
+
 export default class Help extends Command {
 	constructor({ t } = { t: () => null }) {
 		super({
@@ -250,21 +255,27 @@ export default class Help extends Command {
 
 	/* Determine from the arguments what to actually run */
 	preAction({ args, bot }) {
-		if (args.length === 1) {
+		const cleanArgs = args.map(arg => arg.toLocaleLowerCase());
+
+		if (cleanArgs.length === 1) {
 			// !help (no args)
 			/* eslint-disable no-underscore-dangle */
 			this.messageOutput = this.buildMainHelpMenu(bot, bot._commandCategories);
-		} else if (bot.commands.has(args[1])) {
+		} else if (
+			bot.commands.has(cleanArgs[1]) ||
+			bot.commandAliases.has(cleanArgs[1])
+		) {
 			// !help <command>
 			this.messageOutput = this.buildCommandHelpMenu(
 				bot,
-				bot.commands.get(args[1].toLocaleLowerCase())
+				bot.commands.get(cleanArgs[1]) ||
+					bot.commands.get(bot.commandAliases.get(cleanArgs[1]))
 			);
-		} else if (bot._commandCategories.has(args[1])) {
+		} else if (bot._commandCategories.has(cleanArgs[1])) {
 			// !help <category>
 			this.messageOutput = this.buildCategoryHelpMenu(
 				bot,
-				bot._commandCategories.get(args[1].toLocaleLowerCase())
+				bot._commandCategories.get(cleanArgs[1])
 			);
 		} else {
 			// !help {invalidUsage}
