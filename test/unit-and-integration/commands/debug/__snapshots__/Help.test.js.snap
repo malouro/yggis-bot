@@ -103,7 +103,7 @@ exports[`Help Command makes a main help menu that looks like this when there are
 `;
 
 exports[`Help Command makes a main help menu when invalid usage is given 1`] = `
-"Invalid Invalid \`help!\` usage.
+"Invalid \`!help\` usage.
 
 
 \`!help\` \`<command|commandCategory>\`

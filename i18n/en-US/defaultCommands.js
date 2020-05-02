@@ -29,7 +29,7 @@ export default {
 		categoryHeader: category => `**${category} Commands**`,
 		/* Error handling */
 		invalidCommandUsage: (commandPrefix, commandName) =>
-			`Invalid Invalid \`${commandPrefix}${commandName}\` usage.\n`,
+			`Invalid \`${commandPrefix}${commandName}\` usage.\n`,
 	},
 	categories: {
 		debug: {
