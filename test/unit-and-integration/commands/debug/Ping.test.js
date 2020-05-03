@@ -1,9 +1,9 @@
 import Ping from '../../../../src/commands/debug/Ping';
 
-import { runCommand } from '../../../testHelpers';
+import { runCommand, MockTranslateFunc } from '../../../testHelpers';
 
 describe('Ping Command', () => {
-	const PingCommand = new Ping();
+	const PingCommand = new Ping({ t: MockTranslateFunc() });
 
 	test('returns a message with a ping', async () => {
 		const expectedPing = 420;
@@ -12,7 +12,7 @@ describe('Ping Command', () => {
 		});
 
 		expect(result.message.reply).toHaveReturnedWith(
-			expect.stringContaining(`\`${expectedPing} ms\``)
+			expect.stringContaining(`${expectedPing}`)
 		);
 	});
 
@@ -22,11 +22,11 @@ describe('Ping Command', () => {
 
 		expect(result1.message.reply).toHaveNthReturnedWith(
 			1,
-			expect.stringContaining('`1 ms`')
+			expect.stringContaining('1')
 		);
 		expect(result2.message.reply).toHaveNthReturnedWith(
 			2,
-			expect.stringContaining('`0 ms`')
+			expect.stringContaining('0')
 		);
 	});
 });

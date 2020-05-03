@@ -1,9 +1,13 @@
 // eslint-disable-next-line no-unused-vars
 import { Collection, Client, GuildMember } from 'discord.js';
 import { EventEmitter } from 'events';
-import { Bot, Command } from '../src/classes';
+
+import Bot from '../src/classes/Bot';
+import Command from '../src/classes/Command';
+
 import { loggerNames } from '../src/utils/logger';
-import { getCommands } from '../src/utils/setup';
+import { translate } from '../src/utils/i18n';
+import defaultTranslations from '../i18n/en-US';
 
 /**
  * @description
@@ -24,6 +28,10 @@ export const MockDefaultConfig = {
 	statusMessageOptions: {
 		type: 'statusMessageType',
 		url: 'statusMessageUrl',
+	},
+	language: 'test',
+	translations: {
+		test: defaultTranslations,
 	},
 };
 
@@ -60,6 +68,26 @@ loggerNames.forEach(type => {
 export { MockLogger };
 
 /**
+ * @todo <Write JS Docs>
+ * @param {*} param0
+ */
+export function MockTranslateFunc(
+	{ defaultSpace, language, translations } = {
+		defaultSpace: 'COMMON',
+		language: 'test',
+		translations: {
+			test: defaultTranslations,
+		},
+	}
+) {
+	return translate({
+		defaultSpace,
+		language,
+		translations,
+	});
+}
+
+/**
  * @type {Command}
  *
  * @description
@@ -80,7 +108,11 @@ export class MockCommand extends Command {
  * - This will make a command with the Command class defined in `/src/classes/`.
  * - The key name of the command class (and property of `name`) will default to 'MockCommand'.
  */
-export const makeMockCommand = ({ name = 'MockCommand', ...otherOptions }) =>
+export const makeMockCommand = ({
+	name = 'MockCommand',
+	t = MockTranslateFunc,
+	...otherOptions
+}) =>
 	({
 		[name]: class extends Command {
 			constructor() {
@@ -88,6 +120,7 @@ export const makeMockCommand = ({ name = 'MockCommand', ...otherOptions }) =>
 					name,
 					...otherOptions,
 				});
+				this.t = t;
 			}
 		},
 	}[name]);
@@ -98,7 +131,7 @@ export const makeMockCommand = ({ name = 'MockCommand', ...otherOptions }) =>
  * @description
  * Uses the `getCommands` utility function to make a collection containing mock command(s)
  */
-export const MockCommandList = getCommands([MockCommand]);
+export const MockCommandList = [MockCommand];
 
 /**
  * @description
@@ -125,12 +158,11 @@ export const MockBot = new Bot({
  * - Use `mockCommand` to setup the given command in the test bot's command collection.
  */
 export const makeMockBot = ({ mockCommand, ...overrides }) => {
-	const commands = mockCommand
-		? getCommands([mockCommand], { includeDefaults: false })
-		: MockCommandList;
+	const commands = mockCommand ? [mockCommand] : MockCommandList;
 
 	return new Bot({
 		commands,
+		includeDefaultCommands: false,
 		...overrides,
 	});
 };

@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Translate provides translated text when supplied with matching arguments/keys: COMMON.keyWithinSpace 1`] = `"Key within a space"`;
+
+exports[`Translate provides translated text when supplied with matching arguments/keys: COMMON.someSubspace.keyWithinSubspace 1`] = `"Key within a subspace"`;
+
+exports[`Translate provides translated text when supplied with matching arguments/keys: UNCOMMON.keyWithinSpace 1`] = `"RARE Key within a space"`;
+
+exports[`Translate provides translated text when supplied with matching arguments/keys: UNCOMMON.someSubspace.keyWithinSubspace 1`] = `"ULTRA-RARE Key within a subspace"`;
+
+exports[`Translate runs any functions and return values when they are called via the translation function: Function within default space 1`] = `"Function within a space called with TEST-2"`;
+
+exports[`Translate runs any functions and return values when they are called via the translation function: Function within non-default space 1`] = `"SUPER-RARE TEST-4"`;
+
+exports[`Translate runs any functions and return values when they are called via the translation function: Function within subspace, in default space 1`] = `"Function within a subspace called with TEST-1"`;
+
+exports[`Translate runs any functions and return values when they are called via the translation function: Function within subspace, in non-default space 1`] = `"SECRET-RARE TEST-3"`;

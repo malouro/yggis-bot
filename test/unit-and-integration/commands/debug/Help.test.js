@@ -1,20 +1,33 @@
+import mockConsole from 'jest-mock-console';
+
 import Help from '../../../../src/commands/debug/Help';
 import {
 	runCommand,
 	makeMockBot,
-	MockDefaultConfig,
 	makeMockCommand,
+	MockTranslateFunc,
+	MockDefaultConfig,
 } from '../../../testHelpers';
-import { getCommands } from '../../../../src/utils/setup';
 
 describe('Help Command', () => {
+	let restoreConsole = null;
+
+	beforeAll(() => {
+		restoreConsole = mockConsole();
+	});
+
+	afterAll(() => {
+		restoreConsole();
+	});
+
+	const HelpCommand = new Help({ t: MockTranslateFunc() });
 	const mockBot = makeMockBot({ mockCommand: Help });
-	const HelpCommand = new Help();
 
 	/**
 	 * @description
 	 * - Runs the Help command, with a given set of option overrides
 	 * - Use an array for `args` to list out arguments to be used in the command execution
+	 * @returns Jest Mock results to the mocked out Discord `message.channel.send()`
 	 */
 	const runHelpCommand = async ({
 		args = ['!help'],
@@ -57,9 +70,7 @@ describe('Help Command', () => {
 			const mockCommand1 = makeMockCommand({ name: 'command1' });
 			const mockCommand2 = makeMockCommand({ name: 'command2' });
 			const mockBotWithCommands = makeMockBot({
-				commands: getCommands([Help, mockCommand1, mockCommand2], {
-					includeDefaults: false,
-				}),
+				commands: [Help, mockCommand1, mockCommand2],
 			});
 
 			const {
@@ -128,14 +139,15 @@ describe('Help Command', () => {
 		});
 
 		const bot = makeMockBot({
-			commands: getCommands([
+			commands: [
 				Help,
 				commandWithSomeArgs,
 				commandWithChainArgs,
 				commandWithNonChainArgs,
 				commandWithBoth,
 				commandWithArgUsage,
-			]),
+			],
+			t: MockTranslateFunc(),
 		});
 
 		const chainArgRegex = /\([\w,\s]+\)/;
@@ -224,7 +236,7 @@ describe('Help Command', () => {
 				category: 'no-cat',
 			});
 
-			const commands = getCommands([testCommand, noCategoryConfigCommand]);
+			const commands = [testCommand, noCategoryConfigCommand];
 
 			const bot = makeMockBot({
 				commands,

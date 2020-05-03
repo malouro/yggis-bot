@@ -1,4 +1,3 @@
-import { Collection } from 'discord.js';
 import { Bot } from '../../../src/classes';
 import {
 	MockBot,
@@ -24,6 +23,25 @@ describe('Bot Class', () => {
 			expect(testBot.name).toBe('TestBot');
 			expect(testBot).toMatchObject(MockDefaultConfig);
 			expect(testBot.token).toBe(MockToken);
+		});
+
+		test('logs in with the given token', done => {
+			const testBot = new Bot({
+				token: MockToken,
+			});
+			const loginSpy = jest.spyOn(testBot.client, 'login');
+
+			// MockToken should be rejected, or reject with no network connection
+			testBot.start().catch(() => {
+				expect(loginSpy).toHaveBeenCalledWith(MockToken);
+				done();
+			});
+		});
+
+		test('constructs a Bot when no config is given', () => {
+			const testBot = new Bot();
+
+			expect(testBot).toBeInstanceOf(Bot);
 		});
 
 		test('sets activity, based on config, when `onReady` is fired', () => {
@@ -78,31 +96,55 @@ describe('Bot Class', () => {
 		});
 
 		test('handles messages that start with the commandPrefix as a command', () => {
-			const mockCommands = new Collection();
-			const mockTestCommand = new MockCommand();
-
-			mockTestCommand.run = jest.fn();
-			mockCommands.set('test', mockTestCommand);
-
+			const mockTestCommand = makeMockCommand({
+				name: 'Test',
+				aliases: ['test2'],
+			});
 			const testBot = new Bot({
 				client: MockClient,
-				commands: mockCommands,
+				commands: [mockTestCommand],
 				logger: MockLogger,
 				...MockDefaultConfig,
 			});
+
+			const injectMockCommand = testBot.commands.get('test');
+
+			injectMockCommand.run = jest.fn();
+			testBot.commands.set('test', injectMockCommand);
 
 			testBot.onMessage({
 				author: { bot: false },
 				content: `${MockDefaultConfig.commandPrefix}test Message`,
 			});
+			testBot.onMessage({
+				author: { bot: false },
+				content: `${MockDefaultConfig.commandPrefix}test2 Message`,
+			});
 
-			expect(mockTestCommand.run).toHaveBeenCalledWith(
+			expect(testBot.commands.get('test').run).toHaveBeenCalledTimes(2);
+			expect(testBot.commands.get('test').run).toHaveBeenNthCalledWith(
+				1,
 				expect.objectContaining({
 					message: expect.objectContaining({
 						content: `${MockDefaultConfig.commandPrefix}test Message`,
 					}),
 				})
 			);
+			expect(testBot.commands.get('test').run).toHaveBeenNthCalledWith(
+				2,
+				expect.objectContaining({
+					message: expect.objectContaining({
+						content: `${MockDefaultConfig.commandPrefix}test2 Message`,
+					}),
+				})
+			);
+
+			testBot.onMessage({
+				author: { bot: false },
+				content: `${MockDefaultConfig.commandPrefix}notACommand Message`,
+			});
+
+			expect(testBot.commands.get('test').run).toHaveBeenCalledTimes(2);
 		});
 
 		test.each([
@@ -111,26 +153,26 @@ describe('Bot Class', () => {
 			['Ç', 'a non-typical letter symbol'],
 			['1,000.000', 'a long number'],
 		])('can handle %s (%s) as the commandPrefix', commandPrefix => {
-			const mockCommands = new Collection();
-			const mockTestCommand = new MockCommand();
-
-			mockTestCommand.run = jest.fn();
-			mockCommands.set('test', mockTestCommand);
-
+			const mockTestCommand = MockCommand;
 			const testBot = new Bot({
 				client: MockClient,
-				commands: mockCommands,
+				commands: [mockTestCommand],
 				logger: MockLogger,
 				...MockDefaultConfig,
 				commandPrefix,
 			});
+
+			const injectMockCommand = testBot.commands.get('test');
+
+			injectMockCommand.run = jest.fn();
+			testBot.commands.set('test', injectMockCommand);
 
 			testBot.onMessage({
 				author: { bot: false },
 				content: `${commandPrefix}test Message`,
 			});
 
-			expect(mockTestCommand.run).toHaveBeenCalled();
+			expect(testBot.commands.get('test').run).toHaveBeenCalled();
 		});
 
 		test('sorts given commands alphabetically', () => {
@@ -141,12 +183,10 @@ describe('Bot Class', () => {
 				makeMockCommand({ name: 'æ' }),
 				makeMockCommand({ name: 'zeta' }),
 			];
-			const mockCommands = new Collection(
-				commands.map(Command => [Command.name, new Command()])
-			);
 
 			const testBot = new Bot({
-				commands: mockCommands,
+				commands,
+				includeDefaultCommands: false,
 				...MockDefaultConfig,
 			});
 
@@ -160,14 +200,15 @@ describe('Bot Class', () => {
 		});
 
 		test('sets a command categories list when given commands that are configured with command categories', () => {
-			const mockCommands = new Collection();
-
-			mockCommands.set('commandA', { name: 'commandA', category: 'cat1' });
-			mockCommands.set('commandB', { name: 'commandB', category: 'cat1' });
-			mockCommands.set('commandC', { name: 'commandC', category: 'cat2' });
+			const mockCommands = [
+				makeMockCommand({ name: 'commandA', category: 'cat1' }),
+				makeMockCommand({ name: 'commandB', category: 'cat1' }),
+				makeMockCommand({ name: 'commandC', category: 'cat2' }),
+			];
 
 			const testBot = new Bot({
 				commands: mockCommands,
+				includeDefaultCommands: false,
 			});
 
 			/* eslint-disable no-underscore-dangle */
@@ -188,11 +229,49 @@ describe('Bot Class', () => {
 
 		test('has an empty command category list when no commands are supplied', () => {
 			const testBot = new Bot({
-				commands: new Collection(),
+				commands: [],
+				includeDefaultCommands: false,
 			});
 
 			/* eslint-disable-next-line no-underscore-dangle */
 			expect(Array.from(testBot._commandCategories.keys())).toStrictEqual([]);
+		});
+
+		test('sets up i18n', () => {
+			const testTranslations = {
+				test: {
+					TEST: {
+						string: 'some string',
+						func: jest
+							.fn()
+							.mockImplementation(
+								val => `some function called with parameter "${val}"`
+							),
+						subspace: {
+							key: 'translation',
+						},
+					},
+				},
+			};
+			const testBot = new Bot({
+				commands: [MockCommand],
+				includeDefaultCommands: false,
+				language: 'test',
+				translations: testTranslations,
+			});
+
+			expect(testBot.t).toBeInstanceOf(Function);
+
+			const string = testBot.t('TEST', null, 'string');
+			const func = testBot.t('TEST', null, 'func')('test');
+			const subspace = testBot.t('TEST', 'subspace', 'key');
+
+			expect(testBot.translations).toMatchObject(testTranslations);
+			expect(testTranslations.test.TEST.func).toHaveBeenCalled();
+
+			expect(string).toBe('some string');
+			expect(func).toBe('some function called with parameter "test"');
+			expect(subspace).toBe('translation');
 		});
 	});
 

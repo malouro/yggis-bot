@@ -16,6 +16,7 @@ export declare class Command {
 		name: string;
 		permLevel?: number;
 		usage?: CommandUsage;
+		t?: Function;
 	});
 }
 

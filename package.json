@@ -31,7 +31,7 @@
 	"module": "es/",
 	"typings": "types/",
 	"scripts": {
-		"start": "babel-node examples/viaAPI/js/Yggis",
+		"start": "babel-node examples/js/Yggis",
 		"setup": "yarn && yarn generate:dotenv",
 		"build": "yarn build:esm && yarn build:cjs",
 		"build:cjs": "babel --env-name cjs -d lib/ src/",
@@ -53,7 +53,6 @@
 	},
 	"dependencies": {
 		"discord.js": "^11.5.1",
-		"dotenv": "^8.0.0",
 		"lodash": "^4.17.15",
 		"lowdb": "^1.0.0",
 		"winston": "^3.2.1",
@@ -71,6 +70,7 @@
 		"babel-eslint": "^10.0.1",
 		"core-js": "^3.6.4",
 		"cspell": "^4.0.41",
+		"dotenv": "^8.0.0",
 		"eslint": "^6.2.2",
 		"eslint-config-airbnb": "^18.0.1",
 		"eslint-config-prettier": "^6.9.0",
@@ -78,8 +78,9 @@
 		"eslint-plugin-jsx-a11y": "^6.2.1",
 		"eslint-plugin-prettier": "^3.1.2",
 		"eslint-plugin-react": "^7.13.0",
-		"jest": "^24.8.0",
+		"jest": "^25.4.0",
 		"jest-junit": "^10.0.0",
+		"jest-mock-console": "^1.0.0",
 		"prettier": "^1.17.1",
 		"snapshot-diff": "^0.5.1",
 		"wait-for-expect": "^3.0.1"

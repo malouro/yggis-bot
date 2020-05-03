@@ -1,4 +1,4 @@
-import Discord, { Collection } from 'discord.js';
+import { Client, Collection } from 'discord.js';
 
 import camelCase from 'lodash/camelCase';
 import upperFirst from 'lodash/upperFirst';
@@ -10,16 +10,25 @@ import {
 	getCommandFromMessage,
 } from '../utils/commands';
 import { MissingTokenError } from '../utils/errors';
+import getCommands from '../utils/setup/getCommands';
+import { translate } from '../utils/i18n';
+import defaultTranslations from '../../i18n/en-US';
 
 export default class Bot {
 	constructor({
 		name = 'Yggis',
-		client = new Discord.Client(),
+		client = new Client(),
+		t,
+		language = 'en-US',
+		translations,
+		includeDefaultTranslations = true,
 		commandPrefix,
+		commands = [],
+		includeDefaultCommands = true,
 		commandCategories,
+		includeDefaultCommandCategories = true,
 		statusMessage,
 		statusMessageOptions,
-		commands = new Discord.Collection(),
 		logger = defaultLogger,
 		token,
 	} = {}) {
@@ -30,21 +39,40 @@ export default class Bot {
 		) {
 			throw new MissingTokenError();
 		}
+
 		this.token = token || process.env.TOKEN;
 
 		/* setup with defaults */
 		Object.assign(this, defaultConfig);
 
 		/* bot name */
-		this.name = name || this.name;
+		this.name = name;
+
+		/* i18n */
+		this.language = language;
+
+		/** @todo find better way to set up translations */
+		this.translations = includeDefaultTranslations
+			? { 'en-US': defaultTranslations, ...translations }
+			: translations || { 'en-US': defaultTranslations };
+		this.t =
+			t ||
+			translate({
+				defaultSpace: 'COMMON',
+				translations: this.translations,
+				language: this.language,
+			});
 
 		/* setup commands */
-		this.commands = new Map([...commands.entries()].sort());
+		[this.commands, this.commandAliases] = this.getCommands({
+			commands,
+			includeDefaultCommands,
+		});
 		this.commandPrefix = commandPrefix || this.commandPrefix;
-		this.commandCategories = {
-			...defaultConfig.commandCategories,
-			...commandCategories,
-		};
+		this.commandCategories =
+			includeDefaultCommands || includeDefaultCommandCategories
+				? { ...defaultConfig.commandCategories, ...commandCategories }
+				: commandCategories;
 		this._commandCategories = this.getCategories();
 
 		/* setup status message */
@@ -85,6 +113,19 @@ export default class Bot {
 		return categories;
 	}
 
+	getCommands({ commands, includeDefaultCommands }) {
+		const [commandCollection, aliasCollection] = getCommands(commands, {
+			includeDefaults: includeDefaultCommands,
+			t: this.t,
+		});
+
+		const battleReadyCommands = new Map(
+			[...commandCollection.entries()].sort()
+		);
+
+		return [battleReadyCommands, aliasCollection];
+	}
+
 	onReady() {
 		this.client.user.setActivity(this.statusMessage, this.statusMessageOptions);
 		this.logger.bot.log({
@@ -111,6 +152,14 @@ export default class Bot {
 					args,
 					logger: this.logger,
 				});
+			} else if (this.commandAliases.has(commandName)) {
+				this.commands.get(this.commandAliases.get(commandName)).run({
+					bot: this,
+					client: this.client,
+					message,
+					args,
+					logger: this.logger,
+				});
 			}
 		}
 
@@ -120,7 +169,7 @@ export default class Bot {
 		});
 	}
 
-	start() {
-		this.client.login(this.token);
+	async start() {
+		await this.client.login(this.token);
 	}
 }

@@ -1,7 +1,7 @@
-import { Command } from '../../classes';
+import Command from '../../classes/Command';
 
 export default class Ping extends Command {
-	constructor() {
+	constructor({ t } = { t: () => null }) {
 		super({
 			name: 'Ping',
 			category: 'debug',
@@ -12,10 +12,17 @@ export default class Ping extends Command {
 				args: [],
 			},
 		});
+
+		/* setup i18n */
+		this.t = key => t('COMMANDS', 'ping', key);
+
+		this.name = this.t('name') || this.name;
+		this.description = this.t('description') || this.description;
 	}
 
 	action({ client, message, logger }) {
-		message.reply(`Pong! \`${Math.round(client.ping)} ms\``);
+		message.reply(this.t('response')(Math.round(client.ping)));
+
 		logger.debug.log({
 			level: 'info',
 			message: `${message.author} has used the \`Ping\` command!`,

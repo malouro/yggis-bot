@@ -3,7 +3,7 @@
 exports[`Help Command has its own command category help menu (for the \`debug\` category) that looks like this 1`] = `
 "**Debug Commands**
 
-Commands that assist with debugging and support.
+Commands that assist with debugging and support. 🔧
 
 \`!help\`"
 `;
@@ -11,9 +11,11 @@ Commands that assist with debugging and support.
 exports[`Help Command has its own command help menu that looks like this 1`] = `
 "**Help Command**
 
-Help menus, support and information. Find out what commands exist and how to use them.
+Help menus, support and information. Find out what commands exist and how to use them. 💁‍♀️
+
 
 \`!help\` \`<command|commandCategory>\`
+
 
 \`command\`
 Get help on how to use a specific command.
@@ -41,7 +43,9 @@ exports[`Help Command makes a command's help menu that displays a command's avai
 
 (Missing description.)
 
+
 \`!command\` \`<arg2|arg3>\` \`(arg1)\`
+
 
 \`arg1\`
 Arg#1
@@ -58,7 +62,9 @@ exports[`Help Command makes a command's help menu that displays an argument's us
 
 (Missing description.)
 
+
 \`!argusage\` \`<arg2>\` \`(arg1)\`
+
 
 \`arg1\`
 Arg#1
@@ -99,7 +105,9 @@ exports[`Help Command makes a main help menu that looks like this when there are
 exports[`Help Command makes a main help menu when invalid usage is given 1`] = `
 "Invalid \`!help\` usage.
 
+
 \`!help\` \`<command|commandCategory>\`
+
 
 \`command\`
 Get help on how to use a specific command.

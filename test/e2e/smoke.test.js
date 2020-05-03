@@ -2,7 +2,6 @@ import waitForExpect from 'wait-for-expect';
 
 import { Bot } from '../../src/classes';
 import { MockLogger } from '../testHelpers';
-import { getCommands } from '../../src/utils/setup';
 
 jest.setTimeout(30000); // In case of slow network connection, or other unpredictable circumstances
 
@@ -35,7 +34,7 @@ describe('Smoke tests', () => {
 	const Yggis = new Bot({
 		...config,
 		logger: MockLogger,
-		commands: getCommands(),
+		includeDefaultCommands: true,
 	});
 
 	/**

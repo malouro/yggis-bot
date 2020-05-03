@@ -9,22 +9,28 @@ import DefaultCommands from '../../commands';
  */
 export default function getCommands(
 	customCommands = [],
-	{ includeDefaults } = { includeDefaults: true }
+	{ includeDefaults, t } = { includeDefaults: true, t: null }
 ) {
 	const CommandCollection = new Collection();
+	const CommandAliasesCollection = new Collection();
 	const commands = customCommands.concat(
 		includeDefaults ? DefaultCommands : []
 	);
 
 	commands.forEach(CommandConstructor => {
-		const CommandToAdd = new CommandConstructor();
+		const CommandToAdd = t
+			? new CommandConstructor({ t })
+			: new CommandConstructor();
 
 		CommandCollection.set(CommandToAdd.name.toLocaleLowerCase(), CommandToAdd);
 
 		CommandToAdd.aliases.forEach(alias => {
-			CommandCollection.set(alias.toLocaleLowerCase(), CommandToAdd);
+			CommandAliasesCollection.set(
+				alias.toLocaleLowerCase(),
+				CommandToAdd.name.toLocaleLowerCase()
+			);
 		});
 	});
 
-	return CommandCollection;
+	return [CommandCollection, CommandAliasesCollection];
 }
