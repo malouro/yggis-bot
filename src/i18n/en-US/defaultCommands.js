@@ -30,11 +30,33 @@ export default {
 		/* Error handling */
 		invalidCommandUsage: (commandPrefix, commandName) =>
 			`Invalid \`${commandPrefix}${commandName}\` usage.\n`,
+		missingArgumentDescription: '(Missing description.)',
+	},
+	reddit: {
+		name: 'Reddit',
+		description: 'Grab a random Reddit post from a specific subreddit.',
+		invalidSubreddit: subreddit =>
+			`Oops! The subreddit \`/r/${subreddit}\` is either empty or non-existent.`,
+		postedByText: (title, author) => `**${title}**\nposted by ${author}`,
+		usage: {
+			subreddit: {
+				name: 'subreddit',
+				description: 'The subreddit to grab a post from.',
+			},
+		},
+	},
+	aww: {
+		name: 'Aww',
+		description: 'Grab a cute & cuddly post from the /r/aww subreddit.',
 	},
 	categories: {
 		debug: {
 			name: 'Debug',
 			description: 'Commands that assist with debugging and support. 🔧',
+		},
+		fun: {
+			name: 'Fun',
+			description: 'Have a bit of fun with these commands. 😄',
 		},
 	},
 };

@@ -1,3 +1,4 @@
 import DebugCommands from './debug';
+import FunCommands from './fun';
 
-export default [...DebugCommands];
+export default [...DebugCommands, ...FunCommands];

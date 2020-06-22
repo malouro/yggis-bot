@@ -1,7 +1,7 @@
 import { Client, Collection } from 'discord.js';
-
 import camelCase from 'lodash/camelCase';
 import upperFirst from 'lodash/upperFirst';
+import merge from 'lodash/merge';
 
 import defaultConfig from '../constants/defaultConfig';
 import defaultLogger from '../utils/logger';
@@ -12,24 +12,32 @@ import {
 import { MissingTokenError } from '../utils/errors';
 import getCommands from '../utils/setup/getCommands';
 import { translate } from '../utils/i18n';
-import defaultTranslations from '../../i18n/en-US';
+import defaultTranslations from '../i18n/en-US';
 
 export default class Bot {
 	constructor({
+		/* info */
 		name = 'Yggis',
 		client = new Client(),
+		logger = defaultLogger,
+		/* i18n */
 		t,
 		language = 'en-US',
 		translations,
 		includeDefaultTranslations = true,
+		/* commands */
 		commandPrefix,
 		commands = [],
 		includeDefaultCommands = true,
-		commandCategories,
+		/* command categories */
+		commandCategories = [],
 		includeDefaultCommandCategories = true,
+		/* events */
+		eventHandlers = {},
+		/* status */
 		statusMessage,
 		statusMessageOptions,
-		logger = defaultLogger,
+		/* auth */
 		token,
 	} = {}) {
 		/* oauth token for Discord bot */
@@ -53,7 +61,7 @@ export default class Bot {
 
 		/** @todo find better way to set up translations */
 		this.translations = includeDefaultTranslations
-			? { 'en-US': defaultTranslations, ...translations }
+			? merge({ 'en-US': defaultTranslations }, translations)
 			: translations || { 'en-US': defaultTranslations };
 		this.t =
 			t ||
@@ -71,9 +79,12 @@ export default class Bot {
 		this.commandPrefix = commandPrefix || this.commandPrefix;
 		this.commandCategories =
 			includeDefaultCommands || includeDefaultCommandCategories
-				? { ...defaultConfig.commandCategories, ...commandCategories }
+				? ['debug', 'fun', ...commandCategories]
 				: commandCategories;
 		this._commandCategories = this.getCategories();
+
+		/* event handlers */
+		this.eventHandlers = eventHandlers;
 
 		/* setup status message */
 		this.statusMessage = statusMessage || this.statusMessage;
@@ -85,8 +96,22 @@ export default class Bot {
 
 		/* Discord.js client & events */
 		this.client = client;
-		this.client.on('ready', this.onReady.bind(this));
-		this.client.on('message', this.onMessage.bind(this));
+		this.client.on(
+			'ready',
+			this.eventHandlers.ready || this.onReady.bind(this)
+		);
+		this.client.on(
+			'reconnecting',
+			this.eventHandlers.reconnecting || this.onReconnecting.bind(this)
+		);
+		this.client.on(
+			'disconnect',
+			this.eventHandlers.disconnect || this.onDisconnect.bind(this)
+		);
+		this.client.on(
+			'message',
+			this.eventHandlers.message || this.onMessage.bind(this)
+		);
 	}
 
 	getCategories() {
@@ -95,9 +120,7 @@ export default class Bot {
 		this.commands.forEach(({ name: commandName, category }) => {
 			if (!categories.has(category)) {
 				categories.set(category, {
-					...(this.commandCategories[category] || {
-						name: upperFirst(camelCase(category)),
-					}),
+					name: upperFirst(camelCase(category)),
 					commands: [commandName.toLocaleLowerCase()],
 				});
 			} else {
@@ -131,6 +154,20 @@ export default class Bot {
 		this.logger.bot.log({
 			level: 'info',
 			message: 'Ready!',
+		});
+	}
+
+	onReconnecting() {
+		this.logger.bot.log({
+			level: 'info',
+			message: 'Reconnecting...',
+		});
+	}
+
+	onDisconnect() {
+		this.logger.bot.log({
+			level: 'info',
+			message: 'Disconnected',
 		});
 	}
 

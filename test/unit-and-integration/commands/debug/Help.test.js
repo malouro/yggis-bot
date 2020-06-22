@@ -226,7 +226,7 @@ describe('Help Command', () => {
 	});
 
 	describe("makes a command category's help menu", () => {
-		test('with or without command category configuration', async () => {
+		test.only('with or without command category configuration', async () => {
 			const testCommand = makeMockCommand({
 				name: 'TestCommand',
 				category: 'test',
@@ -242,12 +242,18 @@ describe('Help Command', () => {
 				commands,
 				...MockDefaultConfig,
 				commandPrefix: '!',
-				commandCategories: {
-					test: {
-						name: 'Test',
-						description: 'Testing command categories',
+				translations: {
+					'en-US': {
+						COMMANDS: {
+							categories: {
+								test: {
+									name: 'Test',
+									description: 'Testing command categories',
+								},
+							},
+						},
 					},
-				},
+				}
 			});
 
 			const testCategoryHelpMenu = await runHelpCommand({

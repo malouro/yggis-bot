@@ -7,7 +7,7 @@ import Command from '../src/classes/Command';
 
 import { loggerNames } from '../src/utils/logger';
 import { translate } from '../src/utils/i18n';
-import defaultTranslations from '../i18n/en-US';
+import defaultTranslations from '../src/i18n/en-US';
 
 /**
  * @description
@@ -22,7 +22,7 @@ export * from './testConstants';
  * - Follows the template of default values defined in `/src/constants/config.js`
  */
 export const MockDefaultConfig = {
-	commandCategories: {},
+	commandCategories: [],
 	commandPrefix: 'testPrefix',
 	statusMessage: 'testStatusMessage',
 	statusMessageOptions: {

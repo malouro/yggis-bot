@@ -5,7 +5,7 @@
 	},
 	"extends": [
 		"airbnb-base",
-		"plugin:prettier/recommended"
+		"prettier/"
 	],
 	"parser": "babel-eslint",
 	"parserOptions": {
@@ -30,6 +30,7 @@
 			"error",
 			"tab"
 		],
+		"no-nested-ternary": 0,
 		"no-tabs": 0,
 		"no-underscore-dangle": [
 			"error",

@@ -21,13 +21,13 @@ describe('Bot Class', () => {
 
 			expect(testBot).toBeInstanceOf(Bot);
 			expect(testBot.name).toBe('TestBot');
-			expect(testBot).toMatchObject(MockDefaultConfig);
 			expect(testBot.token).toBe(MockToken);
 		});
 
 		test('logs in with the given token', done => {
 			const testBot = new Bot({
 				token: MockToken,
+				logger: MockLogger,
 			});
 			const loginSpy = jest.spyOn(testBot.client, 'login');
 
