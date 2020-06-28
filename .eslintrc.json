@@ -5,7 +5,7 @@
 	},
 	"extends": [
 		"airbnb-base",
-		"prettier/prettier-eslint"
+		"prettier"
 	],
 	"parser": "babel-eslint",
 	"parserOptions": {
