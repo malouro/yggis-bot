@@ -253,7 +253,7 @@ describe('Help Command', () => {
 							},
 						},
 					},
-				}
+				},
 			});
 
 			const testCategoryHelpMenu = await runHelpCommand({
