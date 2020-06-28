@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Reddit command runs with no args and grabs a post from r/all 1`] = `
+"**POST_TITLE**
+posted by /u/SOME_AUTHOR
+https://www.reddit.com/r/all/
+<https://www.reddit.com/r/all/comments/SOME_POST/>"
+`;

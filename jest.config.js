@@ -6,7 +6,7 @@ module.exports = {
 	collectCoverageFrom: [
 		'<rootDir>/src/**/*.{js,ts,jsx,tsx}',
 		'!<rootDir>/src/utils/logger.js',
-		'!<rootDir>/src/Yggis.js',
+		'!<rootDir>/src/i18n/**',
 		'!**/index.js',
 		'!**/*.d.ts',
 	],
