@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Aww Command returns a post from r/aww 1`] = `
+"**POST_TITLE**
+posted by /u/SOME_AUTHOR
+https://i.redd.it/pqdffk5lsp751.jpg
+<https://www.reddit.com/r/aww/comments/SOME_POST/>"
+`;
