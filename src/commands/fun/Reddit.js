@@ -71,7 +71,9 @@ export default class Reddit extends Command {
 				const regex = /<a .*?href="(.*?)">/gi;
 				const matches = [...content.matchAll(regex)];
 
-				return matches[2][1];
+				return matches[2][1].includes('i.redd.it') ?
+					matches[2][1] :
+					matches[3][1];
 			};
 
 			articles.forEach(article => {
