@@ -47,7 +47,7 @@
 		"check:spelling": "cspell src/** test/**/*.js scripts/** docs/**",
 		"check:format": "yarn format:safe",
 		"format": "yarn format:safe --write",
-		"format:safe": "prettier --check \"{src,test,scripts}/**/*.js\"",
+		"format:safe": "prettier --check \"{src,scripts}/**/*.js\"",
 		"docs:dev": "echo \"No docs to build\" && exit 0",
 		"docs:build": "echo \"No docs to build\" && exit 0"
 	},
