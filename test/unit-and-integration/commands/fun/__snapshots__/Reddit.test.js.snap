@@ -1,8 +1,24 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Reddit command empty subreddit 1`] = `"Oops! The subreddit \`/r/empty\` is either empty or non-existent."`;
+
+exports[`Reddit command handles posts with and without images 1`] = `
+"**undefined**
+posted by undefined
+https://i.redd.it/this-is-an-image.jpg
+<undefined>"
+`;
+
+exports[`Reddit command handles posts with and without images 2`] = `
+"**undefined**
+posted by undefined
+https://i.redd.it/this-is-an-image.jpg
+<undefined>"
+`;
+
 exports[`Reddit command runs with no args and grabs a post from r/all 1`] = `
 "**POST_TITLE**
 posted by /u/SOME_AUTHOR
-https://www.reddit.com/r/all/
+https://i.redd.it/wqd0hx650k651.jpg
 <https://www.reddit.com/r/all/comments/SOME_POST/>"
 `;
