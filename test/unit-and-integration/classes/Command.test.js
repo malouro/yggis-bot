@@ -1,9 +1,10 @@
+import merge from 'lodash/merge';
 import { Command } from '../../../src/classes';
 import {
 	MissingPropertyError,
 	InvalidPropertyError,
 } from '../../../src/utils/errors';
-import { runCommand } from '../../testHelpers';
+import { runCommand, MockMasterID } from '../../testHelpers';
 
 describe('Command Class', () => {
 	class TestCommand extends Command {
@@ -95,6 +96,7 @@ describe('Command Class', () => {
 		});
 
 		test('is usable when user permission level exceeds command requirement', async () => {
+			/* permLevel: 0 means that anyone can use the command */
 			class ZeroPermLevelCommand extends Command {
 				constructor() {
 					super({
@@ -122,6 +124,53 @@ describe('Command Class', () => {
 
 			await runCommand(testCommand, { message: mockMessage });
 			expect(testCommand.action).toHaveBeenCalled();
+		});
+
+		test('is unusable when user permission level is lower than command requirement', async () => {
+			class HighPermLevelCommand extends Command {
+				constructor() {
+					super({
+						name: 'test',
+						permLevel: 5,
+					});
+				}
+
+				action = jest.fn();
+			}
+
+			const testCommand = new HighPermLevelCommand();
+
+			// Set up message object to have minimal possible permission level
+			const mockMessageDefaults = {
+				reply: jest.fn(message => message),
+				member: {
+					id: 'just a n00b',
+					guild: {
+						owner: { id: 'not a n00b' },
+					},
+					hasPermission: () => false,
+				},
+			};
+			const mockMessage1 = { ...mockMessageDefaults };
+			const mockMessage2 = merge({}, mockMessageDefaults, {
+				member: { id: 'not a n00b' }
+			});
+			const mockMessage3 = merge({}, mockMessageDefaults, {
+				member: {
+					hasPermission: () => true
+				}
+			});
+			const mockMessage4 = merge({}, mockMessageDefaults, {
+				member: { id: MockMasterID }
+			});
+
+			await runCommand(testCommand, { message: mockMessage1 });
+			await runCommand(testCommand, { message: mockMessage2 });
+			await runCommand(testCommand, { message: mockMessage3 });
+			/* This is the only case where the command will run */
+			await runCommand(testCommand, { message: mockMessage4 });
+
+			expect(testCommand.action).toHaveBeenCalledTimes(1);
 		});
 	});
 
