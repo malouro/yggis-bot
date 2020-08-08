@@ -56,6 +56,7 @@
 		"feed-read-parser": "^1.0.5",
 		"lodash": "^4.17.15",
 		"lowdb": "^1.0.0",
+		"mongodb": "^3.6.0",
 		"winston": "^3.2.1",
 		"yargs": "^13.2.4"
 	},

@@ -1,7 +1,7 @@
 /* eslint-disable-next-line import/no-extraneous-dependencies */
 import { config as dotenvConfig } from 'dotenv';
 
-import { Bot, Command } from '../../src';
+import { Bot, Command } from 'yggis-bot';
 
 /**
  * # .env file contents:

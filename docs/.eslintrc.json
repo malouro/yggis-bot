@@ -1,18 +1,18 @@
 {
-	"env": {
-		"browser": true,
-		"node": true,
-		"es6": true,
-		"jest": false
-	},
-	"extends": [ "../.eslintrc.json", "airbnb" ],
-	"parserOptions": {
-		"ecmaVersion": 2019,
-		"sourceType": "module"
-	},
-	"rules": {
-		"no-tabs": 0,
-		"indent": [ "error", "tab" ],
-		"semi": [ "error", "never" ]
-	}
+  "extends": ["airbnb", "prettier"],
+  "plugins": ["react", "jsx-a11y", "import"],
+  "rules": {
+    "react/prefer-stateless-function": "off",
+    "react/prop-types": "off",
+		"react/no-danger": "off",
+		"indent": ["error", "tab"],
+		"react/jsx-indent": ["error", "tab"],
+		"react/jsx-indent-props": ["error", "tab"]
+  },
+  "settings": {
+    "import/core-modules": []
+  },
+  "env": {
+    "browser": true
+  }
 }
