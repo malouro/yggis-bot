@@ -56,7 +56,7 @@
 		"feed-read-parser": "^1.0.5",
 		"lodash": "^4.17.20",
 		"lowdb": "^1.0.0",
-		"winston": "^3.2.1",
+		"winston": "^3.3.3",
 		"yargs": "^15.4.1"
 	},
 	"devDependencies": {
