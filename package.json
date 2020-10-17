@@ -57,7 +57,7 @@
 		"lodash": "^4.17.20",
 		"lowdb": "^1.0.0",
 		"winston": "^3.3.3",
-		"yargs": "^15.4.1"
+		"yargs": "^16.1.0"
 	},
 	"devDependencies": {
 		"@babel/cli": "^7.8.4",
