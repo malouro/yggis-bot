@@ -67,7 +67,7 @@
 		"@babel/plugin-transform-async-to-generator": "^7.8.3",
 		"@babel/plugin-transform-classes": "^7.8.3",
 		"@babel/preset-env": "^7.11.5",
-		"@types/jest": "^26.0.4",
+		"@types/jest": "^26.0.22",
 		"babel-eslint": "^10.0.1",
 		"core-js": "^3.6.4",
 		"cspell": "^5.0.8",
